@@ -1,4 +1,4 @@
-module github.com/Manuciao10/bot
+module Eagle
 
 go 1.19
 
