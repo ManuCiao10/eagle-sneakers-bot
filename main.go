@@ -17,6 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
+	"github.com/denisbrodbeck/machineid"
 	"github.com/joho/godotenv"
 )
 
@@ -27,6 +28,15 @@ func init() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+	id, err := machineid.ProtectedID("myAppName")
+	if err != nil {
+		log.Fatal(err)
+	}
+	CheckId(id)
+}
+
+func CheckId(id string) {
+	
 }
 
 func SelectMode(label string) string {

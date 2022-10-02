@@ -3,6 +3,7 @@ module github.com/Manuciao10/bot
 go 1.19
 
 require (
+	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
