@@ -54,10 +54,14 @@ func Change_id(ID_object string) {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + "OPEN TICKET ERROR TO UPDATE KEY")
 		os.Exit(1)
 	}
-	color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID UPDATED")
+	color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID UPDATED RESTART BOT")
+	os.Exit(1)
 }
 
 func CheckId(id_database string, ID_object string) {
+	if id_database == "" {
+		Change_id(ID_object)
+	}
 	if utils.Gen_id() == id_database {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID VALID")
 	} else {
@@ -163,10 +167,16 @@ func main() {
 	// fmt.Println(mode)
 }
 
+// Add function to generate all the file necessary to set up csv etc..
 // Add Dashboard
 // Add monitor
 // Add client
 // Add sql database
+// Add modules
+// Add function to check if the bot need update
+// Add quick-tasks
+// Scrape PID + puyt them encrypted
+// Implement a TLS client
 
 //------------------------------------------------------------------//
 // ADD a guide to get the uuid
