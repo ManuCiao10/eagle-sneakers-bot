@@ -7,13 +7,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	// "reflect"
 	"strings"
 	"time"
 
 	"github.com/fatih/color"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -28,15 +27,62 @@ func init() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+}
+
+func gen_id() string {
 	id, err := machineid.ProtectedID("myAppName")
 	if err != nil {
 		log.Fatal(err)
 	}
-	CheckId(id)
+	return id
 }
 
-func CheckId(id string) {
-	
+func Change_id(ID_object string) {
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	err = client.Connect(ctx)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer client.Disconnect(ctx)
+	col := client.Database("autentichation").Collection("autentichation")
+	id, _ := primitive.ObjectIDFromHex(ID_object)
+	res, err := col.UpdateOne(
+		ctx,
+		bson.M{"_id": id},
+		bson.D{
+			{Key: "$set", Value: bson.D{{Key: "id", Value: gen_id()}}},
+		},
+	)
+	_ = res
+	if err != nil {
+		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + "OPEN TICKET ERROR TO UPDATE KEY")
+		log.Fatal(err)
+	}
+	color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID UPDATED")
+}
+
+func CheckId(id string, id_database string, ID_object string) {
+	if id == id_database {
+		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID VALID")
+	} else {
+		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID NOT VALID")
+		answer := SelectMode("[ " + time.Now().Format("15:04:05.000000") + " ]" + " DO YOU WANT TO RESET IT? (Y/N): ")
+		if answer == "y" || answer == "Y" || answer == "yes" || answer == "YES" {
+			Change_id(ID_object)
+			color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID UPDATED")
+			os.Exit(1)
+		} else {
+			color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID NOT UPDATED")
+			os.Exit(1)
+		}
+	}
+
 }
 
 func SelectMode(label string) string {
@@ -66,10 +112,11 @@ func Read_json() bool {
 	}
 	key = payload["key"].(string)
 	uuid := payload["uuid"].(string)
-	return Read_database(key, uuid) // HE'S is gonna return true or false
+	id := gen_id()
+	return Read_database(key, uuid, id) // HE'S is gonna return true or false
 }
 
-func Read_database(key string, uuid string) bool {
+func Read_database(key string, uuid string, id string) bool {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
 		log.Fatal(err)
@@ -100,7 +147,8 @@ func Read_database(key string, uuid string) bool {
 			} else {
 				if result[uuid] == key {
 					// fmt.Println("\nresult type:", reflect.TypeOf(result))
-					// fmt.Println("result:", result)
+					ID_object := result["_id"].(primitive.ObjectID).Hex()
+					CheckId(id, result["id"].(string), ID_object)
 					return true
 				}
 			}
@@ -138,6 +186,8 @@ func main() {
 	}
 	// fmt.Println(mode)
 }
+
+//if content["id"] = vuota aggiungi attuale ID
 
 // check if the key an dthe uuid is valid (SQL)
 // check the ID of the Machine
