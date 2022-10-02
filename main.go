@@ -51,10 +51,10 @@ func Change_id(ID_object string) {
 	}
 	defer client.Disconnect(ctx)
 	col := client.Database("autentichation").Collection("autentichation")
-	id, _ := primitive.ObjectIDFromHex(ID_object)
+	id_obj, _ := primitive.ObjectIDFromHex(ID_object)
 	res, err := col.UpdateOne(
 		ctx,
-		bson.M{"_id": id},
+		bson.M{"_id": id_obj},
 		bson.D{
 			{Key: "$set", Value: bson.D{{Key: "id", Value: gen_id()}}},
 		},
@@ -62,13 +62,13 @@ func Change_id(ID_object string) {
 	_ = res
 	if err != nil {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + "OPEN TICKET ERROR TO UPDATE KEY")
-		log.Fatal(err)
+		os.Exit(1)
 	}
 	color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID UPDATED")
 }
 
-func CheckId(id string, id_database string, ID_object string) {
-	if id == id_database {
+func CheckId(id_database string, ID_object string) {
+	if gen_id() == id_database {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID VALID")
 	} else {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID NOT VALID")
@@ -112,11 +112,10 @@ func Read_json() bool {
 	}
 	key = payload["key"].(string)
 	uuid := payload["uuid"].(string)
-	id := gen_id()
-	return Read_database(key, uuid, id) // HE'S is gonna return true or false
+	return Read_database(key, uuid) // HE'S is gonna return true or false
 }
 
-func Read_database(key string, uuid string, id string) bool {
+func Read_database(key string, uuid string) bool {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
 		log.Fatal(err)
@@ -148,7 +147,7 @@ func Read_database(key string, uuid string, id string) bool {
 				if result[uuid] == key {
 					// fmt.Println("\nresult type:", reflect.TypeOf(result))
 					ID_object := result["_id"].(primitive.ObjectID).Hex()
-					CheckId(id, result["id"].(string), ID_object)
+					CheckId(result["id"].(string), ID_object)
 					return true
 				}
 			}
@@ -163,7 +162,7 @@ func main() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
 	}
-	content, err := os.ReadFile("logo.txt")
+	content, err := os.ReadFile("config/logo.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -187,10 +186,7 @@ func main() {
 	// fmt.Println(mode)
 }
 
-//if content["id"] = vuota aggiungi attuale ID
-
-// check if the key an dthe uuid is valid (SQL)
-// check the ID of the Machine
+// clean code adding utils.go
 // Add Dashboard
 // Add monitor
 // Add client
