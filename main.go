@@ -21,7 +21,7 @@ import (
 )
 
 func init() {
-
+	//add check updates
 	err := godotenv.Load("config/.env")
 
 	if err != nil {
@@ -100,7 +100,7 @@ func Read_database(key string, uuid string) bool {
 }
 
 func main() {
-	color.Red("CHECKING KEY...")
+	color.Red("[ " + time.Now().Format("15:04:05.000000") + " ]" + " CHECKING KEY...")
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
