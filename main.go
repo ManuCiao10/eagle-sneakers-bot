@@ -158,6 +158,7 @@ func main() {
 	}
 }
 
+//---------BOT---------------------------------//
 // Add function to generate all the file necessary to set up csv etc..
 // Add Dashboard
 // Add monitor
@@ -171,6 +172,10 @@ func main() {
 // NB --> HEADERS
 // close bot from remote
 // Add function to read the input task and run that task
+// sniffer tipo proxyman, fiddler
 
-//------------------------------------------------------------------//
+//---------GUIDE-------------------------------//
 // ADD a guide to get the uuid
+
+//---------ERROR_HANDLING----------------------//
+//- Add function to check if the range in the TASKKK are correct ()
