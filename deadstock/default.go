@@ -40,6 +40,14 @@ type Info struct {
 	Country      string
 }
 
+func Menu_deadstock() {
+	fmt.Print("\033[H\033[2J")
+	utils.Logo()
+	Read_file()
+	mode := utils.SelectMode("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " PLEASE SELECT CSV:")
+	Find_index_of_csv(mode)
+}
+
 func Read_file() {
 	files, err := os.ReadDir("./deadstock_task")
 	if err != nil {
@@ -53,12 +61,26 @@ func Read_file() {
 	println("\n")
 }
 
-func Menu_deadstock() {
-	fmt.Print("\033[H\033[2J")
-	utils.Logo()
-	Read_file()
-	mode := utils.SelectMode("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " PLEASE SELECT CSV:")
-	Find_index_of_csv(mode)
+func Create_list(data [][]string) []Product {
+	var list []Product
+	for i, each := range data {
+		if i != 0 {
+			list = append(list, Product{
+				Pid:         each[0],
+				Size:        each[1],
+				Email:       each[2],
+				profile:     each[3],
+				method:      each[4],
+				Card_Number: each[5],
+				Month:       each[6],
+				Year:        each[7],
+				CVV:         each[8],
+				Proxy_List:  each[9],
+			})
+		}
+	}
+	Check_product(list)
+	return list
 }
 
 func Find_index_of_csv(mode string) {
@@ -79,7 +101,6 @@ func Find_index_of_csv(mode string) {
 }
 
 func Read_csv_info(filename string) {
-	// Read csv file
 	csvFile, _ := os.Open("./deadstock_task/" + filename)
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	data, err := reader.ReadAll()
@@ -88,8 +109,9 @@ func Read_csv_info(filename string) {
 	}
 	data_list := Create_list(data)
 	for _, each_line := range data_list {
-		Run_Module(each_line) // each --> {100 random loscoware.com Manu pp     }
+		Run_Module(each_line)
 	}
+	defer csvFile.Close()
 }
 
 func Run_Module(each Product) {
@@ -121,30 +143,62 @@ func Run_Module(each Product) {
 
 	defer csvFile.Close()
 	Check_profile(profile)
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "PREPARING TO RUN MODULE")
+	Module_deadstock(profile)
 
 }
 
-func Create_list(data [][]string) []Product {
-	var list []Product
-	for i, each := range data {
-		if i != 0 {
-			list = append(list, Product{
-				Pid:         each[0],
-				Size:        each[1],
-				Email:       each[2],
-				profile:     each[3],
-				method:      each[4],
-				Card_Number: each[5],
-				Month:       each[6],
-				Year:        each[7],
-				CVV:         each[8],
-				Proxy_List:  each[9],
-			})
-		}
+func Module_deadstock(profile []Info) {
+	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "RUNNING MODULE WITH PROFILE: " + profile[0].Profile_name)
+
+}
+
+//--------ERROR---------//
+
+func Check_product(list []Product) {
+	if len(list) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO PRODUCT DETECTED")
+		os.Exit(0)
 	}
-	// fmt.Println(list[0].Pid)
-	return list
+	if len(list[0].Pid) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO PID DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Size) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO SIZE DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Email) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO PRODUCT DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].profile) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO PROFILE DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].method) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO METHOD DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Card_Number) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO CARD_NUMBER DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Month) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO MONTH DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Year) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO YEAR DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].CVV) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO CVV DETECTED")
+		os.Exit(0)
+	}
+	if len(list[0].Proxy_List) == 0 {
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NO PROXY DETECTED")
+		os.Exit(0)
+	}
 }
 
 func Check_profile(profile []Info) {
@@ -153,37 +207,44 @@ func Check_profile(profile []Info) {
 		os.Exit(1)
 	}
 	if len(profile[0].Profile_name) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "PROFILE NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].First_name) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "NAME NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].Last_name) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "LAST_NAME NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].Phone) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "PHONE NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].Address) == 0 {
-		utils.Profile_error()
-	}
-	if len(profile[0].Address_2) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "ADDRESS NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].House_Number) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "HOUSE_NUMBER NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].City) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "CITY NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].State) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "STATE NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].ZIP) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "ZIP NOT FOUND")
+		os.Exit(1)
 	}
 	if len(profile[0].Country) == 0 {
-		utils.Profile_error()
+		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "COUNTRY NOT FOUND")
+		os.Exit(1)
 	}
 
 }

@@ -173,6 +173,7 @@ func main() {
 // close bot from remote
 // Add function to read the input task and run that task
 // sniffer tipo proxyman, fiddler
+// Add RANDOM Name + Surname
 
 //---------GUIDE-------------------------------//
 // ADD a guide to get the uuid
