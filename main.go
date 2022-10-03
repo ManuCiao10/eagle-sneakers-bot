@@ -154,7 +154,7 @@ func main() {
 	} else if mode == "3" {
 		print("DADSTOCK")
 	} else {
-		print("INVALID CHOICE!\n") //ADD RESTART BOT
+		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + "INVALID CHOICE!")
 	}
 }
 
@@ -174,6 +174,8 @@ func main() {
 // Add function to read the input task and run that task
 // sniffer tipo proxyman, fiddler
 // Add RANDOM Name + Surname
+
+
 
 //---------GUIDE-------------------------------//
 // ADD a guide to get the uuid
