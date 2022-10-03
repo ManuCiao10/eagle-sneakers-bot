@@ -1,5 +1,7 @@
 package deadstock
 
+// DEADSTOCK MODULE
+
 import (
 	"Eagle/utils"
 	"fmt"
@@ -29,7 +31,32 @@ func Menu_deadstock() {
 	utils.Logo()
 	Read_file()
 	mode := utils.SelectMode("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " PLEASE SELECT CSV:")
-	if mode == "1" {
-		print("GAMESTOP")
+	Find_index_of_csv(mode)
+}
+
+func Find_index_of_csv(mode string) {
+	intVar, err := strconv.Atoi(mode)
+	if err != nil {
+		fmt.Println(err)
 	}
+	files, err := os.ReadDir("./deadstock_task")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for i, f := range files {
+		i = i + 1
+		if i == intVar {
+			Run_task(f.Name())
+		}
+	}
+}
+
+func Read_csv_info()  {
+	
+	
+}
+
+func Run_task(filename string) {
+	fmt.Println(filename)
+	Read_csv_info(filename)
 }

@@ -156,7 +156,6 @@ func main() {
 	} else {
 		print("INVALID CHOICE!\n") //ADD RESTART BOT
 	}
-	// fmt.Println(mode)
 }
 
 // Add function to generate all the file necessary to set up csv etc..
@@ -165,7 +164,7 @@ func main() {
 // Add client
 // Add modules
 // Add function to check if the bot need update
-// Add quick-tasks
+// Add quick_tasks
 // Scrape PID + puyt them encrypted
 // Implement a TLS client
 // Quick task con PID
