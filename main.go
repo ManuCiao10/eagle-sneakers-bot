@@ -1,6 +1,7 @@
 package main
 
 import (
+	"Eagle/deadstock"
 	"Eagle/utils"
 	"context"
 	"encoding/json"
@@ -80,6 +81,7 @@ func CheckId(id_database string, ID_object string) {
 }
 
 func Read_json() bool {
+	color.Red("[ " + time.Now().Format("15:04:05.000000") + " ]" + " CHECKING KEY...")
 	var key string
 	content, err := os.ReadFile("./setting.json")
 	if err != nil {
@@ -138,27 +140,17 @@ func Read_database(key string, uuid string) bool {
 }
 
 func main() {
-	color.Red("[ " + time.Now().Format("15:04:05.000000") + " ]" + " CHECKING KEY...")
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
 	}
-	content, err := os.ReadFile("config/logo.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	color.Red(string(content))
-
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 1. GAMESTOP")
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 2. UNIEURO")
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 3. DADSTOCK")
-	println("\n")
-
+	utils.Logo()
+	utils.Site_list()
 	mode := utils.SelectMode("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " PLEASE SELECT SITE:")
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {
-		print("UNIEURO")
+		deadstock.Menu_deadstock()
 	} else if mode == "3" {
 		print("DADSTOCK")
 	} else {
@@ -171,12 +163,15 @@ func main() {
 // Add Dashboard
 // Add monitor
 // Add client
-// Add sql database
 // Add modules
 // Add function to check if the bot need update
 // Add quick-tasks
 // Scrape PID + puyt them encrypted
 // Implement a TLS client
+// Quick task con PID
+// NB --> HEADERS
+// close bot from remote
+// Add function to read the input task and run that task
 
 //------------------------------------------------------------------//
 // ADD a guide to get the uuid

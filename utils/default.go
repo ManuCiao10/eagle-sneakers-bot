@@ -6,8 +6,10 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/denisbrodbeck/machineid"
+	"github.com/fatih/color"
 )
 
 func SelectMode(label string) string {
@@ -29,4 +31,19 @@ func Gen_id() string {
 		log.Fatal(err)
 	}
 	return id
+}
+
+func Logo() {
+	content, err := os.ReadFile("config/logo.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	color.Red(string(content))
+}
+
+func Site_list() {
+	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 1. GAMESTOP")
+	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 2. UNIEURO")
+	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 3. DADSTOCK")
+	println("\n")
 }
