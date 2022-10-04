@@ -15,18 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	"github.com/joho/godotenv"
 )
-
-func init() {
-	//add check updates
-	err := godotenv.Load("config/.env")
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
 
 func Change_id(ID_object string) {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
