@@ -6,6 +6,7 @@ require (
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.13.6 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect

@@ -64,7 +64,7 @@ func CheckId(id_database string, ID_object string) {
 		Change_id(ID_object)
 	}
 	if utils.Gen_id() == id_database {
-		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID VALID")
+		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "]" + " ID VALID")
 	} else {
 		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + " ID NOT VALID")
 		answer := utils.SelectMode("[ " + time.Now().Format("15:04:05.000000") + " ]" + " DO YOU WANT TO RESET IT? (Y/N): ")
@@ -81,7 +81,7 @@ func CheckId(id_database string, ID_object string) {
 }
 
 func Read_json() bool {
-	color.Red("[ " + time.Now().Format("15:04:05.000000") + " ]" + " CHECKING KEY...")
+	color.Red("[" + time.Now().Format("15:04:05.000000") + "]" + " CHECKING KEY...")
 	var key string
 	content, err := os.ReadFile("./setting.json")
 	if err != nil {
@@ -146,7 +146,7 @@ func main() {
 	}
 	utils.Logo()
 	utils.Site_list()
-	mode := utils.SelectMode("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " PLEASE SELECT SITE:")
+	mode := utils.SelectMode("[Eagle 0.0.2] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {
@@ -154,31 +154,33 @@ func main() {
 	} else if mode == "3" {
 		print("DADSTOCK")
 	} else {
-		color.HiMagenta("[ " + time.Now().Format("15:04:05.000000") + " ]" + "INVALID CHOICE!")
+		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID CHOICE!")
 	}
 }
 
-//---------BOT---------------------------------//
-// Add function to generate all the file necessary to set up csv etc..
-// Add Dashboard
-// Add monitor
-// Add client
-// Add modules
-// Add function to check if the bot need update
-// Add quick_tasks
-// Scrape PID + puyt them encrypted
+//---------BOT--------------------//
+// function to generate all the file necessary to set up csv etc..
+// Auto-updates
+// Dashboard
+// monitor
+// client
+// modules
+// function to check if the bot need update
+// quick_tasks
+// Scrape PID + put them encrypted
 // Implement a TLS client
 // Quick task con PID
 // NB --> HEADERS
 // close bot from remote
-// Add function to read the input task and run that task
+// function to read the input task and run that task
 // sniffer tipo proxyman, fiddler
-// Add RANDOM Name + Surname
-
-
-
-//---------GUIDE-------------------------------//
-// ADD a guide to get the uuid
+// RANDOM Name + Surname
 
 //---------ERROR_HANDLING----------------------//
-//- Add function to check if the range in the TASKKK are correct ()
+
+//---------OTHERS-----------------------------//
+// Function to close the bot from remote
+
+//---------GUIDE-------------------------------//
+// 1.TO find your ID you must activate Delepoer Mode. Goig in Setings-->advances-->Developer Mode
+// after right-click to your profile picture and select Copy ID

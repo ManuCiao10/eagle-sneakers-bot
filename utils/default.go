@@ -42,8 +42,9 @@ func Logo() {
 }
 
 func Site_list() {
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 1. GAMESTOP")
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 2. UNIEURO")
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ]" + " 3. DADSTOCK")
+	color.Red("[Eagle 0.0.2] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 1. NEW BALANCE")
+	color.Red("[Eagle 0.0.2] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 2. DADSTOCK")
+	color.Red("[Eagle 0.0.2] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 3. KITH")
+
 	println("\n")
 }
