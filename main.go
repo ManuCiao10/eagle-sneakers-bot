@@ -11,11 +11,21 @@ import (
 	"time"
 
 	"github.com/fatih/color"
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+func init() {
+	//add check updates
+	err := godotenv.Load("config/.env")
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
 func Change_id(ID_object string) {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
@@ -88,9 +98,10 @@ func Read_json() bool {
 }
 
 func Read_database(key string, uuid string) bool {
+	fmt.Println("KEY: " + os.Getenv("PASSWORD"))
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Finding URI ERROR:", err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
