@@ -148,7 +148,7 @@ func Run_Module(each Product) {
 }
 
 func Module_deadstock(profile []Info) {
-	color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + "RUNNING MODULE WITH PROFILE: " + profile[0].Profile_name)
+	color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + "RUNNING MODULE WITH PROFILE: " + profile[0].Profile_name)
 
 }
 
