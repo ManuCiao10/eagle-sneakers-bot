@@ -98,7 +98,6 @@ func Read_json() bool {
 }
 
 func Read_database(key string, uuid string) bool {
-	fmt.Println("KEY: " + os.Getenv("PASSWORD"))
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
 		fmt.Println("Finding URI ERROR:", err)
@@ -159,7 +158,7 @@ func main() {
 }
 
 //---------BOT--------------------//
-// function to generate all the file necessary to set up csv etc..
+// Function to generate all the file necessary to set up csv etc..
 // Auto-updates
 // Dashboard
 // monitor
@@ -172,6 +171,7 @@ func main() {
 // NB --> HEADERS
 // Sniffer tipo proxyman, fiddler
 // RANDOM Name + Surname
+// Add MQT MONITOR MODE
 
 //---------ERROR_HANDLING----------------------//
 
@@ -181,3 +181,12 @@ func main() {
 //---------GUIDE-------------------------------//
 // 1.TO find your ID you must activate Delepoer Mode. Goig in Setings-->advances-->Developer Mode
 // after right-click to your profile picture and select Copy ID
+
+//---------WEB_SITES-------------------------------//
+// monitor
+// early info / pid endpoint
+// modulo
+
+//---------POSSIBLE_SITES-------------------------------//
+// 1. Susi.it
+// 2. Sugar.it
