@@ -154,14 +154,11 @@ func main() {
 // monitor
 // client
 // modules
-// function to check if the bot need update
 // quick_tasks
 // Scrape PID + put them encrypted
 // Implement a TLS client
 // Quick task con PID
 // NB --> HEADERS
-// close bot from remote
-// function to read the input task and run that task
 // sniffer tipo proxyman, fiddler
 // RANDOM Name + Surname
 
