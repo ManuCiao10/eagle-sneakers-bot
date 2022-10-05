@@ -159,7 +159,7 @@ func main() {
 // Implement a TLS client
 // Quick task con PID
 // NB --> HEADERS
-// sniffer tipo proxyman, fiddler
+// Sniffer tipo proxyman, fiddler
 // RANDOM Name + Surname
 
 //---------ERROR_HANDLING----------------------//
