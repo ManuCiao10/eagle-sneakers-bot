@@ -44,7 +44,7 @@ func Menu_deadstock() {
 	fmt.Print("\033[H\033[2J")
 	utils.Logo()
 	Read_file()
-	mode := utils.SelectMode("[Eagle 0.0.2]" + " [" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT CSV:")
+	mode := utils.SelectMode("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT CSV:")
 	Find_index_of_csv(mode)
 }
 

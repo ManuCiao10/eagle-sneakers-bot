@@ -24,6 +24,7 @@ func Module_deadstock(profile []Info) {
 	// webkit := randomString(16)
 	client := &http.Client{}
 	var uenc = preload_cart(client)
+	fmt.Println(uenc)
 
 	//----------------------------------------------------------------//
 	var data = strings.NewReader(`------WebKitFormBoundaryeujuuUMOAExGTwND
@@ -74,6 +75,8 @@ Content-Disposition: form-data; name="super_attribute[150]"
 	req.Header.Set("sec-fetch-site", "same-origin")
 	req.Header.Set("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36")
 	req.Header.Set("x-requested-with", "XMLHttpRequest")
+	req.Header.Set("Connection", "keep-alive")
+
 	response, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
@@ -259,19 +262,20 @@ func preload_cart(client *http.Client) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	resp, err := client.Do(req)
+	resp, _ := client.Do(req)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer resp.Body.Close()
 	bodyText, _ := ioutil.ReadAll(resp.Body)
 
 	uenc := get_cart_url(string(bodyText))
 	if len(uenc) == 0 {
-		log.Fatal("ERROR TO GET CART URL")
+		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + "ERROR TO CART PRODUCT")
 	}
 	return uenc
 }
+
+//CHECK TO REVERSE SCRIPT TO GET THE TOKEN
 
 /*
 STEP 1: Request to https://www.sugar.it/catalog/product/view/id/212183 TO get the entity ID for the CART

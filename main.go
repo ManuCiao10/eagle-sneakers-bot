@@ -81,7 +81,7 @@ func CheckId(id_database string, ID_object string) {
 
 func Read_json() bool {
 	color.Red("[" + time.Now().Format("15:04:05.000000") + "]" + " CHECKING KEY...")
-	
+
 	var key string
 	content, err := os.ReadFile("./setting.json")
 	if err != nil {
@@ -144,10 +144,10 @@ func main() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
 	}
-	
+
 	utils.Logo()
 	utils.Site_list()
-	mode := utils.SelectMode("[Eagle 0.0.2] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
+	mode := utils.SelectMode("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {
