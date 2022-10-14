@@ -258,7 +258,7 @@ func get_identity_id(bodyText string) string {
 }
 
 func preload_cart(client *http.Client) string {
-	req, err := http.NewRequest(http.MethodGet, "https://www.sugar.it/hp5359-cblack-shared-cgrani-hp5359-cblack-shared-cgrani.html", nil)
+	req, err := http.NewRequest(http.MethodGet, "https://www.sugar.it/catalog/product/view/id/212183#eagle", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -276,6 +276,7 @@ func preload_cart(client *http.Client) string {
 }
 
 //CHECK TO REVERSE SCRIPT TO GET THE TOKEN
+//TLS 1.3
 
 /*
 STEP 1: Request to https://www.sugar.it/catalog/product/view/id/212183 TO get the entity ID for the CART
