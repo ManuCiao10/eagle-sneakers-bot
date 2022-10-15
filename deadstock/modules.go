@@ -23,7 +23,7 @@ import (
 func preload_cart(client tls_client.HttpClient) string {
 	req, err := http.NewRequest(http.MethodGet, "https://www.sugar.it/catalog/product/view/id/212183#eagle", nil)
 	if err != nil {
-		print_err("REQUEST ERROR")
+		Print_err("REQUEST ERROR")
 	}
 	req.Header = http.Header{
 		"autority":                  {"www.sugar.it"},
@@ -60,33 +60,33 @@ func preload_cart(client tls_client.HttpClient) string {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		print_err("RESPONSE ERROR CART")
+		Print_err("RESPONSE ERROR CART")
 	}
 	if resp.StatusCode != 200 {
-		print_err("STATUS CODE " + strconv.Itoa(resp.StatusCode))
+		Print_err("STATUS CODE " + strconv.Itoa(resp.StatusCode))
 	}
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		print_err("BODY ERROR")
+		Print_err("BODY ERROR")
 	}
 	defer resp.Body.Close()
 	uenc := get_cart_url(string(bodyText))
 	if len(uenc) == 0 {
-		print_err("CONNECTION ERROR")
+		Print_err("CONNECTION ERROR")
 	}
 	return uenc
 }
 
-func print_err(msg string) {
+func Print_err(msg string) {
 	color.Red("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 	os.Exit(0)
 }
 
-func print(msg string) {
+func Print(msg string) {
 	color.Magenta("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 }
 
-func print_cart(msg string) {
+func Print_cart(msg string) {
 	color.Cyan("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 }
 
@@ -123,7 +123,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 
 	req, err := http.NewRequest(http.MethodPost, "https://www.sugar.it/checkout/cart/add/uenc"+uenc, data)
 	if err != nil {
-		print_err("REQUEST ERROR")
+		Print_err("REQUEST ERROR")
 	}
 	req.Header.Set("authority", "www.sugar.it")
 	req.Header.Set("accept", "application/json, text/javascript, */*; q=0.01")
@@ -144,7 +144,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 	req.Header.Set("x-requested-with", "XMLHttpRequest")
 	response, err := client.Do(req)
 	if err != nil {
-		print_err("RESPONSE ERROR")
+		Print_err("RESPONSE ERROR")
 	}
 	defer response.Body.Close()
 	// f, _ := os.Create("output.txt")
@@ -152,9 +152,9 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 	// response.Write(f)
 	fmt.Println(response)
 	if response.StatusCode == 200 {
-		print_cart("ADDED TO CART " + "<|" + response.Status + "|>")
+		Print_cart("ADDED TO CART " + "<|" + response.Status + "|>")
 	} else {
-		print_err("STATUS CODE " + strconv.Itoa(response.StatusCode))
+		Print_err("STATUS CODE " + strconv.Itoa(response.StatusCode))
 	}
 
 }
@@ -162,7 +162,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 func Module_deadstock(profile []Info) {
 	defer timer("main")()
 	rand.Seed(time.Now().UnixNano())
-	print("PREPARING SESSION") // + strings.ToUpper(profile[0].Profile_name)
+	Print("PREPARING SESSION") // + strings.ToUpper(profile[0].Profile_name)
 	options := []tls_client.HttpClientOption{
 		tls_client.WithTimeout(7),
 		tls_client.WithClientProfile(tls_client.Chrome_105),
@@ -173,13 +173,13 @@ func Module_deadstock(profile []Info) {
 	}
 	client, err := tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
 	if err != nil {
-		print_err("CLIENT ERROR")
+		Print_err("CLIENT ERROR")
 	}
 
 	// webkit := randomString(16)
 	var uenc = preload_cart(client)
 	if len(uenc) == 0 {
-		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " CONNECTION ERROR")
+		Print_err("CONNECTION ERROR")
 	}
 	// } else {
 	// 	fmt.Println(uenc)
@@ -351,7 +351,7 @@ func randomString(n int) string {
 // action="https://www.sugar.it/checkout/cart/add/uenc/aHR0cHM6Ly93d3cuc3VnYXIuaXQvaHA1MzU5LWNibGFjay1zaGFyZWQtY2dyYW5pLWhwNTM1OS1jYmxhY2stc2hhcmVkLWNncmFuaS5odG1s/product/258156/"
 func get_cart_url(bodyText string) string {
 	if strings.Contains(bodyText, "503 Service Unavailable") {
-		print_err("503 SERVICE UNAVAILABLE")
+		Print_err("503 SERVICE UNAVAILABLE")
 	}
 	return strings.Split(strings.Split(bodyText, "add/uenc")[1][:132], "\"")[0]
 

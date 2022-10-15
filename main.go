@@ -101,7 +101,7 @@ func Read_json() bool {
 func Read_database(key string, uuid string) bool {
 	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb+srv://" + os.Getenv("USERNAME") + ":" + os.Getenv("PASSWORD") + "@cluster0.8azzuqv.mongodb.net/?retryWrites=true&w=majority"))
 	if err != nil {
-		fmt.Println("Finding URI ERROR:", err)
+		deadstock.Print_err("CONNECTION ERROR D")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
