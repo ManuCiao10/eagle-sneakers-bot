@@ -2,6 +2,7 @@ package deadstock
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	// "io"
@@ -21,9 +22,8 @@ import (
 func preload_cart(client tls_client.HttpClient) string {
 	req, err := http.NewRequest(http.MethodGet, "https://www.sugar.it/catalog/product/view/id/212183#eagle", nil)
 	if err != nil {
-		log.Println(err)
+		print_err("REQUEST ERROR")
 	}
-
 	req.Header = http.Header{
 		"accept":                    {"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"},
 		"accept-encoding":           {"gzip"},
@@ -42,6 +42,7 @@ func preload_cart(client tls_client.HttpClient) string {
 		"upgrade-insecure-requests": {"1"},
 		"autority":                  {"www.sugar.it"},
 		"user-agent":                {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"},
+		"cookie":                    {"rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _gcl_au=1.1.1605308678.1665258211; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665258211606%2Ciab2:%27%27%2Cregion:%27CA%27}; _ga=GA1.1.1518477362.1665258212; sugar_newsletter=1; _hjSessionUser_2226440=eyJpZCI6ImRjZmQ5OTdmLTZlYzAtNWFlYS1iMDRkLTdmMTY5OWU2MzAwNSIsImNyZWF0ZWQiOjE2NjUyNTgyMTE5MDUsImV4aXN0aW5nIjp0cnVlfQ==; __stripe_mid=4723292b-3a63-450d-9830-726dfa3412116411af; private_content_version=3fc340d1e1eb390a1e3461b9117b6285; _clck=70oxf|1|f5q|0; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; mage-messages=; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; PHPSESSID=1683138bc9655665c9a1f9789f47b5d1; X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; _hjSession_2226440=eyJpZCI6ImEzYTdlMGI4LTEwNWUtNGJkZS1hMDAxLTIyNzA2ZGRkMjU5MyIsImNyZWF0ZWQiOjE2NjU3OTkxMDE4NDksImluU2FtcGxlIjpmYWxzZX0=; _hjAbsoluteSessionInProgress=1; form_key=oRXzM8sm3pLCmOkN; mage-cache-sessid=true; _ga_1TT1ERKS8Z=GS1.1.1665799101.7.1.1665799114.47.0.0; section_data_ids=%7B%22directory-data%22%3A1665799103%2C%22wishlist%22%3A1665799116%2C%22cart%22%3A1665799104%7D; _clsk=r3i3g8|1665800325198|5|1|h.clarity.ms/collect"},
 		http.HeaderOrderKey: {
 			"accept",
 			"accept-encoding",
@@ -58,27 +59,34 @@ func preload_cart(client tls_client.HttpClient) string {
 			"upgrade-insecure-requests",
 			"user-agent",
 			"autority",
+			"cookie",
 		},
 	}
-	resp, _ := client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		print_err("RESPONSE ERROR")
 	}
-	//print response cookies
-	fmt.Println(resp.Cookies())
-	bodyText, _ := ioutil.ReadAll(resp.Body)
-
+	bodyText, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		print_err("BODY ERROR")
+	}
+	defer resp.Body.Close()
 	uenc := get_cart_url(string(bodyText))
 	if len(uenc) == 0 {
-		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " CONNECTION ERROR")
+		print_err("CONNECTION ERROR")
 	}
 	return uenc
 }
 
-//cookies
-//porxies
-//keep the session
+func print_err(msg string) {
+	color.Red("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
+	os.Exit(0)
+}
 
+// cookies
+// porxies
+// keep the session
+// do to not pirnt the golanf error
 func payload_cart(uenc string, client tls_client.HttpClient) {
 	var data = strings.NewReader(`------WebKitFormBoundaryeujuuUMOAExGTwND
 	Content-Disposition: form-data; name="product"
@@ -106,7 +114,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 	120
 	------WebKitFormBoundaryeujuuUMOAExGTwND--`)
 
-	req, err := http.NewRequest("POST", "https://www.sugar.it/checkout/cart/add/uenc"+uenc, data)
+	req, err := http.NewRequest(http.MethodPost, "https://www.sugar.it/checkout/cart/add/uenc"+uenc, data)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -128,6 +136,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 		"upgrade-insecure-requests": {"1"},
 		"autority":                  {"www.sugar.it"},
 		"user-agent":                {"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36"},
+		"cookie":                    {"rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _gcl_au=1.1.1605308678.1665258211; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665258211606%2Ciab2:%27%27%2Cregion:%27CA%27}; _ga=GA1.1.1518477362.1665258212; sugar_newsletter=1; _hjSessionUser_2226440=eyJpZCI6ImRjZmQ5OTdmLTZlYzAtNWFlYS1iMDRkLTdmMTY5OWU2MzAwNSIsImNyZWF0ZWQiOjE2NjUyNTgyMTE5MDUsImV4aXN0aW5nIjp0cnVlfQ==; __stripe_mid=4723292b-3a63-450d-9830-726dfa3412116411af; private_content_version=3fc340d1e1eb390a1e3461b9117b6285; _clck=70oxf|1|f5q|0; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; mage-messages=; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; PHPSESSID=1683138bc9655665c9a1f9789f47b5d1; X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; _hjSession_2226440=eyJpZCI6ImEzYTdlMGI4LTEwNWUtNGJkZS1hMDAxLTIyNzA2ZGRkMjU5MyIsImNyZWF0ZWQiOjE2NjU3OTkxMDE4NDksImluU2FtcGxlIjpmYWxzZX0=; _hjAbsoluteSessionInProgress=1; form_key=oRXzM8sm3pLCmOkN; mage-cache-sessid=true; _ga_1TT1ERKS8Z=GS1.1.1665799101.7.1.1665799114.47.0.0; section_data_ids=%7B%22directory-data%22%3A1665799103%2C%22wishlist%22%3A1665799116%2C%22cart%22%3A1665799104%7D; _clsk=r3i3g8|1665800325198|5|1|h.clarity.ms/collect"},
 		http.HeaderOrderKey: {
 			"accept",
 			"accept-encoding",
@@ -144,6 +153,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 			"upgrade-insecure-requests",
 			"user-agent",
 			"autority",
+			"cookie",
 		},
 	}
 	response, err := client.Do(req)
@@ -161,7 +171,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 func Module_deadstock(profile []Info) {
 	color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + "RUNNING MODULE WITH PROFILE: " + profile[0].Profile_name)
 	options := []tls_client.HttpClientOption{
-		tls_client.WithTimeout(30),
+		tls_client.WithTimeout(7),
 		tls_client.WithClientProfile(tls_client.Chrome_105),
 		tls_client.WithNotFollowRedirects(),
 		//tls_client.WithProxyUrl("http://user:pass@host:ip"),
@@ -178,7 +188,11 @@ func Module_deadstock(profile []Info) {
 	rand.Seed(time.Now().UnixNano())
 	// webkit := randomString(16)
 	var uenc = preload_cart(client)
-	fmt.Println(uenc)
+	if len(uenc) == 0 {
+		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " CONNECTION ERROR")
+	} else {
+		fmt.Println(uenc)
+	}
 
 	//----------------------------------------------------------------//
 
@@ -346,7 +360,12 @@ func randomString(n int) string {
 // action="https://www.sugar.it/checkout/cart/add/uenc/aHR0cHM6Ly93d3cuc3VnYXIuaXQvaHA1MzU5LWNibGFjay1zaGFyZWQtY2dyYW5pLWhwNTM1OS1jYmxhY2stc2hhcmVkLWNncmFuaS5odG1s/product/258156/"
 func get_cart_url(bodyText string) string {
 	// add real content eturn instad of read the file
+	if strings.Contains(bodyText, "503 Service Unavailable") {
+		print_err("503 SERVICE UNAVAILABLE")
+	}
+	fmt.Printf("bodyText: %s", bodyText)
 	return strings.Split(strings.Split(bodyText, "add/uenc")[1][:132], "\"")[0]
+
 }
 
 func get_identity_id(bodyText string) string {
