@@ -3,11 +3,11 @@ package deadstock
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	// "io"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"strings"
 
@@ -66,6 +66,9 @@ func preload_cart(client tls_client.HttpClient) string {
 	if err != nil {
 		print_err("RESPONSE ERROR")
 	}
+	if resp.StatusCode != 200 {
+		print_err("STATUS CODE " + strconv.Itoa(resp.StatusCode))
+	}
 	bodyText, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		print_err("BODY ERROR")
@@ -116,14 +119,14 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 
 	req, err := http.NewRequest(http.MethodPost, "https://www.sugar.it/checkout/cart/add/uenc"+uenc, data)
 	if err != nil {
-		log.Fatal(err)
+		print_err("REQUEST ERROR")
 	}
 	req.Header = http.Header{
 		"accept":                    {"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"},
 		"accept-encoding":           {"gzip"},
 		"accept-language":           {"it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,de;q=0.6,fr;q=0.5"},
-		"cache-control":             {"no-cache"},
-		"pragma":                    {"no-cache"},
+		"cache-control":             {"only-if-cached"},
+		"pragma":                    {"only-if-cached"},
 		"referer":                   {"https://www.sugar.it/checkout/cart/add/uenc" + uenc},
 		"if-none-match":             {`W/"4d0b1-K9LHIpKrZsvKsqNBKd13iwXkWxQ"`},
 		"sec-ch-ua":                 {`"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"`},
@@ -158,7 +161,10 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 	}
 	response, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		print_err("RESPONSE ERROR")
+	}
+	if response.StatusCode != 200 {
+		print_err("STATUS CODE " + strconv.Itoa(response.StatusCode))
 	}
 	// f, _ := os.Create("output.txt")
 	// defer f.Close()
@@ -169,6 +175,8 @@ func payload_cart(uenc string, client tls_client.HttpClient) {
 }
 
 func Module_deadstock(profile []Info) {
+	defer timer("main")()
+	rand.Seed(time.Now().UnixNano())
 	color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + "RUNNING MODULE WITH PROFILE: " + profile[0].Profile_name)
 	options := []tls_client.HttpClientOption{
 		tls_client.WithTimeout(7),
@@ -180,19 +188,17 @@ func Module_deadstock(profile []Info) {
 	}
 	client, err := tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
 	if err != nil {
-		log.Println(err)
-		return
+		print_err("CLIENT ERROR")
 	}
 
-	defer timer("main")()
-	rand.Seed(time.Now().UnixNano())
 	// webkit := randomString(16)
 	var uenc = preload_cart(client)
 	if len(uenc) == 0 {
 		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " CONNECTION ERROR")
-	} else {
-		fmt.Println(uenc)
 	}
+	// } else {
+	// 	fmt.Println(uenc)
+	// }
 
 	//----------------------------------------------------------------//
 
@@ -363,7 +369,6 @@ func get_cart_url(bodyText string) string {
 	if strings.Contains(bodyText, "503 Service Unavailable") {
 		print_err("503 SERVICE UNAVAILABLE")
 	}
-	fmt.Printf("bodyText: %s", bodyText)
 	return strings.Split(strings.Split(bodyText, "add/uenc")[1][:132], "\"")[0]
 
 }
