@@ -56,7 +56,7 @@ func Read_file() {
 	for i, f := range files {
 		i = i + 1
 		s := strconv.Itoa(i)
-		color.Red("[ Eagle 0.0.2 ]" + "[ " + time.Now().Format("15:04:05.000000") + " ] " + s + ". " + f.Name())
+		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + s + ". " + f.Name())
 	}
 	println("\n")
 }
