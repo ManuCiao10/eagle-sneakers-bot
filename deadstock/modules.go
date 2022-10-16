@@ -20,7 +20,23 @@ import (
 	"github.com/fatih/color"
 )
 
-func preload_cart(client tls_client.HttpClient) string {
+func Print_err(msg string) {
+	color.Red("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
+	os.Exit(0)
+}
+
+func Print(msg string) {
+	color.Magenta("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
+}
+
+func Print_cart(msg string) {
+	color.Cyan("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
+}
+
+func Print_err_cart(msg string) {
+	color.Yellow("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
+}
+func preload_cart(client tls_client.HttpClient) string{
 	req, err := http.NewRequest(http.MethodGet, "https://www.sugar.it/catalog/product/view/id/212183#eagle", nil)
 	if err != nil {
 		Print_err("REQUEST ERROR")
@@ -34,6 +50,7 @@ func preload_cart(client tls_client.HttpClient) string {
 		"referer":                   {"https://www.sugar.it/"},
 		"sec-ch-ua":                 {`"Chromium";v="106", "Google Chrome";v="106", "Not;A=Brand";v="99"`},
 		"sec-ch-ua-mobile":          {"?0"},
+		// "set-cookie":                {"PHPSESSID=759a5b96a9dc6838c5cc7cefe02be550; path=/; domain=.sugar.it; HttpOnly"},
 		"sec-ch-ua-platform":        {`"macOS"`},
 		"sec-fetch-dest":            {"document"},
 		"sec-fetch-mode":            {"navigate"},
@@ -62,6 +79,7 @@ func preload_cart(client tls_client.HttpClient) string {
 	if err != nil {
 		Print_err("RESPONSE ERROR CART")
 	}
+	fmt.Println(req.Cookies())
 	if resp.StatusCode != 200 {
 		Print_err("STATUS CODE " + strconv.Itoa(resp.StatusCode))
 	}
@@ -75,23 +93,6 @@ func preload_cart(client tls_client.HttpClient) string {
 		Print_err("CONNECTION ERROR")
 	}
 	return uenc
-}
-
-func Print_err(msg string) {
-	color.Red("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-	os.Exit(0)
-}
-
-func Print(msg string) {
-	color.Magenta("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-}
-
-func Print_cart(msg string) {
-	color.Cyan("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-}
-
-func Print_err_cart(msg string) {
-	color.Yellow("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 }
 
 // cookies
@@ -134,6 +135,7 @@ func payload_cart(uenc string, client tls_client.HttpClient) bool {
 	req.Header.Set("accept-language", "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,de;q=0.6,fr;q=0.5")
 	req.Header.Set("cache-control", "no-cache")
 	req.Header.Set("content-type", "multipart/form-data; boundary=----WebKitFormBoundaryeujuuUMOAExGTwND")
+	// req.Header.Set("set-cookie", "PHPSESSID=b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0; path=/; domain=.sugar.it; HttpOnly")
 	// req.Header.Set("cookie", "rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _gcl_au=1.1.756736159.1665812079; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665812079043%2Ciab2:%27%27%2Cregion:%27CA%27}; _ga=GA1.1.1822933619.1665812079; mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; sugar_newsletter=1; _clck=1ljfpq6|1|f5q|0; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; private_content_version=need_version; mage-messages=; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; PHPSESSID=9f01505fe6b6619f39476e69c2d62d51; X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; _hjSessionUser_2226440=eyJpZCI6IjJmMGI3NTcxLWIzMzEtNWUyMC04ZTIzLTc4YzQ5ZTNlNjNkZiIsImNyZWF0ZWQiOjE2NjU4MTIwNzkyMjAsImV4aXN0aW5nIjp0cnVlfQ==; _hjIncludedInSessionSample=0; _hjSession_2226440=eyJpZCI6IjVmNDI2ZTgwLTdlMGUtNGM3Ni04MjQ1LTI3Nzc1ZjJjMDQ0YiIsImNyZWF0ZWQiOjE2NjU4Njc1OTMyNzQsImluU2FtcGxlIjpmYWxzZX0=; _hjAbsoluteSessionInProgress=0; form_key=4JisAObqEaqk98cn; mage-cache-sessid=true; _clsk=1ob1izd|1665867627527|5|1|h.clarity.ms/collect; section_data_ids=%7B%22customer%22%3A1665867594%2C%22compare-products%22%3A1665867594%2C%22last-ordered-items%22%3A1665867594%2C%22cart%22%3A1665867595%2C%22directory-data%22%3A1665867594%2C%22review%22%3A1665867594%2C%22instant-purchase%22%3A1665867594%2C%22persistent%22%3A1665867594%2C%22captcha%22%3A1665867594%2C%22wishlist%22%3A1665867628%2C%22recently_viewed_product%22%3A1665867594%2C%22recently_compared_product%22%3A1665867594%2C%22product_data_storage%22%3A1665867594%2C%22paypal-billing-agreement%22%3A1665867594%2C%22checkout-fields%22%3A1665867594%2C%22collection-point-result%22%3A1665867594%2C%22pickup-location-result%22%3A1665867594%7D; _ga_1TT1ERKS8Z=GS1.1.1665867592.11.1.1665867921.60.0.0")
 	req.Header.Set("origin", "https://www.sugar.it")
 	req.Header.Set("pragma", "no-cache")
@@ -154,7 +156,8 @@ func payload_cart(uenc string, client tls_client.HttpClient) bool {
 	// f, _ := os.Create("output.txt")
 	// defer f.Close()
 	// response.Write(f)
-	// fmt.Println(response)
+	fmt.Println(req.Cookies())
+	fmt.Println(response.Cookies())
 	if response.StatusCode == 200 {
 		Print_cart("ADDED TO CART " + "<|" + response.Status + "|>")
 		return true
@@ -208,6 +211,7 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) {
 	r.Header.Set("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
 	r.Header.Set("accept-language", "it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7,de;q=0.6,fr;q=0.5")
 	r.Header.Set("cache-control", "no-cache")
+	// r.Header.Set("set-cookie", "PHPSESSID=759a5b96a9dc6838c5cc7cefe02be550; path=/; domain=.sugar.it; HttpOnly")
 	// r.Header.Set("cookie", "X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _gcl_au=1.1.1605308678.1665258211; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665258211606%2Ciab2:%27%27%2Cregion:%27CA%27}; _ga=GA1.1.1518477362.1665258212; mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; sugar_newsletter=1; _clck=70oxf|1|f5j|0; _hjFirstSeen=1; _hjSession_2226440=eyJpZCI6IjEwZmJlYmJmLTY0ZWUtNDA3Zi1iMTc2LTJmMjFkMzJlZGFkYiIsImNyZWF0ZWQiOjE2NjUyNTgyMTIyNTcsImluU2FtcGxlIjpmYWxzZX0=; _hjAbsoluteSessionInProgress=0; form_key=BXNMKB1Z4E8hx7E1; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; mage-cache-sessid=true; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; _hjSessionUser_2226440=eyJpZCI6ImRjZmQ5OTdmLTZlYzAtNWFlYS1iMDRkLTdmMTY5OWU2MzAwNSIsImNyZWF0ZWQiOjE2NjUyNTgyMTE5MDUsImV4aXN0aW5nIjp0cnVlfQ==; private_content_version=e62144218afb7fe41a3a64ee5e84b006; _hjIncludedInPageviewSample=1; _hjIncludedInSessionSample=0; PHPSESSID=48d5f2625c05351736e52b3fa8cb8018; mage-messages=; __stripe_mid=4723292b-3a63-450d-9830-726dfa3412116411af; __stripe_sid=088b8c90-3593-46c4-ae2f-449f08254d44233a21; _ga_1TT1ERKS8Z=GS1.1.1665258211.1.1.1665259758.39.0.0; _clsk=1dcrruj|1665259758761|14|1|h.clarity.ms/collect; section_data_ids=%7B%22customer%22%3A1665258813%2C%22compare-products%22%3A1665258813%2C%22last-ordered-items%22%3A1665258813%2C%22cart%22%3A1665259750%2C%22directory-data%22%3A1665258813%2C%22review%22%3A1665258813%2C%22instant-purchase%22%3A1665258813%2C%22persistent%22%3A1665258813%2C%22captcha%22%3A1665258813%2C%22wishlist%22%3A1665259759%2C%22recently_viewed_product%22%3A1665258813%2C%22recently_compared_product%22%3A1665258813%2C%22product_data_storage%22%3A1665258813%2C%22paypal-billing-agreement%22%3A1665258813%2C%22checkout-fields%22%3A1665258813%2C%22collection-point-result%22%3A1665258813%2C%22pickup-location-result%22%3A1665258813%7D")
 	r.Header.Set("pragma", "no-cache")
 	r.Header.Set("referer", "https://www.sugar.it/checkout/cart/add/uenc"+uenc)
@@ -225,6 +229,8 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) {
 	if err != nil {
 		Print_err("RESPONSE ERROR")
 	}
+	fmt.Println(r.Cookies())
+	fmt.Println(resp.Cookies())
 	// c, _ := os.Create("cart.txt")
 	// c.Write(bodyText1)
 	// defer c.Close()
