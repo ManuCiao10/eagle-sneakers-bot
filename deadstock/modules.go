@@ -234,6 +234,7 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) {
 	// fmt.Println(resp.StatusCode)
 	entity_id := get_identity_id(string(bodyText1))
 	fmt.Println(entity_id)
+
 }
 
 // //-------------------------------------------------//
