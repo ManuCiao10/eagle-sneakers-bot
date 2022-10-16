@@ -383,6 +383,7 @@ improve speed/ cpu handle
 proxies
 3DS handle checkout (if needed)
 PP handle checkout (if needed)
+ADD Mutex Monitor //cache control request & response https://lanre.wtf/blog/2017/07/24/roundtripper-go/
 */
 
 /*
