@@ -412,4 +412,5 @@ chek if ttyjLrlqjsjaWhv2 is necessary
 add client
 check availability size and took a random one
 add backgroud cli blue andchange color like the images
+SSL Certificate Pinning
 */
