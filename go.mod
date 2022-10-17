@@ -8,12 +8,15 @@ require (
 	github.com/inconshreveable/go-update v0.0.0-20160112193335-8152e7eb6ccf
 )
 
+require github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect
+
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/bogdanfinn/fhttp v0.5.5 // indirect
 	github.com/bogdanfinn/utls v0.5.5 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/gookit/color v1.5.2
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/klauspost/compress v1.15.9 // indirect
 	github.com/mattn/go-colorable v0.1.9 // indirect

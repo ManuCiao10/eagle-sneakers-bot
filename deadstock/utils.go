@@ -43,7 +43,7 @@ func Print_err_cart(msg string) {
 	color.Yellow("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 }
 
-func randomString(n int) string {
+func RandomString(n int) string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	sb := strings.Builder{}
 	sb.Grow(n)
