@@ -37,7 +37,7 @@ func Print_err_cart(msg string) {
 	color.Yellow("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
 }
 
-func onestepcheckout(uenc string, client tls_client.HttpClient) {
+func onestepcheckout(uenc string, client tls_client.HttpClient) string {
 	Print("PREPARING CHECKOUT")
 	r, err := http.NewRequest("GET", "https://www.sugar.it/onestepcheckout/", nil)
 	if err != nil {
@@ -58,8 +58,7 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) {
 	// fmt.Printf("%s\n", bodyText1)
 	// fmt.Println(resp.StatusCode)
 	entity_id := get_identity_id(string(bodyText1))
-	fmt.Println("IDENTITY_ID", entity_id)
-
+	return entity_id
 }
 
 func preload_cart(client tls_client.HttpClient) string {
@@ -149,16 +148,15 @@ func Module_deadstock(profile []Info) {
 	options := []tls_client.HttpClientOption{
 		tls_client.WithTimeout(7),
 		tls_client.WithClientProfile(tls_client.Chrome_105),
+		tls_client.WithInsecureSkipVerify(),
 		// tls_client.WithNotFollowRedirects(),
 		//tls_client.WithProxyUrl("http://user:pass@host:ip"),
-		tls_client.WithInsecureSkipVerify(),
 		// tls_client.WithCookieJar(cJar), // create cookieJar instance and pass it as argument
 	}
 	client, err := tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
 	if err != nil {
 		Print_err("CLIENT ERROR")
 	}
-
 	// webkit := randomString(16)
 	var uenc = preload_cart(client)
 	if len(uenc) == 0 {
@@ -168,12 +166,15 @@ func Module_deadstock(profile []Info) {
 	//----------------------------------------------------------------//
 
 	if payload_cart(string(uenc), client) {
-		onestepcheckout(string(uenc), client)
-	} else {
-		Print_err("PAYLOAD ERROR")
+		id_check := onestepcheckout(string(uenc), client)
+		// pre_checkout(string(uenc), client, id_check)
+		fmt.Println(id_check)
+
 	}
 
 }
+
+// func pre_checkout
 
 // //-------------------------------------------------//
 // var data1 = strings.NewReader(`{"cartId":"Lm9PxqYEQdwZ8PG1oTjKl51XiJJxjTGl","paymentMethod":{"method":"paypal_express","po_number":null,"additional_data":null},"billingAddress":{"countryId":"IT","region":"Italia","company":"","telephone":"3662299421","postcode":"50121","city":"Firenze","firstname":"emanuele","lastname":"ardinghi","customAttributes":[{"attribute_code":"gender","value":"1"}],"saveInAddressBook":null}}`)
