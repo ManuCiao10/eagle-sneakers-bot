@@ -316,9 +316,6 @@ func get_identity_id(bodyText string) string {
 
 }
 
-//CHECK TO REVERSE SCRIPT TO GET THE TOKEN
-//TLS 1.3
-
 /*
 STEP 1: Request to https://www.sugar.it/catalog/product/view/id/212183 TO get the entity ID for the CART
 STEP 2: Request to https://www.sugar.it/checkout/cart/add/uenc/CART_ID/product/195475/
@@ -326,24 +323,21 @@ STEP 3: GET Request to https://www.sugar.it/onestepcheckout/ --> TAKE the entity
 STEP 4: POST Request to https://www.sugar.it/rest/default/V1/guest-carts/entity_id/checkout-information with json data
 
 check for size
+CHECK TO REVERSE SCRIPT TO GET THE TOKEN
 keep the session
 check for cookies
-add the client
 check concorrency request
-add webkit genartor random 16 string
 improve speed/ cpu handle
 proxies
 3DS handle checkout (if needed)
 PP handle checkout (if needed)
 ADD Mutex Monitor //cache control request & response https://lanre.wtf/blog/2017/07/24/roundtripper-go/
-*/
 
-/*
-random string of lengh 16
+-----------------------------------------------------
+
 chek if ttyjLrlqjsjaWhv2 is necessary
-42 is the size fo the shoes
-add client
 check availability size and took a random one
 add backgroud cli blue andchange color like the images
 SSL Certificate Pinning
+clean code without too much if & else
 */
