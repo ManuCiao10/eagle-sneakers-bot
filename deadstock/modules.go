@@ -1,41 +1,16 @@
 package deadstock
 
 import (
-	// "fmt"
 	"fmt"
-	"os"
-	"strconv"
-	"time"
-
-	// "io"
 	"io/ioutil"
-	"math/rand"
+	// "math/rand"
+	"strconv"
 	"strings"
-
-	// "golang.org/x/net/html"
-	// goHttp "net/http"
+	// "time"
 
 	http "github.com/bogdanfinn/fhttp"
 	tls_client "github.com/bogdanfinn/tls-client"
-	"github.com/fatih/color"
 )
-
-func Print_err(msg string) {
-	color.Red("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-	os.Exit(0)
-}
-
-func Print(msg string) {
-	color.Magenta("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-}
-
-func Print_cart(msg string) {
-	color.Cyan("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-}
-
-func Print_err_cart(msg string) {
-	color.Yellow("[Eagle 0.0.2]"+"["+time.Now().Format("15:04:05.000000")+"]"+" %s", msg)
-}
 
 func onestepcheckout(uenc string, client tls_client.HttpClient) string {
 	Print("PREPARING CHECKOUT")
@@ -48,22 +23,15 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) string {
 	if err != nil {
 		Print_err("RESPONSE ERROR")
 	}
-	fmt.Println(r.Cookies())
-	fmt.Println(resp.Cookies())
+
+	//check if is still AVAILABLE
+	cock := resp.Header.Get("cart")
+	fmt.Println(cock)
 	entity_id := get_identity_id(string(bodyText1))
 	if len(entity_id) == 0 {
 		Print_err_cart("ADD TO CART FAILED [FAKE CART]")
 	}
 	return entity_id
-}
-
-func write_data_to_file(data string, filename string) {
-	f, err := os.Create(filename)
-	if err != nil {
-		Print_err("FILE CREATION ERROR")
-	}
-	defer f.Close()
-	f.WriteString(data)
 }
 
 func preload_cart(client tls_client.HttpClient) string {
@@ -73,9 +41,8 @@ func preload_cart(client tls_client.HttpClient) string {
 	}
 	resp, err := client.Do(req)
 	if err != nil {
-		Print_err("RESPONSE ERROR CART")
+		Print_err("RESPONSE PRODUCT PAGE")
 	}
-	fmt.Println(req.Cookies())
 	if resp.StatusCode != 200 {
 		Print_err("STATUS CODE " + strconv.Itoa(resp.StatusCode))
 	}
@@ -97,44 +64,26 @@ func preload_cart(client tls_client.HttpClient) string {
 // do to not pirnt the golanf error
 
 func payload_cart(uenc string, client tls_client.HttpClient) bool {
-	var data = strings.NewReader(`------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="product"
+	Product := "250253"
+	Related_product := ""
+	Selected_configurable_option := "250241"
+	Qty := "1"
+	Form_key := "HpzoibLHJnT45dwd"
+	Super_attribute := "115"
 
-250253
-------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="selected_configurable_option"
-
-250244
-------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="related_product"
-
-
-------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="item"
-
-250253
-------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="form_key"
-
-dXGNPdDTbKeBPyNH
-------WebKitFormBoundarymNRAWRTRzC0JSa6A
-Content-Disposition: form-data; name="super_attribute[150]"
-
-40
-------WebKitFormBoundarymNRAWRTRzC0JSa6A--
-`)
-	req, err := http.NewRequest("POST", "https://www.sugar.it/checkout/cart/add/uenc"+uenc, data)
+	data := "product=" + Product + "&related_product=" + Related_product + "&selected_configurable_option=" + Selected_configurable_option + "&qty=" + Qty + "&form_key=" + Form_key + "&super_attribute[150]=" + Super_attribute
+	url := "https://www.sugar.it/checkout/cart/add/uenc" + uenc + "?" + data
+	fmt.Println(url)
+	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		Print_err("REQUEST ERROR_2")
 	}
-	req.Header.Set("content-type", "multipart/form-data; boundary=----WebKitFormBoundarymNRAWRTRzC0JSa6A")
-	req.Header.Set("cookie", "mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; _gcl_au=1.1.434003817.1665959414; rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _ga=GA1.1.133822203.1665959415; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665959415837%2Ciab2:%27%27%2Cregion:%27CA%27}; sugar_newsletter=1; _hjSessionUser_2226440=eyJpZCI6ImU5MTk5OGIzLTE2M2YtNTdmNC05MzA2LTA2NTE3N2ZmMzQzZiIsImNyZWF0ZWQiOjE2NjU5NTk0MTUxNTYsImV4aXN0aW5nIjp0cnVlfQ==; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; mage-messages=; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; private_content_version=e6593975982f0e43dcfeb8494bbd97aa; __stripe_mid=4ed876e4-fdab-40de-b131-1f30ed73cadcc31d27; _clck=1vh2vhs|1|f5s|0; PHPSESSID=f5ed036ef7ab8a0a368f17465dc1a613; X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; _hjIncludedInSessionSample=0; _hjSession_2226440=eyJpZCI6IjM3ZGZlNTJmLWYyYzMtNDExYi05YTM4LTcxYzEzNGFjNmY0NCIsImNyZWF0ZWQiOjE2NjYwMDY3MTM0NDMsImluU2FtcGxlIjpmYWxzZX0=; _hjIncludedInPageviewSample=1; _hjAbsoluteSessionInProgress=0; form_key=dXGNPdDTbKeBPyNH; mage-cache-sessid=true; section_data_ids=%7B%22customer%22%3A1666006714%2C%22compare-products%22%3A1666006714%2C%22last-ordered-items%22%3A1666006714%2C%22cart%22%3A1666006715%2C%22directory-data%22%3A1666006715%2C%22review%22%3A1666006714%2C%22instant-purchase%22%3A1666006714%2C%22persistent%22%3A1666006714%2C%22captcha%22%3A1666006714%2C%22wishlist%22%3A1666006809%2C%22recently_viewed_product%22%3A1666006714%2C%22recently_compared_product%22%3A1666006714%2C%22product_data_storage%22%3A1666006714%2C%22paypal-billing-agreement%22%3A1666006714%2C%22checkout-fields%22%3A1666006714%2C%22collection-point-result%22%3A1666006714%2C%22pickup-location-result%22%3A1666006714%7D; _clsk=24z7l0|1666006823031|7|1|h.clarity.ms/collect; _ga_1TT1ERKS8Z=GS1.1.1666006712.2.1.1666006845.60.0.0")
-
+	req.Header.Set("content-type", "multipart/form-data; boundary=----WebKitFormBoundaryFUQ1FmogQ5RFQY06")
+	req.Header.Set("cookie", "mage-translation-storage=%7B%7D; mage-translation-file-version=%7B%7D; _gcl_au=1.1.434003817.1665959414; rmStore=ald:20220924_1801|atrv:nmrHekKy67Q-4dg2BmmR8wQ5hCXCLzqi6Q; _ga=GA1.1.133822203.1665959415; CookieConsent={stamp:%27-1%27%2Cnecessary:true%2Cpreferences:true%2Cstatistics:true%2Cmarketing:true%2Cver:1%2Cutc:1665959415837%2Ciab2:%27%27%2Cregion:%27CA%27}; sugar_newsletter=1; _hjSessionUser_2226440=eyJpZCI6ImU5MTk5OGIzLTE2M2YtNTdmNC05MzA2LTA2NTE3N2ZmMzQzZiIsImNyZWF0ZWQiOjE2NjU5NTk0MTUxNTYsImV4aXN0aW5nIjp0cnVlfQ==; mage-cache-storage=%7B%7D; mage-cache-storage-section-invalidation=%7B%7D; recently_viewed_product=%7B%7D; recently_viewed_product_previous=%7B%7D; recently_compared_product=%7B%7D; recently_compared_product_previous=%7B%7D; product_data_storage=%7B%7D; __stripe_mid=4ed876e4-fdab-40de-b131-1f30ed73cadcc31d27; _clck=1vh2vhs|1|f5s|0; PHPSESSID=07fbf4f82455ef7ec82b5eb89eb6d1bd; private_content_version=f9cc328414671c832497e92262a8149c; X-Magento-Vary=c58cc7336841735bf5ef13185766282824a9d073; _hjIncludedInSessionSample=0; _hjSession_2226440=eyJpZCI6IjU4OGNkMWMwLTg3MjUtNGFiZS05ODUxLWNmMDlkMWU2OWFjMyIsImNyZWF0ZWQiOjE2NjYwMTM5ODMxODQsImluU2FtcGxlIjpmYWxzZX0=; _hjIncludedInPageviewSample=1; _hjAbsoluteSessionInProgress=1; form_key=HpzoibLHJnT45dwd; mage-cache-sessid=true; mage-messages=; _clsk=c0shqz|1666014000703|4|1|h.clarity.ms/collect; section_data_ids=%7B%22customer%22%3A1666013986%2C%22compare-products%22%3A1666013986%2C%22last-ordered-items%22%3A1666013986%2C%22cart%22%3A1666013986%2C%22directory-data%22%3A1666013986%2C%22review%22%3A1666013986%2C%22instant-purchase%22%3A1666013986%2C%22persistent%22%3A1666013986%2C%22captcha%22%3A1666013986%2C%22wishlist%22%3A1666014002%2C%22recently_viewed_product%22%3A1666013986%2C%22recently_compared_product%22%3A1666013986%2C%22product_data_storage%22%3A1666013986%2C%22paypal-billing-agreement%22%3A1666013986%2C%22checkout-fields%22%3A1666013986%2C%22collection-point-result%22%3A1666013986%2C%22pickup-location-result%22%3A1666013986%7D; _ga_1TT1ERKS8Z=GS1.1.1666012253.3.1.1666014008.29.0.0")
 	response, err := client.Do(req)
 	if err != nil {
 		Print_err("RESPONSE ERROR")
 	}
-	fmt.Println(req.Cookies())
 	fmt.Println(response.Cookies())
 	if response.StatusCode == 200 {
 		Print_cart("ADDED TO CART " + "<|" + response.Status + "|>")
@@ -148,7 +97,7 @@ Content-Disposition: form-data; name="super_attribute[150]"
 
 func Module_deadstock(profile []Info) {
 	defer timer("main")()
-	rand.Seed(time.Now().UnixNano())
+	// rand.Seed(time.Now().UnixNano())
 	Print("PREPARING SESSION") // + strings.ToUpper(profile[0].Profile_name)
 	options := []tls_client.HttpClientOption{
 		tls_client.WithTimeout(7),
@@ -292,15 +241,7 @@ func Module_deadstock(profile []Info) {
 // fmt.Println(resp6)
 // time.Sleep(2 * time.Second)
 
-// func randomString(n int) string {
-// 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-// 	sb := strings.Builder{}
-// 	sb.Grow(n)
-// 	for i := 0; i < n; i++ {
-// 		sb.WriteByte(charset[rand.Intn(len(charset))])
-// 	}
-// 	return sb.String()
-// }
+
 
 func get_cart_url(bodyText string) string {
 	if strings.Contains(bodyText, "503 Service Unavailable") {
@@ -343,4 +284,6 @@ check availability size and took a random one
 add backgroud cli blue andchange color like the images
 SSL Certificate Pinning
 clean code without too much if & else
+add parse form https://astaxie.gitbooks.io/build-web-application-with-golang/content/en/04.1.html
+add router http.HandleFunc("/add/uenc", Add_to_cart_Handler)
 */
