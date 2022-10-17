@@ -50,15 +50,20 @@ func onestepcheckout(uenc string, client tls_client.HttpClient) string {
 	}
 	fmt.Println(r.Cookies())
 	fmt.Println(resp.Cookies())
-	// c, _ := os.Create("cart.txt")
-	// c.Write(bodyText1)
-	// defer c.Close()
-
-	// resp.Write(c)
-	// fmt.Printf("%s\n", bodyText1)
-	// fmt.Println(resp.StatusCode)
 	entity_id := get_identity_id(string(bodyText1))
+	if len(entity_id) == 0 {
+		Print_err_cart("ADD TO CART FAILED [FAKE CART]")
+	}
 	return entity_id
+}
+
+func write_data_to_file(data string, filename string) {
+	f, err := os.Create(filename)
+	if err != nil {
+		Print_err("FILE CREATION ERROR")
+	}
+	defer f.Close()
+	f.WriteString(data)
 }
 
 func preload_cart(client tls_client.HttpClient) string {
@@ -309,8 +314,6 @@ func get_identity_id(bodyText string) string {
 	// content, _ := ioutil.ReadFile("cart.txt")
 	if strings.Contains(bodyText, "entity_id") {
 		return strings.Split(strings.Split(bodyText, "entity_id")[1], "\"")[2]
-	} else {
-		Print_err_cart("ADD TO CART FAILED [FAKE CART]")
 	}
 	return ""
 
