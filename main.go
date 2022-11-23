@@ -2,9 +2,7 @@ package main
 
 import (
 	"github.com/eagle/deadstock"
-	// "Eagle/deadstock"
 	"github.com/eagle/utils"
-	// "Eagle/utils"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -164,7 +162,7 @@ func main() {
 
 //---------BOT--------------------//
 //chekc how to compile go module and create the CONSOLE APP
-// ADD APII 
+// ADD APII
 // SET CONSOLE LOG
 // Function to generate all the file necessary to set up csv etc..
 // Auto-updates
@@ -199,7 +197,6 @@ func main() {
 // 1. Susi.it
 // 2. Sugar.it
 // 3. champssports.com
-
 
 /*
 func setConsoleTitle(title string) (int, error) {
