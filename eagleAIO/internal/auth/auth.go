@@ -2,6 +2,6 @@ package auth
 
 
 import (
-	"github.com/eagleAIO/internal/version"
+	"github.com/eagle/eagleAIO/internal/version"
 )
 
