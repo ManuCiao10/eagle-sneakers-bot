@@ -1,8 +1,10 @@
 package main
 
 import (
-	"Eagle/deadstock"
-	"Eagle/utils"
+	"github.com/eagle/deadstock"
+	// "Eagle/deadstock"
+	"github.com/eagle/utils"
+	// "Eagle/utils"
 	"context"
 	"encoding/json"
 	"fmt"
