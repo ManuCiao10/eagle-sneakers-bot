@@ -1,16 +1,22 @@
 package main
 
 import (
-	"github.com/eagle/deadstock"
-	"github.com/eagle/utils"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
+	"os/user"
+	"strings"
 	"time"
 
+	"github.com/eagle/deadstock"
+	"github.com/eagle/eagle/version"
+	"github.com/eagle/utils"
 	"github.com/fatih/color"
+	"github.com/jaypipes/ghw"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -139,8 +145,17 @@ func Read_database(key string, uuid string) bool {
 	return false
 }
 
+// func getVersion() string {
+// 	// client := &http.Client{}
+// 	// _ err
+// }
+
+
+
 func main() {
 	//cehck version
+	// getVersion()
+	
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
@@ -148,7 +163,7 @@ func main() {
 
 	utils.Logo()
 	utils.Site_list()
-	mode := utils.SelectMode("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
+	mode := utils.SelectMode("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {
@@ -161,7 +176,9 @@ func main() {
 }
 
 //---------BOT--------------------//
-//chekc how to compile go module and create the CONSOLE APP
+//crate an executable file in golang
+// change id security
+// check how to compile go module and create the CONSOLE APP
 // ADD APII
 // SET CONSOLE LOG
 // Function to generate all the file necessary to set up csv etc..
@@ -170,11 +187,7 @@ func main() {
 // monitor
 // client
 // modules
-// quick_tasks
 // Scrape PID + put them encrypted
-// Implement a TLS client
-// Quick task con PID
-// NB --> HEADERS
 // Sniffer tipo proxyman, fiddler
 // RANDOM Name + Surname
 // Add MQT MONITOR MODE
