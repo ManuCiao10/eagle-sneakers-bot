@@ -140,6 +140,7 @@ func Read_database(key string, uuid string) bool {
 }
 
 func main() {
+	//cehck version
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
@@ -160,6 +161,9 @@ func main() {
 }
 
 //---------BOT--------------------//
+//chekc how to compile go module and create the CONSOLE APP
+// ADD APII 
+// SET CONSOLE LOG
 // Function to generate all the file necessary to set up csv etc..
 // Auto-updates
 // Dashboard
@@ -193,3 +197,24 @@ func main() {
 // 1. Susi.it
 // 2. Sugar.it
 // 3. champssports.com
+
+
+/*
+func setConsoleTitle(title string) (int, error) {
+	handle, err := syscall.LoadLibrary("Kernel32.dll")
+	if err != nil {
+		return 0, err
+	}
+	defer syscall.FreeLibrary(handle)
+	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
+	if err != nil {
+		return 0, err
+	}
+	r, _, err := syscall.Syscall(proc, 1, uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(title))), 0, 0)
+	return int(r), err
+}
+
+func updateTitle() {
+	_, _ = setConsoleTitle(fmt.Sprintf("HellasAIO ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d", carts, checkouts, failures))
+}
+*/
