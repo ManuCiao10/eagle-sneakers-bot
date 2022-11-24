@@ -90,7 +90,7 @@ func Find_index_of_csv(mode string) {
 	}
 	files, err := os.ReadDir("./deadstock_task")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("here",err)
 	}
 	for i, f := range files {
 		i = i + 1
@@ -105,7 +105,7 @@ func Read_csv_info(filename string) {
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	data, err := reader.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("here",err)
 	}
 	data_list := Create_list(data)
 	for _, each_line := range data_list {

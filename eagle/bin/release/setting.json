@@ -7,5 +7,8 @@
   "capmonster_key": "INSERT_YOUR_CAPMONSTER_KEY",
 
   "solver": "SELECT_YOUR_SOLVER",
-  "uuid": "rcytvubinkuihn4e"
+  "uuid": "rcytvubinkuihn4e",
+  "delay": {
+    "retry": ""
+  }
 }

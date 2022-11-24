@@ -85,7 +85,7 @@ func Read_json() bool {
 	color.Red("[" + time.Now().Format("15:04:05.000000") + "]" + " CHECKING KEY...")
 
 	var key string
-	content, err := os.ReadFile("./setting.json")
+	content, err := os.ReadFile("eagle/bin/release/setting.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -165,6 +165,7 @@ func main() {
 /*
 
 ---------BOT--------------------
+// Add loader for all the info( profiles, proxies, key)
  improve the inizialization of ALL the data
  rich_presence
  create an executable file in golang
