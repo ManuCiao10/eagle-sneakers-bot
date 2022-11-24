@@ -162,45 +162,49 @@ func main() {
 	}
 }
 
-//---------BOT--------------------//
-// improve the inizialization of ALL the data
-// rich_presence
-// create an executable file in golang
-// change id security
-// check how to compile go module and create the CONSOLE APP
-// ADD APII
-// SET CONSOLE LOG
-// Function to generate all the file necessary to set up csv etc..
-// Auto-updates
-// Dashboard
-// monitor
-// client
-// modules
-// Scrape PID + put them encrypted
-// Sniffer tipo proxyman, fiddler
-// RANDOM Name + Surname
-// Add MQT MONITOR MODE
-
-//---------ERROR_HANDLING----------------------//
-
-//---------OTHERS-----------------------------//
-// Function to close the bot from remote
-
-//---------GUIDE-------------------------------//
-// 1.TO find your ID you must activate Delepoer Mode. Goig in Setings-->advances-->Developer Mode
-// after right-click to your profile picture and select Copy ID
-
-//---------WEB_SITES-------------------------------//
-// monitor
-// early info / pid endpoint
-// modulo
-
-//---------POSSIBLE_SITES-------------------------------//
-// 1. Susi.it
-// 2. Sugar.it
-// 3. champssports.com
-
 /*
+
+---------BOT--------------------
+ improve the inizialization of ALL the data
+ rich_presence
+ create an executable file in golang
+ change id security
+ check how to compile go module and create the CONSOLE APP
+ ADD APII
+ SET CONSOLE LOG
+ Function to generate all the file necessary to set up csv etc..
+ Auto-updates
+ Dashboard
+ monitor
+ client
+ modules
+ Scrape PID + put them encrypted
+ Sniffer tipo proxyman, fiddler
+ RANDOM Name + Surname
+ Add MQT MONITOR MODE
+
+---------ERROR_HANDLING----------------------
+
+---------OTHERS-----------------------------
+ Function to close the bot from remote
+
+---------GUIDE-------------------------------
+ 1.TO find your ID you must activate Delepoer Mode. Goig in Setings-->advances-->Developer Mode
+ after right-click to your profile picture and select Copy ID
+
+---------WEB_SITES-------------------------------
+ monitor
+ early info / pid endpoint
+ modulo
+
+
+
+---------Structure-------------------------------
+1. The architecture does not depend on the existence of some library of feature laden software.
+2. Testable. The business rules can be tested without the UI, Database, Web Server, or any other external element.
+
+
+
 func setConsoleTitle(title string) (int, error) {
 	handle, err := syscall.LoadLibrary("Kernel32.dll")
 	if err != nil {
