@@ -1,0 +1,10 @@
+{
+  "key": "",
+  "webhook": "",
+  "delay": {
+    "retry": ""
+  },
+  "2captcha_key": "",
+  "anticaptcha_key": "",
+  "capmonster_key": ""
+}

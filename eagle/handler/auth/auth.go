@@ -4,7 +4,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"log"
-	"net/http"
+
+	// "net/http"
 	"os/user"
 	"strings"
 
@@ -17,7 +18,7 @@ func newSHA256(data string) string {
 	return hex.EncodeToString(hash[:])
 }
 
-func generateHWID() string {
+func GenerateHWID() string {
 	block, _ := ghw.Block()
 	var disks []string
 	for _, disk := range block.Disks {
@@ -34,12 +35,8 @@ func generateHWID() string {
 	return newSHA256(strings.Join(disks, ",") + "," + username)
 }
 
-func api() {
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+func Initialize() {
+	router := gin.Default()
+	
+	router.Run("localhost:8080")
 }

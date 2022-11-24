@@ -2,21 +2,17 @@ package main
 
 import (
 	"context"
-	"crypto/sha256"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
-	"os/user"
-	"strings"
 	"time"
 
 	"github.com/eagle/deadstock"
-	"github.com/eagle/eagle/version"
+	// "github.com/eagle/eagle/handler/auth"
+	"github.com/eagle/eagle/handler/version"
 	"github.com/eagle/utils"
 	"github.com/fatih/color"
-	"github.com/jaypipes/ghw"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -145,17 +141,8 @@ func Read_database(key string, uuid string) bool {
 	return false
 }
 
-// func getVersion() string {
-// 	// client := &http.Client{}
-// 	// _ err
-// }
-
-
-
 func main() {
-	//cehck version
-	// getVersion()
-	
+	// auth.Initialize()
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
@@ -176,7 +163,9 @@ func main() {
 }
 
 //---------BOT--------------------//
-//crate an executable file in golang
+// improve the inizialization of ALL the data
+// rich_presence
+// create an executable file in golang
 // change id security
 // check how to compile go module and create the CONSOLE APP
 // ADD APII
