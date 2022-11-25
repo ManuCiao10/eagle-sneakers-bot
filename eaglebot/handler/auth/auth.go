@@ -38,7 +38,12 @@ func GenerateHWID() string {
 }
 
 func Initialize() {
+	//check for updates
+	//create a .exe file
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "9000"
+	}
 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
 		io.WriteString(w, "Hello, world!\n")
 	}

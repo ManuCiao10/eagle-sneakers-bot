@@ -143,11 +143,14 @@ func Read_database(key string, uuid string) bool {
 
 func main() {
 	auth.Initialize()
+
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
 	}
-
+	// rich_presence.Initialize()
+	// loading.Initialize()
+	// console.Initialize()
 	utils.Banner()
 	utils.Site_list()
 	mode := utils.SelectMode("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
