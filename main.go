@@ -165,7 +165,8 @@ func main() {
 /*
 
 ---------BOT--------------------
-// Add loader for all the info( profiles, proxies, key)
+ debug folder
+ Add loader for all the info( profiles, proxies, key)
  improve the inizialization of ALL the data
  rich_presence
  create an executable file in golang
@@ -197,8 +198,6 @@ func main() {
  monitor
  early info / pid endpoint
  modulo
-
-
 
 ---------Structure-------------------------------
 1. The architecture does not depend on the existence of some library of feature laden software.

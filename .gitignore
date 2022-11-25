@@ -1,6 +1,2 @@
 .DS_Store
-rev.go
-config/
-add/
-add_to_cart.py
-cart.txt
+config/.env
