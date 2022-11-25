@@ -3,10 +3,7 @@ package auth
 import (
 	"crypto/sha256"
 	"encoding/hex"
-	"io"
 	"log"
-	"net/http"
-	"os"
 
 	// "net/http"
 	"os/user"
@@ -37,17 +34,50 @@ func GenerateHWID() string {
 	return newSHA256(strings.Join(disks, ",") + "," + username)
 }
 
+//VERSION
+// func Initialize() {
+// 	//check for updates
+// 	//create a .exe file
+// 	port := os.Getenv("PORT")
+// 	if port == "" {
+// 		port = "9000"
+// 	}
+//	mux := http.NewServeMux()
+// 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+// 		io.WriteString(w, "API is running\n")
+// 	}
+// 	DownloadHandler := func(w http.ResponseWriter, req *http.Request) {
+// 		//download the file.exe
+// 		return version.Download(w, req)
+// 	}
+
+// 	VersionHandler := func(w http.ResponseWriter, req *http.Request) {
+// 		//return version
+// 		println("Checking for updates...")
+// 		resp, err := http.Get("https://eagleaio.herokuapp.com/version")
+// 		if err != nil {
+// 			println("Error checking for updates")
+// 			return
+// 		}
+// 		defer resp.Body.Close()
+// 		newversion := resp.Body
+// 		if newversion == version.Version {
+// 			println("You are up to date")
+// 		} else {
+// 			println("New version available")
+// 			version.Update()
+// 		}
+
+// 		// io.WriteString(w, version.Version)
+
+// 	}
+// 	http.HandleFunc("/", helloHandler)
+// 	http.HandleFunc("/version", VersionHandler)
+// 	http.HandleFunc("/download", DownloadHandler)
+
+// 	log.Print(http.ListenAndServe(":"+port, nil))
+// }
+
+// KEY
 func Initialize() {
-	//check for updates
-	//create a .exe file
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "9000"
-	}
-	helloHandler := func(w http.ResponseWriter, req *http.Request) {
-		io.WriteString(w, "Hello, world!\n")
-	}
-	http.HandleFunc("/", helloHandler)
-	log.Println("Listing for " + port)
-	log.Print(http.ListenAndServe(":"+port, nil))
 }

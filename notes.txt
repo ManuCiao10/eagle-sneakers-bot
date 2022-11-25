@@ -1,4 +1,6 @@
 ---------BOT--------------------
+
+ change username and password database
  debug folder
  Add loader for all the info( profiles, proxies, key)
  improve the inizialization of ALL the data

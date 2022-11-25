@@ -10,6 +10,7 @@ import (
 
 	"github.com/eagle/deadstock"
 	"github.com/eagle/eaglebot/handler/auth"
+	"github.com/eagle/eaglebot/handler/rich_presence"
 	"github.com/eagle/eaglebot/handler/version"
 	"github.com/eagle/utils"
 	"github.com/fatih/color"
@@ -142,13 +143,14 @@ func Read_database(key string, uuid string) bool {
 }
 
 func main() {
+	// key.Initialize()
 	auth.Initialize()
 
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
-		os.Exit(1)
+		os.Exit(255)
 	}
-	// rich_presence.Initialize()
+	rich_presence.Initialize()
 	// loading.Initialize()
 	// console.Initialize()
 	utils.Banner()
