@@ -33,8 +33,8 @@ func Gen_id() string {
 	return id
 }
 
-func Logo() {
-	content, err := os.ReadFile("config/logo.txt")
+func Banner() {
+	content, err := os.ReadFile("config/banner.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

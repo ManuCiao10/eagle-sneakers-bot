@@ -3,13 +3,15 @@ package auth
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"io"
 	"log"
+	"net/http"
+	"os"
 
 	// "net/http"
 	"os/user"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/jaypipes/ghw"
 )
 
@@ -36,7 +38,11 @@ func GenerateHWID() string {
 }
 
 func Initialize() {
-	router := gin.Default()
-	
-	router.Run("localhost:8080")
+	port := os.Getenv("PORT")
+	helloHandler := func(w http.ResponseWriter, req *http.Request) {
+		io.WriteString(w, "Hello, world!\n")
+	}
+	http.HandleFunc("/", helloHandler)
+	log.Println("Listing for" + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

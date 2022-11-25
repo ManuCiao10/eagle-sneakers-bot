@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/eagle/deadstock"
-	// "github.com/eagle/eagle/handler/auth"
-	"github.com/eagle/eagle/handler/version"
+	"github.com/eagle/eaglebot/handler/auth"
+	"github.com/eagle/eaglebot/handler/version"
 	"github.com/eagle/utils"
 	"github.com/fatih/color"
 	"github.com/joho/godotenv"
@@ -85,7 +85,7 @@ func Read_json() bool {
 	color.Red("[" + time.Now().Format("15:04:05.000000") + "]" + " CHECKING KEY...")
 
 	var key string
-	content, err := os.ReadFile("eagle/bin/release/setting.json")
+	content, err := os.ReadFile("eaglebot/bin/release/setting.json")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -142,13 +142,13 @@ func Read_database(key string, uuid string) bool {
 }
 
 func main() {
-	// auth.Initialize()
+	auth.Initialize()
 	if !Read_json() {
 		color.Red("KEY NOT VALID")
 		os.Exit(1)
 	}
 
-	utils.Logo()
+	utils.Banner()
 	utils.Site_list()
 	mode := utils.SelectMode("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
 	if mode == "1" {
@@ -161,65 +161,3 @@ func main() {
 		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID CHOICE!")
 	}
 }
-
-/*
-
----------BOT--------------------
- debug folder
- Add loader for all the info( profiles, proxies, key)
- improve the inizialization of ALL the data
- rich_presence
- create an executable file in golang
- change id security
- check how to compile go module and create the CONSOLE APP
- ADD APII
- SET CONSOLE LOG
- Function to generate all the file necessary to set up csv etc..
- Auto-updates
- Dashboard
- monitor
- client
- modules
- Scrape PID + put them encrypted
- Sniffer tipo proxyman, fiddler
- RANDOM Name + Surname
- Add MQT MONITOR MODE
-
----------ERROR_HANDLING----------------------
-
----------OTHERS-----------------------------
- Function to close the bot from remote
-
----------GUIDE-------------------------------
- 1.TO find your ID you must activate Delepoer Mode. Goig in Setings-->advances-->Developer Mode
- after right-click to your profile picture and select Copy ID
-
----------WEB_SITES-------------------------------
- monitor
- early info / pid endpoint
- modulo
-
----------Structure-------------------------------
-1. The architecture does not depend on the existence of some library of feature laden software.
-2. Testable. The business rules can be tested without the UI, Database, Web Server, or any other external element.
-
-
-
-func setConsoleTitle(title string) (int, error) {
-	handle, err := syscall.LoadLibrary("Kernel32.dll")
-	if err != nil {
-		return 0, err
-	}
-	defer syscall.FreeLibrary(handle)
-	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
-	if err != nil {
-		return 0, err
-	}
-	r, _, err := syscall.Syscall(proc, 1, uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(title))), 0, 0)
-	return int(r), err
-}
-
-func updateTitle() {
-	_, _ = setConsoleTitle(fmt.Sprintf("HellasAIO ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d", carts, checkouts, failures))
-}
-*/
