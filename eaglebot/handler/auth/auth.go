@@ -44,5 +44,5 @@ func Initialize() {
 	}
 	http.HandleFunc("/", helloHandler)
 	log.Println("Listing for " + port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Print(http.ListenAndServe(":"+port, nil))
 }
