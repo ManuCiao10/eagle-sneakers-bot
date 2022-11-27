@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/eagle/eaglebot/handler/loading"
+	"github.com/fatih/color"
 
 	"github.com/jaypipes/ghw"
 )
@@ -80,11 +81,20 @@ func GenerateHWID() string {
 // 	log.Print(http.ListenAndServe(":"+port, nil))
 // }
 
+func ValidateKey(key string) bool {
+	color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
+	return true
+}
+
 // KEY
 func Initialize() {
-	if len(loading.Data.Settings.Settings.AuthKey) != 300 {
-		println("[!] Invalid key")
+	// var key string
+	if len(loading.Data.Settings.Settings.AuthKey) != 30 {
+		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY DETECTED [CHECK JSON FILE]")
 		time.Sleep(2 * time.Second)
 		os.Exit(1)
 	}
+	key := loading.Data.Settings.Settings.AuthKey
+	
+	ValidateKey(key)
 }
