@@ -10,7 +10,7 @@ import (
 	// "github.com/eagle/eaglebot/handler/console"
 	"github.com/eagle/eaglebot/handler/loading"
 	"github.com/eagle/eaglebot/handler/version"
-	"github.com/eagle/utils"
+	"github.com/eagle/eaglebot/handler/utils"
 	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 	// "go.mongodb.org/mongo-driver/bson"
@@ -144,10 +144,6 @@ func main() {
 	loading.Initialize()
 	auth.Initialize()
 
-	// if !Read_json() {
-	// 	color.Red("KEY NOT VALID")
-	// 	os.Exit(255)
-	// }
 	// rich_presence.Initialize()
 	utils.Banner()
 	utils.Site_list()

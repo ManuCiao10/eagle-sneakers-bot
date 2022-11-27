@@ -1,7 +1,7 @@
 package deadstock
 
 import (
-	"github.com/eagle/utils"
+	"github.com/eagle/eaglebot/handler/utils"
 	"bufio"
 	"encoding/csv"
 	"fmt"
