@@ -4,10 +4,12 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"log"
-
-	// "net/http"
+	"os"
 	"os/user"
 	"strings"
+	"time"
+
+	"github.com/eagle/eaglebot/handler/loading"
 
 	"github.com/jaypipes/ghw"
 )
@@ -80,4 +82,9 @@ func GenerateHWID() string {
 
 // KEY
 func Initialize() {
+	if len(loading.Data.Settings.Settings.AuthKey) != 300 {
+		println("[!] Invalid key")
+		time.Sleep(2 * time.Second)
+		os.Exit(1)
+	}
 }

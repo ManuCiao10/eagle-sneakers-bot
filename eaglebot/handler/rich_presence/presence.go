@@ -66,5 +66,5 @@ func Initialize() {
 	// Discord will only show the presence if the app is running
 	// Sleep for a few seconds to see the update
 	fmt.Println("Sleeping...")
-	time.Sleep(time.Second * 4)
+	// time.Sleep(time.Second * 1000)
 }

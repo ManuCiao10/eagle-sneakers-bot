@@ -1,16 +1,14 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/eagle/deadstock"
 	"github.com/eagle/eaglebot/handler/auth"
-	"github.com/eagle/eaglebot/handler/rich_presence"
+
+	// "github.com/eagle/eaglebot/handler/console"
+	"github.com/eagle/eaglebot/handler/loading"
 	"github.com/eagle/eaglebot/handler/version"
 	"github.com/eagle/utils"
 	"github.com/fatih/color"
@@ -143,16 +141,14 @@ func init() {
 // }
 
 func main() {
-	// loading.Initialize()
+	loading.Initialize()
 	auth.Initialize()
 
 	// if !Read_json() {
 	// 	color.Red("KEY NOT VALID")
 	// 	os.Exit(255)
 	// }
-	rich_presence.Initialize()
-	// loading.Initialize()
-	// console.Initialize()
+	// rich_presence.Initialize()
 	utils.Banner()
 	utils.Site_list()
 	mode := utils.SelectMode("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")

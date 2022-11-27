@@ -7,7 +7,9 @@
   "capmonster_key": "INSERT_YOUR_CAPMONSTER_KEY",
 
   "solver": "SELECT_YOUR_SOLVER",
+
   "delay": {
-    "retry": ""
+    "retry": "",
+    "timeout": ""
   }
 }
