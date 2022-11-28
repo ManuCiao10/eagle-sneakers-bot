@@ -30,7 +30,7 @@ func main() {
 	// rich_presence.Initialize()
 	utils.Banner()
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
-	color.Red("WELCOME BACK " + color.HiWhiteString(username))
+	color.Red("WELCOME BACK " + color.WhiteString(username))
 	println("\n")
 	utils.Site_list()
 	// utils.Menu()

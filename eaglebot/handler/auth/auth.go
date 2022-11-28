@@ -80,7 +80,7 @@ func ValidateHWID(key string) bool {
 
 func ValidateKey(key string) bool {
 	client := &http.Client{}
-	color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
+	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
 
 	r, err := http.NewRequest("GET", "https://api.hyper.co/v6/licenses/"+key, nil)
 	if err != nil {

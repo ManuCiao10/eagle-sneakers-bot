@@ -1,10 +1,10 @@
 package version
 
 type Update struct {
-	Data []Data `json:"data"`
+	Info []Info `json:"data"`
 }
 
-type Data struct {
+type Info struct {
 	Version string `json:"name"`
 	ID      string `json:"id"`
 }
