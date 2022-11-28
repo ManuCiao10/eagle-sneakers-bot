@@ -2,10 +2,12 @@ package main
 
 import (
 	"log"
+	"strings"
 	"time"
 
 	"github.com/eagle/deadstock"
 	"github.com/eagle/eaglebot/handler/auth"
+	"github.com/fatih/color"
 
 	// "github.com/eagle/eaglebot/handler/console"
 	"github.com/eagle/eaglebot/handler/loading"
@@ -27,13 +29,15 @@ func init() {
 	}
 }
 
-
 func main() {
 	loading.Initialize()
 	auth.Initialize()
 
 	// rich_presence.Initialize()
 	utils.Banner()
+	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
+	color.Red("WELCOME BACK TO EAGLE " + username)
+	println("\n")
 	utils.Site_list()
 	// utils.Check_update()
 	// utils.Menu()

@@ -7,6 +7,7 @@ package auth
 
 type AuthResponse struct {
 	Integrations Integrations `json:"integrations"`
+	Metadata     Metadata     `json:"metadata"`
 }
 type Discord struct {
 	ID            string `json:"id"`
@@ -15,4 +16,8 @@ type Discord struct {
 }
 type Integrations struct {
 	Discord Discord `json:"discord"`
+}
+
+type Metadata struct {
+	HWID string `json:"HWID"`
 }
