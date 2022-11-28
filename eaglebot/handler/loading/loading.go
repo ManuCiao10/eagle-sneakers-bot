@@ -3,7 +3,7 @@ package loading
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	// "fmt"
 )
@@ -28,14 +28,10 @@ func loadSettings() *Settings {
 	}
 
 	defer jsonFile.Close()
+	byteValue, _ := io.ReadAll(jsonFile)
 
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-
-	// we initialize our Users array
 	var settings Settings
 
-	// we unmarshal our byteArray which contains our
-	// jsonFile's content into 'users' which we defined above
 	err = json.Unmarshal(byteValue, &settings.Settings)
 	if err != nil {
 		return nil
