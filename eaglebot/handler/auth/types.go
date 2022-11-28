@@ -19,5 +19,5 @@ type Integrations struct {
 }
 
 type Metadata struct {
-	HWID string `json:"HWID"`
+	HWID string `json:"hwid"`
 }

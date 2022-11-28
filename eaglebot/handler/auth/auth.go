@@ -45,14 +45,16 @@ func GenerateHWID() string {
 	return newSHA256(strings.Join(disks, ",") + "," + username)
 }
 
-func BindMachineID(key string) bool {
+func ValidateHWID(key string) bool {
 	HWID := GenerateHWID()
-	check_id := Auth.Metadata.HWID
+	check_id := Auth.Metadata.HWID //read from json struct
+
 	if check_id == "" {
-		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "BINDING MACHINE ID...")
 		url := "https://api.hyper.co/v6/licenses/" + key + "/metadata"
 		payload, err := json.Marshal(map[string]interface{}{
-			"hwid": HWID,
+			"metadata" : map[string]interface{}{
+				"hwid" : HWID,
+			},
 		})
 
 		if err != nil {
@@ -75,15 +77,14 @@ func BindMachineID(key string) bool {
 		time.Sleep(3 * time.Second)
 		os.Exit(255)
 	}
-
-	time.Sleep(20 * time.Second)
-	return true
+	color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UNABLE TO VALIDATE MACHINE ID")
+	return false
 
 }
 
 func ValidateKey(key string) bool {
 	client := &http.Client{}
-	color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
+	color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
 
 	r, err := http.NewRequest("GET", "https://api.hyper.co/v6/licenses/"+key, nil)
 	if err != nil {
@@ -114,7 +115,7 @@ func ValidateKey(key string) bool {
 		log.Fatal("Could not unmarshal response body, shutting down.", err)
 	}
 
-	BindMachineID(key)
+	ValidateHWID(key)
 
 	return true
 
