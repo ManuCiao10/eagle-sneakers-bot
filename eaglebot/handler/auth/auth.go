@@ -5,9 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -18,7 +16,6 @@ import (
 	"github.com/eagle/eaglebot/handler/loading"
 	"github.com/eagle/eaglebot/handler/utils"
 	"github.com/fatih/color"
-
 	"github.com/jaypipes/ghw"
 )
 
@@ -47,7 +44,7 @@ func GenerateHWID() string {
 
 func ValidateHWID(key string) bool {
 	HWID := GenerateHWID()
-	check_id := Auth.Metadata.HWID //read from json struct
+	check_id := Auth.Metadata.HWID 
 
 	if check_id == "" {
 		url := "https://api.hyper.co/v6/licenses/" + key + "/metadata"
@@ -66,19 +63,18 @@ func ValidateHWID(key string) bool {
 		req.Header.Add("content-type", "application/json")
 		req.Header.Add("Authorization", "Bearer "+os.Getenv("API_TOKEN"))
 
-		res, _ := http.DefaultClient.Do(req)
-		body, _ := ioutil.ReadAll(res.Body)
-		defer res.Body.Close()
+		_, err = http.DefaultClient.Do(req)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		fmt.Println(res)
-		fmt.Println(string(body))
 	} else if check_id != HWID {
 		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "MACHINE ALREADY BOUND [RESET YOUR KEY]")
 		time.Sleep(3 * time.Second)
 		os.Exit(255)
 	}
-	color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UNABLE TO VALIDATE MACHINE ID")
-	return false
+
+	return true
 
 }
 
@@ -115,16 +111,15 @@ func ValidateKey(key string) bool {
 		log.Fatal("Could not unmarshal response body, shutting down.", err)
 	}
 
-	ValidateHWID(key)
+	if !ValidateHWID(key) {
+		return false
+	}
 
 	return true
 
 }
 
 func Initialize() {
-	//check for updates
-	//check if the username is different
-	//handle if key is already bound
 	if len(loading.Data.Settings.Settings.AuthKey) == 0 {
 		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY DETECTED [CHECK JSON FILE]")
 		time.Sleep(2 * time.Second)
