@@ -34,7 +34,7 @@ func Gen_id() string {
 }
 
 func Banner() {
-	content, err := os.ReadFile("config/banner.txt")
+	content, err := os.ReadFile("handler/utils/banner.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
