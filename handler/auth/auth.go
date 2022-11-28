@@ -13,8 +13,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/eagle/eaglebot/handler/loading"
-	"github.com/eagle/eaglebot/handler/utils"
+	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/utils"
 	"github.com/fatih/color"
 	"github.com/jaypipes/ghw"
 )
@@ -69,7 +69,7 @@ func ValidateHWID(key string) bool {
 		}
 
 	} else if check_id != HWID {
-		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "MACHINE ALREADY BOUND [RESET YOUR KEY]")
+		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "RESET YOUR KEY IN THE DASHBOARD")
 		time.Sleep(3 * time.Second)
 		os.Exit(255)
 	}

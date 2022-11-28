@@ -1,9 +1,7 @@
 package version
 
 import (
-	"crypto/sha256"
 	"encoding/json"
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -19,29 +17,40 @@ var (
 	File    Update
 )
 
-
 func CheckSum() string {
-	sha256_hash := sha256.New()
-
-	if _, err := os.Stat("bin/bot.exe"); os.IsNotExist(err) {
-		if _, err := os.Stat("bin"); os.IsNotExist(err) {
-			os.Mkdir("bin", 0755)
-		}
+	//no Folder bin => create
+	if _, err := os.Stat("bin"); os.IsNotExist(err) {
+		os.Mkdir("bin", 0755)
 		return ""
 	}
 
-	file, err := os.Open("bin/bot.exe")
+	file, err := os.Open("bin/")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("failed opening directory: %s", err)
 	}
-
 	defer file.Close()
+	var count int
+	list, _ := file.Readdirnames(0)
 
-	if _, err := io.Copy(sha256_hash, file); err != nil {
-		log.Fatal(err)
+	//More files.exe => delete
+	for _, name := range list {
+		if strings.Contains(name, ".exe") {
+			count++
+		}
+	}
+	if count > 1 {
+		color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "DELETE OLD VERSION")
+		time.Sleep(2 * time.Second)
+		os.Exit(255)
 	}
 
-	return string(sha256_hash.Sum(nil))
+	for _, name := range list {
+		if strings.Contains(name, ".exe") {
+			version := strings.Split(name, "_")[1]
+			return version[:len(version)-4]
+		}
+	}
+	return ""
 }
 
 func GetLatestVersion() string {
@@ -63,7 +72,6 @@ func GetLatestVersion() string {
 	}
 	for _, v := range File.Info {
 		if strings.Contains(v.Version, "Update") {
-
 			return v.Version
 		}
 	}
@@ -79,9 +87,9 @@ func GetID() string {
 	return ""
 }
 
-func DowloadUpdate() {
+func DowloadUpdate() bool {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://manuciao5388.hyper.co/ajax/products/"+ GetID() + "/files?", nil)
+	req, err := http.NewRequest("GET", "https://manuciao5388.hyper.co/ajax/products/"+GetID()+"/files?", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,22 +119,25 @@ func DowloadUpdate() {
 		log.Fatal(err)
 	}
 	file.Sync()
-	fmt.Print(resp.StatusCode)
+
+	return resp.StatusCode == 200
 }
 
 func Updates() {
 	new_version := strings.ToUpper(GetLatestVersion())
-	new := strings.Split(new_version, ".")
-	if new[2] != CheckSum() {
-		fmt.Print(CheckSum())
-		time.Sleep(30 * time.Second)
+	version := strings.Split(new_version, " ")[1]
+	if version != CheckSum() {
 		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "DOWNLOADING " + new_version)
-		DowloadUpdate()
+		if !DowloadUpdate() {
+			color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "ERROR DOWNLOADING UPDATE")
+			time.Sleep(2 * time.Second)
+			os.Exit(255)
+		}
+		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UPDATE DOWNLOADED")
+		if CheckSum() != "" {
+			os.Remove("bin/EagleBot_" + CheckSum() + ".exe")
+		}
+		time.Sleep(2 * time.Second)
 		os.Exit(255)
-
 	}
-	time.Sleep(30 * time.Second)
-
 }
-
-//fix if wher you check the name of the currently bot

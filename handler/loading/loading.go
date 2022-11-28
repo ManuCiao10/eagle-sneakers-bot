@@ -21,7 +21,7 @@ func Load() *Config {
 }
 
 func loadSettings() *Settings {
-	jsonFile, err := os.Open("eaglebot/bin/release/setting.json")
+	jsonFile, err := os.Open("bin/setting.json")
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)

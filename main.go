@@ -5,12 +5,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/eagle/deadstock"
-	"github.com/eagle/eaglebot/handler/auth"
+	"github.com/eagle/handler/auth"
+	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/sites/deadstock"
+	"github.com/eagle/handler/utils"
+	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
-	"github.com/eagle/eaglebot/handler/loading"
-	"github.com/eagle/eaglebot/handler/utils"
-	"github.com/eagle/eaglebot/handler/version"
 	"github.com/joho/godotenv"
 )
 
@@ -28,13 +28,15 @@ func main() {
 	version.Updates()
 
 	// rich_presence.Initialize()
+	//launch EageBot.exe from bin reposotory
+
 	utils.Banner()
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
 	color.Red("WELCOME BACK " + color.WhiteString(username))
 	println("\n")
 	utils.Site_list()
 	// utils.Menu()
-	mode := utils.SelectMode("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:")
+	mode := utils.SelectMode(color.HiWhiteString("[Eagle " + version.Version + "]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:"))
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {

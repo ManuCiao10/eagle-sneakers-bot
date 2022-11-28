@@ -1,7 +1,7 @@
 package loading
 
 import (
-	"github.com/eagle/eaglebot/handler/settings"
+	"github.com/eagle/handler/settings"
 )
 
 type Settings struct {
