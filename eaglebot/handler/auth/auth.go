@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/eagle/eaglebot/handler/loading"
+	"github.com/eagle/eaglebot/handler/utils"
 	"github.com/fatih/color"
 
 	"github.com/jaypipes/ghw"
@@ -41,49 +42,6 @@ func GenerateHWID() string {
 	return newSHA256(strings.Join(disks, ",") + "," + username)
 }
 
-//VERSION
-// func Initialize() {
-// 	//check for updates
-// 	//create a .exe file
-// 	port := os.Getenv("PORT")
-// 	if port == "" {
-// 		port = "9000"
-// 	}
-//	mux := http.NewServeMux()
-// 	helloHandler := func(w http.ResponseWriter, req *http.Request) {
-// 		io.WriteString(w, "API is running\n")
-// 	}
-// 	DownloadHandler := func(w http.ResponseWriter, req *http.Request) {
-// 		//download the file.exe
-// 		return version.Download(w, req)
-// 	}
-
-// 	VersionHandler := func(w http.ResponseWriter, req *http.Request) {
-// 		//return version
-// 		println("Checking for updates...")
-// 		resp, err := http.Get("https://eagleaio.herokuapp.com/version")
-// 		if err != nil {
-// 			println("Error checking for updates")
-// 			return
-// 		}
-// 		defer resp.Body.Close()
-// 		newversion := resp.Body
-// 		if newversion == version.Version {
-// 			println("You are up to date")
-// 		} else {
-// 			println("New version available")
-// 			version.Update()
-// 		}
-
-// 		// io.WriteString(w, version.Version)
-
-// 	}
-// 	http.HandleFunc("/", helloHandler)
-// 	http.HandleFunc("/version", VersionHandler)
-// 	http.HandleFunc("/download", DownloadHandler)
-
-// 	log.Print(http.ListenAndServe(":"+port, nil))
-// }
 
 func ValidateKey(key string) bool {
 	client := &http.Client{}
@@ -91,7 +49,8 @@ func ValidateKey(key string) bool {
 
 	r, err := http.NewRequest("GET", "https://api.hyper.co/v6/licenses/"+key, nil)
 	if err != nil {
-		log.Fatalln("Could not  auth server, shutting down.")
+		utils.ConsolePrint("AUTH SERVER ERROR", "red")
+		// log.Fatalln("Could not  auth server, shutting down.")
 	}
 
 	r.Header.Set("Authorization", "Bearer "+os.Getenv("API_TOKEN"))
@@ -99,16 +58,16 @@ func ValidateKey(key string) bool {
 
 	resp, err := client.Do(r)
 	if err != nil {
-		log.Fatalln("Could not request auth server, %?&shutting down.", err)
+		utils.ConsolePrint("COULD NOT REQUEST AUTH", "red")
+		return false
 	}
-
-	// fmt.Print("Response: ", resp.StatusCode)
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Could not read response body, shutting down.", err)
+		utils.ConsolePrint("COULD NOT READ RESPONSE BODY", "red")
+		return false
 	}
+
 	if resp.StatusCode != 200 {
-		color.HiRed("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY")
 		return false
 	}
 	//save response in struct
@@ -136,5 +95,9 @@ func Initialize() {
 	}
 	key := loading.Data.Settings.Settings.AuthKey
 
-	ValidateKey(key)
+	if !ValidateKey(key) {
+		color.HiRed("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY")
+		time.Sleep(2 * time.Second)
+		os.Exit(1)
+	}
 }
