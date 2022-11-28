@@ -52,8 +52,8 @@ func ValidateHWID(key string) bool {
 	if check_id == "" {
 		url := "https://api.hyper.co/v6/licenses/" + key + "/metadata"
 		payload, err := json.Marshal(map[string]interface{}{
-			"metadata" : map[string]interface{}{
-				"hwid" : HWID,
+			"metadata": map[string]interface{}{
+				"hwid": HWID,
 			},
 		})
 
@@ -73,7 +73,7 @@ func ValidateHWID(key string) bool {
 		fmt.Println(res)
 		fmt.Println(string(body))
 	} else if check_id != HWID {
-		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "MACHINE ALREADY BOUND")
+		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "MACHINE ALREADY BOUND [RESET YOUR KEY]")
 		time.Sleep(3 * time.Second)
 		os.Exit(255)
 	}
@@ -121,9 +121,10 @@ func ValidateKey(key string) bool {
 
 }
 
-// KEY
 func Initialize() {
 	//check for updates
+	//check if the username is different
+	//handle if key is already bound
 	if len(loading.Data.Settings.Settings.AuthKey) == 0 {
 		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY DETECTED [CHECK JSON FILE]")
 		time.Sleep(2 * time.Second)
