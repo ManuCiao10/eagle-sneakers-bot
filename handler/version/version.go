@@ -47,7 +47,6 @@ func CheckSum() string {
 	for _, name := range list {
 		if strings.Contains(name, ".exe") {
 			version := strings.Split(name, "_")[1]
-			//save version in struct
 			return version[:len(version)-4]
 		}
 	}
@@ -81,8 +80,8 @@ func GetLatestVersion() string {
 
 func GetID() string {
 	for _, v := range File.Info {
-		if strings.Contains(v.Version, "Update") {
-			return v.ID
+		if strings.Contains(v.Version, "EagleBot") {
+			return v.Files[0]
 		}
 	}
 	return ""
@@ -90,7 +89,7 @@ func GetID() string {
 
 func DowloadUpdate() bool {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://manuciao5388.hyper.co/ajax/products/"+GetID()+"/files?", nil)
+	req, err := http.NewRequest("GET", "https://manuciao5388.hyper.co/ajax/files/"+GetID(), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -120,7 +119,6 @@ func DowloadUpdate() bool {
 		log.Fatal(err)
 	}
 	file.Sync()
-
 	return resp.StatusCode == 200
 }
 

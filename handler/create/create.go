@@ -11,7 +11,7 @@ import (
 
 var (
 	JsonTemplate = []byte(`{
-  "key": "INSERT_YOUR_KEY_HERE",
+  "key": "EAGLE-LD9W-CJ3K-NAO7-KFOV",
   "webhook": "INSERT_YOUR_WEBHOOK",
 		  
   "2captcha_key": "INSERT_YOUR_2CAPTCHA_KEY",
@@ -31,7 +31,7 @@ var (
 )
 
 func Initialize() {
-	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CREATING FOLDERS...")
+	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CHECKING FOLDERS...")
 
 	if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
 		err := os.Mkdir("EagleBot", 0755)
