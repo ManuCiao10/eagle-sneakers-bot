@@ -42,7 +42,7 @@ func main() {
 	auth.Initialize()
 	version.Updates()
 	utils.GetVersionName()
-	// console.Diplay()
+	// console.Display()
 	// rich_presence.Initialize() TO fiX
 	utils.Banner()
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
