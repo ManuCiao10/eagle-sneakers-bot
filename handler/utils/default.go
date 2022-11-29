@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/denisbrodbeck/machineid"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
 )
@@ -26,14 +25,6 @@ func SelectMode(label string) string {
 	return strings.TrimSpace(s)
 }
 
-func Gen_id() string {
-	id, err := machineid.ProtectedID("myAppName")
-	if err != nil {
-		log.Fatal(err)
-	}
-	return id
-}
-
 func Banner() {
 	content, err := os.ReadFile("handler/utils/banner.txt")
 	if err != nil {
@@ -43,10 +34,8 @@ func Banner() {
 	color.Red(string(content))
 }
 
-//save version in struct or in a variable
-
 func GetVersionName() {
-	file, err := os.Open("bin/")
+	file, err := os.Open("EagleBot/")
 	if err != nil {
 		log.Fatalf("failed opening directory: %s", err)
 	}

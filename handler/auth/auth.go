@@ -71,7 +71,7 @@ func ValidateHWID(key string) bool {
 	} else if check_id != HWID {
 		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "RESET YOUR KEY IN THE DASHBOARD")
 		time.Sleep(3 * time.Second)
-		os.Exit(255)
+		os.Exit(0)
 	}
 
 	return true
@@ -123,13 +123,13 @@ func Initialize() {
 	if len(loading.Data.Settings.Settings.AuthKey) == 0 {
 		color.HiMagenta("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY DETECTED [CHECK JSON FILE]")
 		time.Sleep(2 * time.Second)
-		os.Exit(1)
+		os.Exit(0)
 	}
 	key := loading.Data.Settings.Settings.AuthKey
 
 	if !ValidateKey(key) {
 		color.HiRed("[" + time.Now().Format("15:04:05.000000") + "] " + "INVALID KEY")
 		time.Sleep(2 * time.Second)
-		os.Exit(1)
+		os.Exit(0)
 	}
 }

@@ -18,13 +18,13 @@ var (
 )
 
 func CheckSum() string {
-	//no Folder bin => create
-	if _, err := os.Stat("bin"); os.IsNotExist(err) {
-		os.Mkdir("bin", 0755)
+	//no Folder EagleBot => create
+	if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
+		os.Mkdir("EagleBot", 0755)
 		return ""
 	}
 
-	file, err := os.Open("bin/")
+	file, err := os.Open("EagleBot/")
 	if err != nil {
 		log.Fatalf("failed opening directory: %s", err)
 	}
@@ -106,11 +106,11 @@ func DowloadUpdate() bool {
 		log.Fatal(err)
 	}
 
-	if _, err := os.Stat("bin"); os.IsNotExist(err) {
-		os.Mkdir("bin", 0755)
+	if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
+		os.Mkdir("EagleBot", 0755)
 	}
 	final_version := GetLatestVersion()
-	file, err := os.Create("bin/EagleBot_" + strings.Split(final_version, " ")[1] + ".exe")
+	file, err := os.Create("EagleBot/EagleBot_" + strings.Split(final_version, " ")[1] + ".exe")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -132,13 +132,12 @@ func Updates() {
 		if !DowloadUpdate() {
 			color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "ERROR DOWNLOADING UPDATE")
 			time.Sleep(2 * time.Second)
-			os.Exit(255)
+			os.Exit(0)
 		}
 		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UPDATE DOWNLOADED")
 		time.Sleep(2 * time.Second)
-		os.Exit(255)
+		os.Exit(0)
 	}
 	Version = version
-	
 
 }

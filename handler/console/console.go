@@ -3,7 +3,7 @@ package console
 import (
 	"time"
 
-	"github.com/eagle/eaglebot/handler/version"
+	"github.com/eagle/handler/version"
 )
 
 var (
