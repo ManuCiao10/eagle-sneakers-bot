@@ -75,22 +75,22 @@ func Site_list() {
 func ConsolePrint(msg string, inputColor string) {
 	switch inputColor {
 	case "red":
-		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Red("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "green":
-		color.Green("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Green("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "yellow":
-		color.Yellow("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Yellow("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "blue":
-		color.Blue("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Blue("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "magenta":
-		color.HiMagenta("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Magenta("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "cyan":
-		color.Cyan("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Cyan("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "white":
-		color.White("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.White("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	case "black":
-		color.Black("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Black("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	default:
-		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Red("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	}
 }

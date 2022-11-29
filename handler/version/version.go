@@ -137,9 +137,8 @@ func Updates() {
 		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UPDATE DOWNLOADED")
 		time.Sleep(2 * time.Second)
 		os.Exit(255)
-	} else {
-		color.Green("[" + time.Now().Format("15:04:05.000000") + "] " + "NO UPDATES")
-		Version = version
 	}
+	Version = version
+	
 
 }

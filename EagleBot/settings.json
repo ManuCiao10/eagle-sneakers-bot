@@ -1,0 +1,15 @@
+{
+  "key": "INSERT_YOUR_KEY_HERE",
+  "webhook": "INSERT_YOUR_WEBHOOK",
+		  
+  "2captcha_key": "INSERT_YOUR_2CAPTCHA_KEY",
+  "anticaptcha_key": "INSERT_YOUR_ANTICAPTCHA_KEY",
+  "capmonster_key": "INSERT_YOUR_CAPMONSTER_KEY",
+		  
+  "solver": "SELECT_YOUR_SOLVER",
+		  
+  "delay": {
+    "retry": "DELAY",
+    "timeout": "DELAY"
+  }
+}
