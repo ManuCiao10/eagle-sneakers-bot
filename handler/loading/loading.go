@@ -17,8 +17,14 @@ func Initialize() {
 func Load() *Config {
 	return &Config{
 		Settings: *loadSettings(),
+		// Version:  *loadVersion(), //starting loading version reading from bin folder
 	}
 }
+
+// func loadVersion() *Version {
+// 	//read in bin folder
+
+// }
 
 func loadSettings() *Settings {
 	jsonFile, err := os.Open("bin/setting.json")

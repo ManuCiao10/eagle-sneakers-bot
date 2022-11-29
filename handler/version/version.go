@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	Version = "0.0.17"
+	Version string
 	File    Update
 )
 
@@ -47,6 +47,7 @@ func CheckSum() string {
 	for _, name := range list {
 		if strings.Contains(name, ".exe") {
 			version := strings.Split(name, "_")[1]
+			//save version in struct
 			return version[:len(version)-4]
 		}
 	}
@@ -75,7 +76,7 @@ func GetLatestVersion() string {
 			return v.Version
 		}
 	}
-	return Version
+	return ""
 }
 
 func GetID() string {
@@ -134,10 +135,11 @@ func Updates() {
 			os.Exit(255)
 		}
 		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UPDATE DOWNLOADED")
-		if CheckSum() != "" {
-			os.Remove("bin/EagleBot_" + CheckSum() + ".exe")
-		}
 		time.Sleep(2 * time.Second)
 		os.Exit(255)
+	} else {
+		color.Green("[" + time.Now().Format("15:04:05.000000") + "] " + "NO UPDATES")
+		Version = version
 	}
+
 }
