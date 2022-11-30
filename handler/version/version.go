@@ -64,6 +64,7 @@ func GetLatestVersion() string {
 	res, _ := http.DefaultClient.Do(req)
 
 	body, _ := io.ReadAll(res.Body)
+	// fmt.Print(string(body))
 	defer res.Body.Close()
 
 	err := json.Unmarshal(body, &File)

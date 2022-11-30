@@ -8,6 +8,7 @@ import (
 	"github.com/eagle/handler/auth"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/rich_presence"
 	"github.com/eagle/handler/sites/deadstock"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
@@ -36,6 +37,8 @@ func Menu() {
 	}
 }
 
+
+
 func main() {
 	create.Initialize()
 	loading.Initialize()
@@ -43,7 +46,7 @@ func main() {
 	version.Updates()
 	utils.GetVersionName()
 	// console.Display()
-	// rich_presence.Initialize() TO fiX
+	rich_presence.Initialize()
 	utils.Banner()
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
 	color.Red("WELCOME BACK " + color.WhiteString(username))

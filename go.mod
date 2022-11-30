@@ -3,13 +3,13 @@ module github.com/eagle
 go 1.19
 
 require (
-	github.com/bogdanfinn/tls-client v0.7.2
-	github.com/denisbrodbeck/machineid v1.0.1
+	github.com/bogdanfinn/tls-client v0.9.0
 	github.com/jaypipes/ghw v0.9.0
 )
 
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
+	github.com/ananagame/rich-go v0.0.0-20200319172754-527649f3d36d // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/jaypipes/pcidb v1.0.0 // indirect
@@ -24,18 +24,18 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
-	github.com/bogdanfinn/fhttp v0.5.5
-	github.com/bogdanfinn/utls v0.5.5 // indirect
+	github.com/bogdanfinn/fhttp v0.5.9
+	github.com/bogdanfinn/utls v1.5.9 // indirect
 	github.com/fatih/color v1.13.0
 	github.com/google/uuid v1.3.0
-	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0
 	github.com/joho/godotenv v1.4.0
-	github.com/klauspost/compress v1.15.9 // indirect
-	github.com/mattn/go-colorable v0.1.9 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/klauspost/compress v1.15.12 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/nattawitc/rich-go v0.0.0-20200402133947-4fcadd738f5b
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
-	golang.org/x/net v0.0.0-20220622184535-263ec571b305 // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/net v0.2.0 // indirect
+	golang.org/x/sys v0.2.0 // indirect
+	golang.org/x/text v0.4.0 // indirect
 )
