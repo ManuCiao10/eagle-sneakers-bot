@@ -2,17 +2,30 @@ package utils
 
 import (
 	"bufio"
+	"embed"
 	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
 	"time"
-	"embed"
 
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
 )
+
+func Menu() {
+	mode := SelectMode(color.MagentaString("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" PLESE SELECT A SITE:")))
+	if mode == "1" {
+		print("GAMESTOP")
+	} else if mode == "2" {
+		print("DEADSTOCK")
+	} else if mode == "3" {
+		print("TEST ZARA")
+	} else {
+		ConsolePrint("INVALID OPTION!", "red")
+	}
+}
 
 func SelectMode(label string) string {
 	var s string
@@ -29,10 +42,10 @@ func SelectMode(label string) string {
 
 //go:embed banner.txt
 var content embed.FS
+
 func Banner() {
-	
+
 	banner, _ := content.ReadFile("banner.txt")
-	
 
 	cmd := exec.Command("cmd", "/c", "cls")
 	cmd.Stdout = os.Stdout
