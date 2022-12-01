@@ -25,9 +25,8 @@ func main() {
 	auth.Initialize()
 	version.Updates()
 	console.Initialize()
-	utils.GetVersionName()
 	// rich_presence.Initialize()
-
+	
 	utils.Banner()
 	Welcome()
 	utils.Site_list()

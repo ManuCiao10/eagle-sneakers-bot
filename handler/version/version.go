@@ -18,33 +18,6 @@ var (
 	File    Update
 )
 
-// func CheckSum() string {
-// 	//no Folder EagleBot => create
-
-// 	var count int
-// 	list, _ := file.Readdirnames(0)
-
-// 	//More files.exe => delete
-// 	for _, name := range list {
-// 		if strings.Contains(name, ".exe") {
-// 			count++
-// 		}
-// 	}
-// 	if count > 1 {
-// 		color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "DELETE OLD VERSION")
-// 		time.Sleep(2 * time.Second)
-// 		os.Exit(255)
-// 	}
-
-// 	for _, name := range list {
-// 		if strings.Contains(name, ".exe") {
-// 			version := strings.Split(name, "_")[1]
-// 			return version[:len(version)-4]
-// 		}
-// 	}
-// 	return ""
-// }
-
 func GetLatestVersion() string {
 	url := "https://api.hyper.co/v6/products"
 
@@ -98,10 +71,6 @@ func DowloadUpdate(version string) bool {
 		log.Fatal(err)
 	}
 
-	// if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
-	// 	os.Mkdir("EagleBot", 0755)
-	// }
-	// final_version := GetLatestVersion()
 	file, err := os.Create("EagleBot_" + version + ".exe")
 	if err != nil {
 		log.Fatal(err)
@@ -115,10 +84,7 @@ func DowloadUpdate(version string) bool {
 	return resp.StatusCode == 200
 }
 
-// func FindNameExecutableFile() string {
-// }
-
-func ExecutableName() string {
+func DuplicateCrack() {
 	//delete old version
 	var count int
 	list, _ := os.ReadDir(".")
@@ -132,9 +98,15 @@ func ExecutableName() string {
 		time.Sleep(2 * time.Second)
 		os.Exit(0)
 	}
+}
+
+func ExecutableName() string {
+
+	DuplicateCrack()
 
 	ExecutableName := os.Args[0]
 	ExecutableName = strings.Split(ExecutableName, "\\")[len(strings.Split(ExecutableName, "\\"))-1]
+
 	ExecutableName = strings.Split(ExecutableName, "_")[1]
 	ExecutableName = ExecutableName[:len(ExecutableName)-4]
 

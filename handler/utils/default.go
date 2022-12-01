@@ -53,30 +53,8 @@ func Banner() {
 	color.Magenta(string(banner))
 }
 
-func GetVersionName() {
-	ExecutableName := os.Args[0]
-	ExecutableName = strings.Split(ExecutableName, "\\")[len(strings.Split(ExecutableName, "\\"))-1]
-	ExecutableName = strings.Split(ExecutableName, "_")[1]
-	//remove .exe last 4 caracters
-	ExecutableName = ExecutableName[:len(ExecutableName)-4]
-
-	version.Version = ExecutableName
-	// file, err := os.Open("EagleBot/")
-	// if err != nil {
-	// 	log.Fatalf("failed opening directory: %s", err)
-	// }
-	// defer file.Close()
-	// list, _ := file.Readdirnames(0)
-
-	// for _, name := range list {
-	// 	if strings.Contains(name, ".exe") {
-	// 		version_ := strings.Split(name, "_")[1]
-	// 		version.Version = version_[:len(version_)-4]
-	// 	}
-	// }
-}
-
 func Site_list() {
+	version.Version = version.ExecutableName()
 	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. NEW BALANCE"))
 	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 2. DADSTOCK"))
 	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 3. KITH"))

@@ -5,6 +5,6 @@ type Update struct {
 }
 
 type Info struct {
-	Version string `json:"name"`
-	Files []string `json:"files"`
+	Version string   `json:"name"`
+	Files   []string `json:"files"`
 }
