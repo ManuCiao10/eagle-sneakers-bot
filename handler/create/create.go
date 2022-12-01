@@ -4,6 +4,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/fatih/color"
@@ -46,76 +47,69 @@ func Initialize() {
 
 	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CHECKING FOLDERS...")
 
-	if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
-		err := os.Mkdir("EagleBot", 0755)
+	if _, err := os.Stat("Proxies"); os.IsNotExist(err) {
+		err := os.Mkdir("Proxies", 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+		_, err = os.Create("Proxies/proxies.txt")
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
-	if _, err := os.Stat("EagleBot/Proxies"); os.IsNotExist(err) {
-		err := os.Mkdir("EagleBot/Proxies", 0755)
-		if err != nil {
-			log.Fatal(err)
-		}
-		_, err = os.Create("EagleBot/Proxies/proxies.txt")
-		if err != nil {
-			log.Fatal(err)
-		}
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
 	}
-	/* get current directory
-		dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
-	    if err != nil {
-	            log.Fatal(err)
-	    }
-	    fmt.Println(dir)
-	*/
 
-	if _, err := os.Stat("EagleBot/settings.json"); os.IsNotExist(err) {
-		_, err := os.Create("EagleBot/settings.json")
+	if _, err := os.Stat("settings.json"); os.IsNotExist(err) {
+		_, err := os.Create("settings.json")
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		err = ioutil.WriteFile("EagleBot/settings.json", JsonTemplate, 0644)
+		err = ioutil.WriteFile("settings.json", JsonTemplate, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	if _, err := os.Stat("EagleBot/profiles.csv"); os.IsNotExist(err) {
-		_, err := os.Create("EagleBot/profiles.csv")
+	if _, err := os.Stat("profiles.csv"); os.IsNotExist(err) {
+		_, err := os.Create("profiles.csv")
 		if err != nil {
 			log.Fatal(err)
 		}
-		err = ioutil.WriteFile("EagleBot/profiles.csv", CsvTemplate, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	if _, err := os.Stat("EagleBot/Zara"); os.IsNotExist(err) {
-		err := os.Mkdir("EagleBot/Zara", 0755)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		_, err = os.Create("EagleBot/Zara/tasks.csv")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		err = ioutil.WriteFile("EagleBot/Zara/tasks.csv", CsvTemplateTask, 0644)
+		err = ioutil.WriteFile("profiles.csv", CsvTemplate, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	if _, err := os.Stat("EagleBot/mods"); os.IsNotExist(err) {
-		err := os.Mkdir("EagleBot/mods", 0755)
+	if _, err := os.Stat("Zara"); os.IsNotExist(err) {
+		err := os.Mkdir("Zara", 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		_, err = os.Create("Zara/tasks.csv")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = ioutil.WriteFile("Zara/tasks.csv", CsvTemplateTask, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
+
+	if _, err := os.Stat("mods"); os.IsNotExist(err) {
+		err := os.Mkdir("mods", 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	os.Remove(dir + "/.DS_Store")
 
 	// time.Sleep(10 * time.Second)
 }

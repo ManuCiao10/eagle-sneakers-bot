@@ -3,7 +3,6 @@ package console
 import (
 	"fmt"
 	"syscall"
-	"time"
 	"unsafe"
 
 	"github.com/eagle/handler/version"
@@ -15,21 +14,6 @@ var (
 	failures  int
 )
 
-func AddCheckout() {
-	checkouts += 1
-	updateTitle()
-}
-
-func AddCart() {
-	carts += 1
-	updateTitle()
-}
-
-func AddFailure() {
-	failures += 1
-	updateTitle()
-}
-
 func Initialize() {
 	carts = 0
 	checkouts = 0
@@ -38,15 +22,21 @@ func Initialize() {
 	updateTitle()
 }
 
-// setConsoleTitle
-// func setConsoleTitle(title string) (int, error) {
-// 	kernel32 := syscall.NewLazyDLL("kernel32.dll")
-// 	proc := kernel32.NewProc("SetConsoleTitleW")
-// 	ret, _, err := proc.Call(uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(title))))
-// 	return int(ret), err
+func SetConsoleTitle(title string) (int, error) {
+	handle, err := syscall.LoadLibrary("Kernel32.dll")
+	if err != nil {
+		return 0, err
+	}
+	defer syscall.FreeLibrary(handle)
+	proc, err := syscall.GetProcAddress(handle, "SetConsoleTitleW")
+	if err != nil {
+		return 0, err
+	}
+	r, _, err := syscall.Syscall(proc, 1, uintptr(unsafe.Pointer(syscall.StringToUTF16Ptr(title))), 0, 0)
+	return int(r), err
+}
 
-// }
-
-// func updateTitle() {
-// 	_, _ = setConsoleTitle(fmt.Sprintf("HellasAIO ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d", carts, checkouts, failures))
-// }
+func updateTitle() {
+	SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %s ", version.Version))
+	// _, _ = SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %d ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d",version.Version, carts, checkouts, failures))
+}

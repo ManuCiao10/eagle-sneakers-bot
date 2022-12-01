@@ -21,11 +21,11 @@ func Load() *Config {
 	}
 }
 
-//go:embed settings.json
+//go:embed config.json
 var JsonTemplate embed.FS
 
 func loadEnv() *Env {
-	env, _ := JsonTemplate.ReadFile("settings.json")
+	env, _ := JsonTemplate.ReadFile("config.json")
 
 	var envs Env
 
@@ -38,7 +38,7 @@ func loadEnv() *Env {
 }
 
 func loadSettings() *Settings {
-	jsonFile, err := os.Open("EagleBot/settings.json")
+	jsonFile, err := os.Open("settings.json")
 
 	if err != nil {
 		fmt.Println(err)

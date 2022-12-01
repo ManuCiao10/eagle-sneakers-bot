@@ -1,4 +1,4 @@
 .DS_Store
 notes.txt
 Makefile
-handler/loading/settings.json
+handler/loading/config.json

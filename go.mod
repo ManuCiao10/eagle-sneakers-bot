@@ -5,7 +5,6 @@ go 1.19
 require (
 	github.com/bogdanfinn/tls-client v0.9.0
 	github.com/jaypipes/ghw v0.9.0
-	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -17,6 +16,7 @@ require (
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	howett.net/plist v1.0.0 // indirect
 )
 
