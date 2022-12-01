@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -13,19 +12,10 @@ import (
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
-	"github.com/joho/godotenv"
 )
 
-func init() {
-	err := godotenv.Load("config/.env")
-
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
-
 func Menu() {
-	mode := utils.SelectMode(color.WhiteString("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT SITE:"))
+	mode := utils.SelectMode(color.MagentaString("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" PLESE SELECT A SITE:")))
 	if mode == "1" {
 		print("GAMESTOP")
 	} else if mode == "2" {
@@ -37,19 +27,21 @@ func Menu() {
 	}
 }
 
-
-
 func main() {
+	//delete files config.json from mods
+	//fix where the bot is checking for the Version of the bot for the update
+	//add all the icon and the img or banner to the bot
 	create.Initialize()
 	loading.Initialize()
 	auth.Initialize()
 	version.Updates()
 	utils.GetVersionName()
-	// console.Display()
 	rich_presence.Initialize()
+	// console.Display()
 	utils.Banner()
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
-	color.Red("WELCOME BACK " + color.WhiteString(username))
+	//add tab to the menu
+	color.Magenta("WELCOME BACK  \t" + color.WhiteString(username))
 	println("\n")
 	utils.Site_list()
 	Menu()

@@ -15,6 +15,7 @@ import (
 
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/utils"
+
 	"github.com/fatih/color"
 	"github.com/jaypipes/ghw"
 )
@@ -44,7 +45,7 @@ func GenerateHWID() string {
 
 func ValidateHWID(key string) bool {
 	HWID := GenerateHWID()
-	check_id := Auth.Metadata.HWID 
+	check_id := Auth.Metadata.HWID
 
 	if check_id == "" {
 		url := "https://api.hyper.co/v6/licenses/" + key + "/metadata"
@@ -58,10 +59,12 @@ func ValidateHWID(key string) bool {
 			log.Fatal(err)
 		}
 
-		req, _ := http.NewRequest("PATCH", url, bytes.NewBuffer(payload))
-
+		req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(payload))
+		if err != nil {
+			log.Fatal(err)
+		}
 		req.Header.Add("content-type", "application/json")
-		req.Header.Add("Authorization", "Bearer "+os.Getenv("API_TOKEN"))
+		req.Header.Add("Authorization", "Bearer "+loading.Data.Env.Env.API_TOKEN)
 
 		_, err = http.DefaultClient.Do(req)
 		if err != nil {
@@ -80,6 +83,7 @@ func ValidateHWID(key string) bool {
 
 func ValidateKey(key string) bool {
 	client := &http.Client{}
+
 	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "VALIDATING KEY...")
 
 	r, err := http.NewRequest("GET", "https://api.hyper.co/v6/licenses/"+key, nil)
@@ -87,8 +91,8 @@ func ValidateKey(key string) bool {
 		utils.ConsolePrint("AUTH SERVER ERROR", "red")
 		return false
 	}
-
-	r.Header.Set("Authorization", "Bearer "+os.Getenv("API_TOKEN"))
+	time.Sleep(2 * time.Second)
+	r.Header.Set("Authorization", "Bearer "+loading.Data.Env.Env.API_TOKEN)
 	r.Header.Set("Content-Type", "application/json")
 
 	resp, err := client.Do(r)
@@ -114,7 +118,6 @@ func ValidateKey(key string) bool {
 	if !ValidateHWID(key) {
 		return false
 	}
-
 	return true
 
 }

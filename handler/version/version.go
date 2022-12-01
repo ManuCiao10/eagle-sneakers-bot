@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/eagle/handler/loading"
 	"github.com/fatih/color"
 )
 
@@ -59,7 +60,7 @@ func GetLatestVersion() string {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("Authorization", "Bearer "+os.Getenv("API_TOKEN"))
+	req.Header.Add("Authorization", "Bearer "+loading.Data.Env.Env.API_TOKEN)
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -94,8 +95,8 @@ func DowloadUpdate() bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-	req.Header.Set("cookie", "authorization="+os.Getenv("AUTH_DOWNLOAD"))
-	req.Header.Set("hyper-account", os.Getenv("ACC_DOWLOAD"))
+	req.Header.Set("cookie", "authorization="+loading.Data.Env.Env.AUTH_DOWNLOAD)
+	req.Header.Set("hyper-account", loading.Data.Env.Env.ACC_DOWLOAD)
 	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatal(err)

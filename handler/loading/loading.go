@@ -1,6 +1,7 @@
 package loading
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -16,7 +17,24 @@ func Initialize() {
 func Load() *Config {
 	return &Config{
 		Settings: *loadSettings(),
+		Env:      *loadEnv(),
 	}
+}
+
+//go:embed settings.json
+var JsonTemplate embed.FS
+
+func loadEnv() *Env {
+	env, _ := JsonTemplate.ReadFile("settings.json")
+
+	var envs Env
+
+	err := json.Unmarshal(env, &envs.Env)
+	if err != nil {
+		fmt.Println(err)
+	}
+	return &envs
+
 }
 
 func loadSettings() *Settings {

@@ -11,6 +11,13 @@ type Settings struct {
 }
 
 type Delay struct {
-	Retry string `json:"retry"`
+	Retry   string `json:"retry"`
 	Timeout string `json:"timeout"`
+}
+
+type Env struct {
+	API_TOKEN      string `json:"API_TOKEN"`
+	AUTH_DOWNLOAD  string `json:"AUTH_DOWNLOAD"`
+	ACC_DOWLOAD    string `json:"ACC_DOWLOAD"`
+	DISCORD_APP_ID string `json:"DISCORD_APP_ID"`
 }

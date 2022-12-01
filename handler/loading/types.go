@@ -2,17 +2,15 @@ package loading
 
 import (
 	"github.com/eagle/handler/settings"
-	// "github.com/eagle/handler/version"
 )
 
 type Settings struct {
 	Settings settings.Settings `json:"settings"`
 }
 
-// type Version struct {
-// 	Version version.Info `json:"version"`
-// }
-
+type Env struct {
+	Env settings.Env `json:"env"`
+}
 
 type Config struct {
 	// Accounts        Accounts
@@ -21,5 +19,6 @@ type Config struct {
 	// Profiles        Profiles
 	// QuicktaskGroups map[int][]QuicktaskGroup
 	// Version  Version  `json:"version"`
+	Env      Env      `json:"env"`
 	Settings Settings `json:"settings"`
 }

@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
+	"embed"
 
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
@@ -25,13 +27,18 @@ func SelectMode(label string) string {
 	return strings.TrimSpace(s)
 }
 
+//go:embed banner.txt
+var content embed.FS
 func Banner() {
-	content, err := os.ReadFile("handler/utils/banner.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Print("\033[H\033[2J")
-	color.Red(string(content))
+	
+	banner, _ := content.ReadFile("banner.txt")
+	
+
+	cmd := exec.Command("cmd", "/c", "cls")
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+
+	color.Magenta(string(banner))
 }
 
 func GetVersionName() {
@@ -51,12 +58,12 @@ func GetVersionName() {
 }
 
 func Site_list() {
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 1. NEW BALANCE")
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 2. DADSTOCK")
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 3. KITH")
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 4. SUGAR")
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 5. SUSI")
-	color.Red("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " 6. 18 MONTROSE")
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. NEW BALANCE"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 2. DADSTOCK"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 3. KITH"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 4. SUGAR"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 5. SUSI"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 6. 18 MONTROSE"))
 
 	println("\n")
 }

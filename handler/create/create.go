@@ -30,7 +30,20 @@ var (
 	CsvTemplateTask = []byte(`Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List`)
 )
 
+// //go:embed favicon.ico
+// var icon []byte
+
 func Initialize() {
+
+	// icon, err := ioutil.ReadFile("icon.ico")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// err = ioutil.WriteFile("EagleBot/icon.ico", icon, 0644)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CHECKING FOLDERS...")
 
 	if _, err := os.Stat("EagleBot"); os.IsNotExist(err) {
@@ -96,5 +109,13 @@ func Initialize() {
 			log.Fatal(err)
 		}
 	}
+
+	if _, err := os.Stat("EagleBot/mods"); os.IsNotExist(err) {
+		err := os.Mkdir("EagleBot/mods", 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	// time.Sleep(10 * time.Second)
 }
