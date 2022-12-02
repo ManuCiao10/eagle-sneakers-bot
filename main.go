@@ -7,6 +7,7 @@ import (
 	"github.com/eagle/handler/console"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/rich_presence"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
@@ -25,8 +26,8 @@ func main() {
 	auth.Initialize()
 	version.Updates()
 	console.Initialize()
-	// rich_presence.Initialize()
-	
+	rich_presence.Initialize()
+
 	utils.Banner()
 	Welcome()
 	utils.Site_list()

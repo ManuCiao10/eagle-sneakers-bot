@@ -36,7 +36,6 @@ var (
 var icon embed.FS
 
 func Initialize() {
-
 	if _, err := os.Stat("mods"); os.IsNotExist(err) {
 		err := os.Mkdir("mods", 0755)
 		if err != nil {
