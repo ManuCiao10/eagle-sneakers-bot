@@ -38,7 +38,8 @@ func loadEnv() *Env {
 }
 
 func loadSettings() *Settings {
-	jsonFile, err := os.Open("handler/loading/settings.json")
+	jsonFile, err := os.Open("settings.json")
+	// jsonFile, err := os.Open("handler/loading/settings.json")
 
 	if err != nil {
 		fmt.Println(err)

@@ -13,6 +13,8 @@ import (
 	"github.com/fatih/color"
 )
 
+//go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
+
 func Welcome() {
 	username := strings.ToUpper(auth.Auth.Integrations.Discord.Username)
 	color.Magenta("WELCOME BACK  \t" + color.WhiteString(username))
@@ -20,7 +22,6 @@ func Welcome() {
 }
 
 func main() {
-	//add all the favicon.icon to the bot embed
 	create.Initialize()
 	loading.Initialize()
 	auth.Initialize()

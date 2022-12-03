@@ -1,7 +1,6 @@
 package create
 
 import (
-	"embed"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,6 +9,7 @@ import (
 
 	"github.com/fatih/color"
 )
+
 
 var (
 	JsonTemplate = []byte(`{
@@ -32,35 +32,7 @@ var (
 	CsvTemplateTask = []byte(`Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List`)
 )
 
-//go:embed favicon.ico
-var icon embed.FS
-
 func Initialize() {
-	if _, err := os.Stat("mods"); os.IsNotExist(err) {
-		err := os.Mkdir("mods", 0755)
-		if err != nil {
-			log.Fatal(err)
-		}
-		iconFile, err := icon.ReadFile("favicon.ico")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		err = ioutil.WriteFile("mods/favicon.ico", iconFile, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		//set favicon.ico to the bot anc console
-
-		err = os.Setenv("FAVICON", "favicon.ico")
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
-	//set favicon to executable
-
 	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CHECKING FOLDERS...")
 
 	if _, err := os.Stat("Proxies"); os.IsNotExist(err) {
