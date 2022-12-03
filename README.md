@@ -1,4 +1,4 @@
-<kbd> <img src="https://github.com/ManuCiao10/eagle/blob/master/handler/mods/git.jpeg" /> </kbd>
+<kbd> <img src="https://github.com/ManuCiao10/eagle/blob/master/handler/mods/git.png" /> </kbd>
 
 # Structure
 
