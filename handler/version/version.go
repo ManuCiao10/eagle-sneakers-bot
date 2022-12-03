@@ -113,7 +113,7 @@ func ExecutableName() string {
 	return ExecutableName
 }
 
-func Updates() {
+func Initialize() {
 	new_version := strings.ToUpper(GetLatestVersion())
 	version := strings.Split(new_version, " ")[1]
 	if version != ExecutableName() {

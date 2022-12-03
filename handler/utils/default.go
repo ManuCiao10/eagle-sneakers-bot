@@ -53,7 +53,7 @@ func Banner() {
 	color.Magenta(string(banner))
 }
 
-func Site_list() {
+func Site() {
 	version.Version = version.ExecutableName()
 	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. NEW BALANCE"))
 	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 2. DADSTOCK"))

@@ -1,4 +1,4 @@
-package rich_presence
+package presence
 
 import (
 	"fmt"

@@ -15,7 +15,6 @@ import (
 
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/utils"
-
 	"github.com/fatih/color"
 	"github.com/jaypipes/ghw"
 )
@@ -79,6 +78,12 @@ func ValidateHWID(key string) bool {
 
 	return true
 
+}
+
+func Welcome() {
+	username := strings.ToUpper(Auth.Integrations.Discord.Username)
+	color.Magenta("WELCOME BACK  \t" + color.WhiteString(username))
+	println("\n")
 }
 
 func ValidateKey(key string) bool {
