@@ -1,17 +1,18 @@
 package modules
 
 import (
-	// "github.com/eagle/handler/modules/thebrokenarm"
+	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/utils"
 )
 
 func Initialize(site int) {
 
+	//add switch case for each module
+
 	if site == utils.ERROR {
 		utils.ConsolePrint("INVALID OPTION!", "red")
 	} else if site == utils.THEBROKENARM {
-		utils.ConsolePrint("THE!", "red")
-		// thebrokenarm.Initialize()
+		thebrokenarm.Initialize()
 	}
 
 }

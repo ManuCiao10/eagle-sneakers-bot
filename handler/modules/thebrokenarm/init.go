@@ -7,32 +7,7 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
-
-	"github.com/eagle/handler/utils"
-	"github.com/fatih/color"
 )
-
-func Menu_deadstock() {
-	fmt.Print("\033[H\033[2J")
-	utils.Banner()
-	Read_file()
-	mode := utils.SelectMode("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT CSV:")
-	Find_index_of_csv(mode)
-}
-
-func Read_file() {
-	files, err := os.ReadDir("./deadstock_task")
-	if err != nil {
-		log.Fatal(err)
-	}
-	for i, f := range files {
-		i = i + 1
-		s := strconv.Itoa(i)
-		color.Red("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "] " + s + ". " + f.Name())
-	}
-	println("\n")
-}
 
 func Create_list(data [][]string) []Product {
 	var list []Product
@@ -57,25 +32,29 @@ func Create_list(data [][]string) []Product {
 	return list
 }
 
-func Find_index_of_csv(mode string) {
-	intVar, err := strconv.Atoi(mode)
+// used
+func Find_index_of_csv(csv string, name string) {
+	intVar, err := strconv.Atoi(csv)
 	if err != nil {
 		fmt.Println(err)
 	}
-	files, err := os.ReadDir("./deadstock_task")
+	files, err := os.ReadDir("./" + name)
 	if err != nil {
 		log.Fatal(err)
 	}
 	for i, f := range files {
 		i = i + 1
 		if i == intVar {
-			Read_csv_info(f.Name())
+			Read_csv_info(f.Name(), "thebrokenarm")
 		}
 	}
 }
 
-func Read_csv_info(filename string) {
-	csvFile, _ := os.Open("./deadstock_task/" + filename)
+func Read_csv_info(filename string, name string) {
+	csvFile, err := os.Open("./" + name + "/" + filename)
+	if err != nil {
+		log.Fatal(err)
+	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	data, err := reader.ReadAll()
 	if err != nil {
@@ -91,7 +70,10 @@ func Read_csv_info(filename string) {
 func Run_Module(each Product) {
 	var profile []Info
 
-	csvFile, _ := os.Open("./profiles.csv")
+	csvFile, err := os.Open("./profiles.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	data, err := reader.ReadAll()
 	if err != nil {
@@ -120,3 +102,29 @@ func Run_Module(each Product) {
 	// Module_deadstock(profile)
 
 }
+
+// func timer(name string) func() {
+// 	start := time.Now()
+// 	return func() {
+// 		fmt.Printf("%s took %v\n", name, time.Since(start))
+// 	}
+// }
+
+// func Write_data_to_file(data string, filename string) {
+// 	f, err := os.Create(filename)
+// 	if err != nil {
+// 		// Print_err("FILE CREATION ERROR")
+// 	}
+// 	defer f.Close()
+// 	f.WriteString(data)
+// }
+
+// func RandomString(n int) string {
+// 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+// 	sb := strings.Builder{}
+// 	sb.Grow(n)
+// 	for i := 0; i < n; i++ {
+// 		sb.WriteByte(charset[rand.Intn(len(charset))])
+// 	}
+// 	return sb.String()
+// }

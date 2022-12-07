@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"embed"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 
@@ -15,7 +17,7 @@ import (
 
 var (
 	THEBROKENARM = 1
-	ERROR		= 255
+	ERROR        = 255
 )
 
 func Menu() int {
@@ -55,12 +57,7 @@ func Banner() {
 
 func Site() {
 	version.Version = version.ExecutableName()
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. NEW BALANCE"))
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 2. DADSTOCK"))
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 3. KITH"))
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 4. SUGAR"))
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 5. SUSI"))
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 6. 18 MONTROSE"))
+	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. THEBROKENARM"))
 
 	println("\n")
 }
@@ -86,4 +83,17 @@ func ConsolePrint(msg string, inputColor string) {
 	default:
 		color.Red("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
 	}
+}
+
+func Directory(site string) {
+	files, err := os.ReadDir("./" + site)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for i, f := range files {
+		i = i + 1
+		s := strconv.Itoa(i)
+		color.Magenta("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + color.WhiteString(s+". "+f.Name()))
+	}
+	println("\n")
 }
