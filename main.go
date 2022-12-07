@@ -5,6 +5,7 @@ import (
 	"github.com/eagle/handler/console"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/modules"
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
@@ -23,5 +24,7 @@ func main() {
 	utils.Banner()
 	auth.Welcome()
 	utils.Site()
-	utils.Menu()
+	site := utils.Menu()
+	modules.Initialize(site)
+
 }

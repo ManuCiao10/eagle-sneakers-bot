@@ -13,17 +13,17 @@ import (
 	"github.com/fatih/color"
 )
 
-func Menu() {
+var (
+	THEBROKENARM = 1
+	ERROR		= 255
+)
+
+func Menu() int {
 	mode := SelectMode(color.MagentaString("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" PLESE SELECT A SITE:")))
 	if mode == "1" {
-		print("GAMESTOP")
-	} else if mode == "2" {
-		print("DEADSTOCK")
-	} else if mode == "3" {
-		print("TEST ZARA")
-	} else {
-		ConsolePrint("INVALID OPTION!", "red")
+		return THEBROKENARM
 	}
+	return 255
 }
 
 func SelectMode(label string) string {

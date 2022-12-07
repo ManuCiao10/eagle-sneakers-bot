@@ -14,7 +14,6 @@
 #GUIDE
  DASHBOARD
 
-
 #SECURITY
  1. https://stackify.com/what-is-inetpub/
  2. Sniffer tipo proxyman, fiddler, burp
