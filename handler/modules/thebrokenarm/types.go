@@ -26,3 +26,6 @@ type Info struct {
 	ZIP          string
 	Country      string
 }
+
+var profile []Info
+var list []Product

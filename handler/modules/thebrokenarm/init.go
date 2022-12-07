@@ -3,14 +3,40 @@ package thebrokenarm
 import (
 	"bufio"
 	"encoding/csv"
-	"fmt"
-	"log"
 	"os"
 	"strconv"
 )
 
-func Create_list(data [][]string) []Product {
-	var list []Product
+func CvsIndex(csv string, name string) string {
+	intVar, err := strconv.Atoi(csv)
+	if err != nil {
+		err_("INVALID SELECTION")
+	}
+	files, err := os.ReadDir("./" + name)
+	if err != nil {
+		err_("INVALID TASK")
+	}
+	for i, f := range files {
+		i = i + 1
+		if i == intVar {
+			return f.Name()
+		}
+	}
+	return "UNEXPECTED"
+}
+
+func CvsInfo(filename string, name string) []Product {
+	csvFile, err := os.Open("./" + name + "/" + filename)
+	if err != nil {
+		err_("ERROR OPENING FILE")
+	}
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+	data, err := reader.ReadAll()
+	if err != nil {
+		err_("ERROR READING FILE")
+	}
+	defer csvFile.Close()
+
 	for i, each := range data {
 		if i != 0 {
 			list = append(list, Product{
@@ -27,60 +53,30 @@ func Create_list(data [][]string) []Product {
 			})
 		}
 	}
-	//check if the porfiles or the info are meplty with a range for loop
-	// Check_product(list)
+
+	if len(list) == 0 {
+		err_("TASK LIST IS EMPTY")
+	}
+
 	return list
 }
 
-// used
-func Find_index_of_csv(csv string, name string) {
-	intVar, err := strconv.Atoi(csv)
-	if err != nil {
-		fmt.Println(err)
-	}
-	files, err := os.ReadDir("./" + name)
-	if err != nil {
-		log.Fatal(err)
-	}
-	for i, f := range files {
-		i = i + 1
-		if i == intVar {
-			Read_csv_info(f.Name(), "thebrokenarm")
-		}
-	}
-}
+func CvsProfile(name string) []Info {
 
-func Read_csv_info(filename string, name string) {
-	csvFile, err := os.Open("./" + name + "/" + filename)
+	csvFile, err := os.Open("./" + name)
 	if err != nil {
-		log.Fatal(err)
+		err_("ERROR OPENING FILE")
 	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	data, err := reader.ReadAll()
 	if err != nil {
-		log.Fatal(err)
+		err_("ERROR READING FILE")
 	}
-	data_list := Create_list(data)
-	for _, each_line := range data_list {
-		Run_Module(each_line)
-	}
+
 	defer csvFile.Close()
-}
 
-func Run_Module(each Product) {
-	var profile []Info
-
-	csvFile, err := os.Open("./profiles.csv")
-	if err != nil {
-		log.Fatal(err)
-	}
-	reader := csv.NewReader(bufio.NewReader(csvFile))
-	data, err := reader.ReadAll()
-	if err != nil {
-		log.Fatal(err)
-	}
-	for _, each_line := range data {
-		if each_line[0] == each.profile {
+	for idx, each_line := range data {
+		if idx != 0 {
 			profile = append(profile, Info{
 				Profile_name: each_line[0],
 				First_name:   each_line[1],
@@ -96,35 +92,30 @@ func Run_Module(each Product) {
 			})
 		}
 	}
+	if len(profile) == 0 {
+		err_("PROFILE LIST IS EMPTY")
+	}
 
-	defer csvFile.Close()
-	// Check_profile(profile)
-	// Module_deadstock(profile)
+	return profile
 
 }
 
-// func timer(name string) func() {
-// 	start := time.Now()
-// 	return func() {
-// 		fmt.Printf("%s took %v\n", name, time.Since(start))
-// 	}
-// }
+/*
 
-// func Write_data_to_file(data string, filename string) {
-// 	f, err := os.Create(filename)
-// 	if err != nil {
-// 		// Print_err("FILE CREATION ERROR")
-// 	}
-// 	defer f.Close()
-// 	f.WriteString(data)
-// }
+func timer(name string) func() {
+	start := time.Now()
+	return func() {
+		fmt.Printf("%s took %v\n", name, time.Since(start))
+	}
+}
 
-// func RandomString(n int) string {
-// 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-// 	sb := strings.Builder{}
-// 	sb.Grow(n)
-// 	for i := 0; i < n; i++ {
-// 		sb.WriteByte(charset[rand.Intn(len(charset))])
-// 	}
-// 	return sb.String()
-// }
+func Write_data_to_file(data string, filename string) {
+	f, err := os.Create(filename)
+	if err != nil {
+		// Print_err("FILE CREATION ERROR")
+	}
+	defer f.Close()
+	f.WriteString(data)
+}
+
+*/
