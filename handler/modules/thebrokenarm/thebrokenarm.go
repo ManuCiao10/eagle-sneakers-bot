@@ -23,6 +23,8 @@ func Initialize() {
 	CvsInfo(task_name, "thebrokenarm")
 	CvsProfile("profiles.csv")
 
+	//RUN TASK MODULES
+
 }
 
 func err_(msg string) {
@@ -30,9 +32,9 @@ func err_(msg string) {
 	os.Exit(0)
 }
 
-func print_struct() {
-	// fmt.Print(list)
-	// fmt.Print(profile)
-	fmt.Print(profile[0].Profile_name)
-	// fmt.Println("PID: ", list[0].Pid)
-}
+// func print_struct() {
+// 	fmt.Print(list)
+// 	fmt.Print(profile)
+// 	fmt.Print(profile[0].Profile_name)
+// 	fmt.Println("PID: ", list[0].Pid)
+// }

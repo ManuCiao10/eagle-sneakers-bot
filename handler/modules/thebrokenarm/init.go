@@ -55,15 +55,15 @@ func CvsInfo(filename string, name string) []Product {
 	}
 
 	if len(list) == 0 {
-		err_("TASK LIST IS EMPTY")
+		err_("TASK FILE " + filename + " IS EMPTY")
 	}
 
 	return list
 }
 
-func CvsProfile(name string) []Info {
+func CvsProfile(filename string) []Info {
 
-	csvFile, err := os.Open("./" + name)
+	csvFile, err := os.Open("./" + filename)
 	if err != nil {
 		err_("ERROR OPENING FILE")
 	}
@@ -93,7 +93,7 @@ func CvsProfile(name string) []Info {
 		}
 	}
 	if len(profile) == 0 {
-		err_("PROFILE LIST IS EMPTY")
+		err_("PROFILE FILE " + filename + " IS EMPTY")
 	}
 
 	return profile
