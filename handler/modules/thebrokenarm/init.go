@@ -5,6 +5,12 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"sync"
+)
+
+var (
+	taskMutex = sync.RWMutex{}
+	tasks               = make(map[string]Task)
 )
 
 func CvsIndex(csv string, name string) string {
@@ -25,7 +31,14 @@ func CvsIndex(csv string, name string) string {
 	return "UNEXPECTED"
 }
 
+type Tasks struct {
+	Tasks map[int][]string
+}
+
 func CvsInfo(filename string, name string) []Product {
+	var tasks Tasks
+	tasks.Tasks = make(map[int][]string)
+
 	csvFile, err := os.Open("./" + name + "/" + filename)
 	if err != nil {
 		err_("ERROR OPENING FILE")
@@ -37,68 +50,78 @@ func CvsInfo(filename string, name string) []Product {
 	}
 	defer csvFile.Close()
 
-	for i, each := range data {
-		if i != 0 {
-			list = append(list, Product{
-				Pid:         each[0],
-				Size:        each[1],
-				Email:       each[2],
-				profile:     each[3],
-				method:      each[4],
-				Card_Number: each[5],
-				Month:       each[6],
-				Year:        each[7],
-				CVV:         each[8],
-				Proxy_List:  each[9],
-			})
-		}
-	}
-
-	if len(list) == 0 {
+	if len(data) <= 1 {
 		err_("TASK FILE " + filename + " IS EMPTY")
+	}
+	//read csv file
+	taskQuantity := len(data) - 1
+
+	for i := 0; i < taskQuantity; i++ {
+		if i != 0 {
+			CreateTask(
+				data[i][0],
+				data[i][1],
+				data[i][2],
+				data[i][3],
+				data[i][4],
+				data[i][5],
+				data[i][6],
+				data[i][7],
+				data[i][8],
+				data[i][9],
+			)
+		}
 	}
 
 	return list
 }
 
-func CvsProfile(filename string) []Info {
+func CreateTask() {
+	taskMutex.Lock()
+	defer taskMutex.Unlock()
 
-	csvFile, err := os.Open("./" + filename)
-	if err != nil {
-		err_("ERROR OPENING FILE")
-	}
-	reader := csv.NewReader(bufio.NewReader(csvFile))
-	data, err := reader.ReadAll()
-	if err != nil {
-		err_("ERROR READING FILE")
-	}
-
-	defer csvFile.Close()
-
-	for idx, each_line := range data {
-		if idx != 0 {
-			profile = append(profile, Info{
-				Profile_name: each_line[0],
-				First_name:   each_line[1],
-				Last_name:    each_line[2],
-				Phone:        each_line[3],
-				Address:      each_line[4],
-				Address_2:    each_line[5],
-				House_Number: each_line[6],
-				City:         each_line[7],
-				State:        each_line[8],
-				ZIP:          each_line[9],
-				Country:      each_line[10],
-			})
-		}
-	}
-	if len(profile) == 0 {
-		err_("PROFILE FILE " + filename + " IS EMPTY")
-	}
-
-	return profile
+	tasks[index] = Task{
 
 }
+
+// func CvsProfile(filename string) []Info {
+
+// 	csvFile, err := os.Open("./" + filename)
+// 	if err != nil {
+// 		err_("ERROR OPENING FILE")
+// 	}
+// 	reader := csv.NewReader(bufio.NewReader(csvFile))
+// 	data, err := reader.ReadAll()
+// 	if err != nil {
+// 		err_("ERROR READING FILE")
+// 	}
+
+// 	defer csvFile.Close()
+
+// 	for idx, each_line := range data {
+// 		if idx != 0 {
+// 			profile = append(profile, Info{
+// 				Profile_name: each_line[0],
+// 				First_name:   each_line[1],
+// 				Last_name:    each_line[2],
+// 				Phone:        each_line[3],
+// 				Address:      each_line[4],
+// 				Address_2:    each_line[5],
+// 				House_Number: each_line[6],
+// 				City:         each_line[7],
+// 				State:        each_line[8],
+// 				ZIP:          each_line[9],
+// 				Country:      each_line[10],
+// 			})
+// 		}
+// 	}
+
+// 	if len(profile) == 0 {
+// 		err_("PROFILE FILE " + filename + " IS EMPTY")
+// 	}
+
+// 	return profile
+// }
 
 /*
 

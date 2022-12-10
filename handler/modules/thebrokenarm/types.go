@@ -1,6 +1,6 @@
 package thebrokenarm
 
-type Product struct {
+type Task struct {
 	Pid         string
 	Size        string
 	Email       string
@@ -11,9 +11,9 @@ type Product struct {
 	Year        string
 	CVV         string
 	Proxy_List  string
-}
 
-type Info struct {
+	//---------------//
+
 	Profile_name string
 	First_name   string
 	Last_name    string
@@ -26,6 +26,3 @@ type Info struct {
 	ZIP          string
 	Country      string
 }
-
-var profile []Info
-var list []Product
