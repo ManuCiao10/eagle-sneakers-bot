@@ -8,6 +8,7 @@ require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/jaypipes/pcidb v1.0.0 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
@@ -21,6 +22,8 @@ require (
 require (
 	github.com/fatih/color v1.13.0
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0
+	github.com/iancoleman/orderedmap v0.2.0
+	github.com/lithammer/shortuuid v3.0.0+incompatible
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

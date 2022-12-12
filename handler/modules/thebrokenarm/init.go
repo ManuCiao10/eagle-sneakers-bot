@@ -10,7 +10,7 @@ import (
 
 var (
 	taskMutex = sync.RWMutex{}
-	tasks               = make(map[string]Task)
+	tasks     = make(map[string]Task)
 )
 
 func CvsIndex(csv string, name string) string {
@@ -35,7 +35,7 @@ type Tasks struct {
 	Tasks map[int][]string
 }
 
-func CvsInfo(filename string, name string) []Product {
+func CvsInfo(filename string, name string) {
 	var tasks Tasks
 	tasks.Tasks = make(map[int][]string)
 
@@ -73,15 +73,17 @@ func CvsInfo(filename string, name string) []Product {
 		}
 	}
 
-	return list
 }
 
-func CreateTask() {
+func CreateTask(pid, size, mail, profile, payment, cc, month, year, cvv, proxy string) {
 	taskMutex.Lock()
 	defer taskMutex.Unlock()
 
 	tasks[index] = Task{
-
+		Pid:     pid,
+		Size:    size,
+		
+	}
 }
 
 // func CvsProfile(filename string) []Info {

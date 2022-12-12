@@ -2,10 +2,14 @@ package loading
 
 import (
 	"embed"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"os"
+
+	"github.com/eagle/handler/profile"
 )
 
 var Data Config
@@ -16,8 +20,9 @@ func Initialize() {
 
 func Load() *Config {
 	return &Config{
-		Settings: *loadSettings(),
+		// Settings: *loadSettings(),
 		Env:      *loadEnv(),
+		Profiles: *loadProfiles(),
 	}
 }
 
@@ -55,4 +60,51 @@ func loadSettings() *Settings {
 		return nil
 	}
 	return &settings
+}
+
+func loadProfiles() *Profiles {
+	f, err := os.Open("profiles.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var profiles Profiles
+
+	// remember to close the file at the end of the program
+	defer f.Close()
+
+	// read csv values using csv.Reader
+	csvReader := csv.NewReader(f)
+
+	c := 0
+	for {
+		rec, err := csvReader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if c == 0 {
+			c += 1
+			continue
+		}
+
+		profiles.Profiles = append(profiles.Profiles, profile.Profile{
+			ID:           rec[0],
+			FirstName:    rec[1],
+			LastName:     rec[2],
+			MobileNumber: rec[3],
+			Address:      rec[4],
+			Address2:     rec[5],
+			HouseNumber:  rec[6],
+			City:         rec[7],
+			State:        rec[8],
+			Zip:          rec[9],
+			Country:      rec[10],
+		})
+	}
+
+	return &profiles
 }
