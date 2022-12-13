@@ -10,7 +10,7 @@ func Initialize(site int) {
 	if site == utils.ERROR {
 		utils.ConsolePrint("INVALID OPTION!", "red")
 	} else if site == utils.THEBROKENARM {
-		thebrokenarm.Initialize()
+		thebrokenarm.Loading()
 	}
 
 }
