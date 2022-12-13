@@ -7,8 +7,6 @@ import (
 
 func Initialize(site int) {
 
-	//add switch case for each module
-
 	if site == utils.ERROR {
 		utils.ConsolePrint("INVALID OPTION!", "red")
 	} else if site == utils.THEBROKENARM {

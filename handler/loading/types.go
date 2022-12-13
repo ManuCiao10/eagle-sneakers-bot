@@ -22,7 +22,6 @@ type Config struct {
 	// Proxies         Proxies
 	// Tasks           Tasks
 	// QuicktaskGroups map[int][]QuicktaskGroup
-	// Version  Version  `json:"version"`
 	Env      Env      `json:"env"`
 	Settings Settings `json:"settings"`
 	Profiles Profiles

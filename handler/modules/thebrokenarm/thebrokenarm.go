@@ -22,16 +22,24 @@ func Initialize() {
 	}
 
 	CvsInfo(task_name, "thebrokenarm")
-	// CvsProfile("profiles.csv")
 
-	// Thebrokenarm()
+	Thebrokenarm()
 
 }
 
 func Thebrokenarm() {
-	fmt.Print("\033[H\033[2J")
-	color.HiWhite("[Eagle 0.0.2]" + "[" + time.Now().Format("15:04:05.000000") + "]" + " STARTING TASK: THEBROKENARM")
-	time.Sleep(2 * time.Second)
+
+	//use range to loop through map
+	for _, i := range tasks {
+		go test(i)
+	}
+
+}
+
+func test(i *Task) {
+	fmt.Println("task ["+"]", i)
+	time.Sleep(1 * time.Second)
+
 }
 
 func err_(msg string) {
