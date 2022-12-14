@@ -16,6 +16,7 @@ import (
 )
 
 var (
+	Debug        = false
 	THEBROKENARM = 1
 	ERROR        = 255
 )
@@ -85,6 +86,10 @@ func ConsolePrint(msg string, inputColor string) {
 	}
 }
 
+func Time() string {
+	return time.Now().Format("15:04:05.000000")
+}
+
 func Directory(site string) {
 	files, err := os.ReadDir("./" + site)
 	if err != nil {
@@ -93,7 +98,7 @@ func Directory(site string) {
 	for i, f := range files {
 		i = i + 1
 		s := strconv.Itoa(i)
-		color.Magenta("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + color.WhiteString(s+". "+f.Name()))
+		color.Magenta("[Eagle " + version.Version + "]" + " [" + Time() + "] " + color.WhiteString(s+". "+f.Name()))
 	}
 	println("\n")
 }
