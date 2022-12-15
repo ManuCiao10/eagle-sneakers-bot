@@ -30,7 +30,7 @@ func Loading() {
 	CvsInfo(task_name, "thebrokenarm")
 
 	//create a client
-	//handle the task
+	
 	
 
 }
