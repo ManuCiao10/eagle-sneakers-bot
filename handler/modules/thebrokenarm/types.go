@@ -20,8 +20,8 @@ type Task struct {
 	Proxy_List  string        `json:"proxy_list"`
 	Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	Client       *client.Client      `json:"-"` // http client
-	CheckoutData *CheckoutLogRequest `json:"-"` // checkout data
+	Client       *client.Client     `json:"-"` // http client
+	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
 }
 
 type CheckoutLogRequest struct {
@@ -49,9 +49,9 @@ var (
 )
 
 var (
-	DoneTaskState  TaskState = "done"
+	DoneTaskState     TaskState = "done"
 	ContinueTaskState TaskState = "continue"
-	ErrorTaskState TaskState = "error"
+	ErrorTaskState    TaskState = "error"
 )
 
 // type TaskType struct {

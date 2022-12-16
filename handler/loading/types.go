@@ -14,15 +14,24 @@ type Env struct {
 }
 
 type Profiles struct {
-	Profiles []profile.Profile
+	Profiles []profile.Profile `json:"profiles"`
+}
+
+type Proxies struct {
+	ID        string   `json:"id"`
+	ProxyList []string `json:"proxy_list"`
 }
 
 type Config struct {
 	// Accounts        Accounts
-	// Proxies         Proxies
 	// Tasks           Tasks
 	// QuicktaskGroups map[int][]QuicktaskGroup
+	Proxies  Proxies  `json:"proxies"`
 	Env      Env      `json:"env"`
 	Settings Settings `json:"settings"`
-	Profiles Profiles
+	Profiles Profiles `json:"profiles"`
 }
+
+var (
+	ProxiesIdx = make(map[int]*Proxies)
+)

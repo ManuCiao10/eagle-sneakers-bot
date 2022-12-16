@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
@@ -35,7 +36,17 @@ func Initialize(t *Task) TaskState {
 		return ErrorTaskState
 	}
 
+	taskProfile := GetProfile(t)
+	if taskProfile.ID == "" {
+		err_("PROFILE NOT FOUND")
+		return ErrorTaskState
+	}
+
 	//proxies
+	proxy := loading.Data.Proxies.ID
+
+	fmt.Println(proxy)
+	// proxy := utils.GetProxy(t.Proxy)
 
 	// client, err := client.NewClient()
 

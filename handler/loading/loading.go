@@ -23,7 +23,34 @@ func Load() *Config {
 		// Settings: *loadSettings(),
 		Env:      *loadEnv(),
 		Profiles: *loadProfiles(),
+		Proxies:  *loadProxies(),
 	}
+}
+
+func loadProxies() *Proxies {
+	files, err := os.ReadDir("./proxies")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var proxies Proxies
+	for _, file := range files {
+
+		jsonFile, err := os.Open("proxies/" + file.Name())
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		defer jsonFile.Close()
+
+		//assign ID the name of the file
+		fmt.Print(file.Name())
+		proxies.ID = file.Name()
+
+	}
+	return &proxies
+
 }
 
 //go:embed config.json

@@ -12,6 +12,8 @@ import (
 var (
 	taskMutex = sync.RWMutex{}
 	tasks     = make(map[int]*Task)
+	
+	// proxies  = make(map[int]string)
 )
 
 func CvsIndex(csv string, name string) string {
