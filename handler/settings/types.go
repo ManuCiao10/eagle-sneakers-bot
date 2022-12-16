@@ -23,6 +23,6 @@ type Env struct {
 }
 
 type Proxie struct {
-	ID        string `json:"id"`         //file name
-	ProxyList string `json:"proxy_list"` //content of the file (list of proxies)
+	ID        string   `json:"id"`         //file name
+	ProxyList []string `json:"proxy_list"` //content of the file (list of proxies)
 }

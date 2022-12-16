@@ -34,6 +34,16 @@ func Load() *Config {
 	}
 }
 
+func CreateSliceProxy(scanner *bufio.Scanner) []string {
+	var proxies []string
+
+	for scanner.Scan() {
+		proxies = append(proxies, scanner.Text())
+	}
+
+	return proxies
+}
+
 func loadProxies() *Proxies {
 	proxyMutex.RLock()
 	defer proxyMutex.RUnlock()
@@ -53,14 +63,12 @@ func loadProxies() *Proxies {
 		defer file.Close()
 
 		scanner := bufio.NewScanner(file)
-		for scanner.Scan() {
+		contenet := CreateSliceProxy(scanner)
+		proxies.Proxies = append(proxies.Proxies, settings.Proxie{
+			ID:        strings.Split(fileName.Name(), ".")[0],
+			ProxyList: contenet,
+		})
 
-			proxies.Proxies = append(proxies.Proxies, settings.Proxie{
-				ID:        strings.Split(fileName.Name(), ".")[0],
-				ProxyList: scanner.Text(),
-			})
-
-		}
 		if err := scanner.Err(); err != nil {
 			log.Fatal(err)
 		}

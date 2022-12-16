@@ -2,9 +2,11 @@ package thebrokenarm
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
+	"github.com/eagle/handler/client"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
 )
@@ -40,23 +42,8 @@ func proxyToProxyUrl(proxy string) string {
 	return fmt.Sprintf("http://%s", proxy)
 }
 
-
-
-func GetProxyURL(proxies string) string{
-	proxySplit := strings.Split(proxies, ":")
-	//split for the last splitbypoint[3]
-
-
-	return proxySplit[3]
-	
-
-	// fmt.Println(proxySplit)
-	// fmt.Println(len(proxySplit))
-
-
-}
-
 func Initialize(t *Task) TaskState {
+	rand.Seed(time.Now().UnixNano())
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
 		return ErrorTaskState
@@ -68,24 +55,21 @@ func Initialize(t *Task) TaskState {
 		return ErrorTaskState
 	}
 
-	proxies := GetProxyList(t)
-	if proxies.ID == "not_found" {
+	p := GetProxyList(t)
+	if p.ID == "not_found" {
 		err_("PROXY LIST NOT FOUND")
 		return ErrorTaskState
 	}
-	// var proxyURL string
 
-	test := GetProxyURL(proxies.ProxyList)
-	fmt.Println(test)
+	proxyURL := proxyToProxyUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
+	//FIX HERE for proxy
+	t.CheckoutData.Proxy = proxyURL
 
-	// fmt.Print(proxyURL)
-	// t.CheckoutData.Proxy = proxyURL
+	_, err := client.NewClient(proxyURL)
 
-	// client, err := client.NewClient(proxyURL)
-
-	// if err != nil {
-	// 	err_("CLIENT ERROR")
-	// }
+	if err != nil {
+		err_("CLIENT ERROR")
+	}
 
 	t.CheckoutData.Website = "thebrokenarm"
 	t.CheckoutData.Mode = t.Mode
