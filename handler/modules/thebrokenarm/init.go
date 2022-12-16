@@ -12,8 +12,6 @@ import (
 var (
 	taskMutex = sync.RWMutex{}
 	tasks     = make(map[int]*Task)
-	
-	// proxies  = make(map[int]string)
 )
 
 func CvsIndex(csv string, name string) string {
@@ -85,7 +83,7 @@ func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNumber, 
 		Month:       month,
 		Year:        year,
 		CVV:         cvv,
-		Proxy_List:  proxy_list,
+		Proxy_List:  strings.Split(proxy_list, ".")[0],
 	}
 
 }

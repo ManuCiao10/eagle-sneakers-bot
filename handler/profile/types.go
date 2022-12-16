@@ -14,8 +14,3 @@ type Profile struct {
 	Country      string `json:"country"`
 }
 
-// type ProfileGroup struct {
-// 	ID       string                 `json:"id"`
-// 	Name     string                 `json:"name"`
-// 	Profiles *orderedmap.OrderedMap `json:"profiles"` // ordered map to make sure our profile selection works
-// }

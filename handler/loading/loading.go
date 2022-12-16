@@ -8,8 +8,10 @@ import (
 	"io"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/eagle/handler/profile"
+	"github.com/eagle/handler/settings"
 )
 
 var Data Config
@@ -27,6 +29,10 @@ func Load() *Config {
 	}
 }
 
+// var (
+// 	DioCane = make(map[int]*Proxies)
+// )
+
 func loadProxies() *Proxies {
 	files, err := os.ReadDir("./proxies")
 	if err != nil {
@@ -34,19 +40,18 @@ func loadProxies() *Proxies {
 	}
 
 	var proxies Proxies
+
 	for _, file := range files {
-
-		jsonFile, err := os.Open("proxies/" + file.Name())
-
+		//read content of the txtFile
+		content, err := os.ReadFile("proxies/" + file.Name())
 		if err != nil {
-			fmt.Println(err)
+			log.Fatal(err)
 		}
-
-		defer jsonFile.Close()
-
-		//assign ID the name of the file
-		fmt.Print(file.Name())
-		proxies.ID = file.Name()
+		//vedi di suddividere gia da subit port e host
+		proxies.Proxies = append(proxies.Proxies, settings.Proxie{
+			ID:        strings.Split(file.Name(), ".")[0],
+			ProxyList: string(content),
+		})
 
 	}
 	return &proxies
@@ -97,12 +102,9 @@ func loadProfiles() *Profiles {
 
 	var profiles Profiles
 
-	// remember to close the file at the end of the program
 	defer f.Close()
 
-	// read csv values using csv.Reader
 	csvReader := csv.NewReader(f)
-
 	c := 0
 	for {
 		rec, err := csvReader.Read()

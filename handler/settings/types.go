@@ -22,3 +22,7 @@ type Env struct {
 	DISCORD_APP_ID string `json:"DISCORD_APP_ID"`
 }
 
+type Proxie struct {
+	ID        string `json:"id"`         //file name
+	ProxyList string `json:"proxy_list"` //content of the file (list of proxies)
+}

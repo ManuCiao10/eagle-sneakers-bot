@@ -3,12 +3,15 @@ package thebrokenarm
 import (
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
-	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/settings"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
+
+	"github.com/eagle/handler/loading"
 )
 
 func Loading() {
@@ -30,6 +33,18 @@ func Loading() {
 
 }
 
+func GetProxyList(t *Task) settings.Proxie {
+
+	for _, proxy := range loading.Data.Proxies.Proxies {
+		if proxy.ID == t.Proxy_List {
+			return proxy
+		}
+	}
+
+	return settings.Proxie{}
+
+}
+
 func Initialize(t *Task) TaskState {
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
@@ -42,10 +57,16 @@ func Initialize(t *Task) TaskState {
 		return ErrorTaskState
 	}
 
-	//proxies
-	proxy := loading.Data.Proxies.ID
+	proxies := GetProxyList(t)
+	if proxies.ID == "" {
+		err_("PROXY LIST NOT FOUND" + strings.ToUpper(proxies.ID))
+		return ErrorTaskState
+	}
+	fmt.Print(proxies.ID)
+	fmt.Print(proxies.ProxyList)
+	// proxy := loading.Data.Proxies.Proxies[1]
 
-	fmt.Println(proxy)
+	// fmt.Println(proxy)
 	// proxy := utils.GetProxy(t.Proxy)
 
 	// client, err := client.NewClient()

@@ -16,10 +16,8 @@ type Env struct {
 type Profiles struct {
 	Profiles []profile.Profile `json:"profiles"`
 }
-
 type Proxies struct {
-	ID        string   `json:"id"`
-	ProxyList []string `json:"proxy_list"`
+	Proxies []settings.Proxie `json:"proxies"`
 }
 
 type Config struct {
@@ -31,7 +29,3 @@ type Config struct {
 	Settings Settings `json:"settings"`
 	Profiles Profiles `json:"profiles"`
 }
-
-var (
-	ProxiesIdx = make(map[int]*Proxies)
-)
