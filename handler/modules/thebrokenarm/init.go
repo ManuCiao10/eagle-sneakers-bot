@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -44,10 +45,10 @@ func CvsInfo(filename string, name string) {
 	defer csvFile.Close()
 
 	if len(task) <= 1 {
-		err_("TASK FILE " + filename + " IS EMPTY")
+		err_("FILE " + strings.ToUpper(filename) + " IS EMPTY")
 	}
 
-	taskQuantity := len(task) - 1
+	taskQuantity := len(task)
 	for i := 0; i < taskQuantity; i++ {
 		if i != 0 {
 			CreateTask(i,
@@ -61,16 +62,18 @@ func CvsInfo(filename string, name string) {
 				task[i][7],
 				task[i][8],
 				task[i][9],
+				task[i][10],
 			)
 		}
 	}
 }
 
-func CreateTask(index int, pid, size, mail, profile, payment, cardNumber, month, year, cvv, proxy_list string) {
+func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNumber, month, year, cvv, proxy_list string) {
 	taskMutex.Lock()
 	defer taskMutex.Unlock()
 
 	tasks[index] = &Task{
+		Mode:        strings.ToLower(mode),
 		Pid:         pid,
 		Size:        size,
 		Email:       mail,
@@ -83,4 +86,14 @@ func CreateTask(index int, pid, size, mail, profile, payment, cardNumber, month,
 		Proxy_List:  proxy_list,
 	}
 
+}
+
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }

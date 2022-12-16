@@ -10,12 +10,6 @@ import (
 	"github.com/fatih/color"
 )
 
-var (
-	// taskTypes         = make(map[string]*TaskType)
-	SiteConversionSTI = make(map[string]int)
-	SiteConversionITS = make(map[int][]string)
-)
-
 func Loading() {
 	fmt.Print("\033[H\033[2J")
 	utils.Banner()
@@ -29,9 +23,27 @@ func Loading() {
 
 	CvsInfo(task_name, "thebrokenarm")
 
-	//create a client
-	
-	
+	for _, t := range tasks {
+		Initialize(t)
+	}
+
+}
+
+func Initialize(t *Task) TaskState {
+	if !Contains([]string{"login", "normal"}, t.Mode) {
+		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
+		return ErrorTaskState
+	}
+
+	//proxies
+
+	// client, err := client.NewClient()
+
+	// if err != nil {
+	// 	err_("CLIENT ERROR")
+	// }
+
+	return ContinueTaskState
 
 }
 

@@ -1,7 +1,4 @@
-Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
-67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
+Mode,Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List
+logi,67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
+normal,67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
+normal,67gy, gmail.com,@manu,MANY,cc,4242424242424242,12,2020,123,DC
