@@ -9,12 +9,16 @@ import (
 	"log"
 	"os"
 	"strings"
+	"sync"
 
 	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/settings"
 )
 
-var Data Config
+var (
+	Data       Config
+	proxyMutex = sync.RWMutex{}
+)
 
 func Initialize() {
 	Data = *Load()
@@ -29,11 +33,10 @@ func Load() *Config {
 	}
 }
 
-// var (
-// 	DioCane = make(map[int]*Proxies)
-// )
-
 func loadProxies() *Proxies {
+	proxyMutex.RLock()
+	defer proxyMutex.RUnlock()
+
 	files, err := os.ReadDir("./proxies")
 	if err != nil {
 		log.Fatal(err)
@@ -42,12 +45,11 @@ func loadProxies() *Proxies {
 	var proxies Proxies
 
 	for _, file := range files {
-		//read content of the txtFile
 		content, err := os.ReadFile("proxies/" + file.Name())
 		if err != nil {
 			log.Fatal(err)
 		}
-		//vedi di suddividere gia da subit port e host
+
 		proxies.Proxies = append(proxies.Proxies, settings.Proxie{
 			ID:        strings.Split(file.Name(), ".")[0],
 			ProxyList: string(content),

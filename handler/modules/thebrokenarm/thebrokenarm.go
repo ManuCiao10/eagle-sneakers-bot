@@ -2,16 +2,11 @@ package thebrokenarm
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
-	"github.com/eagle/handler/settings"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
-	"github.com/fatih/color"
-
-	"github.com/eagle/handler/loading"
 )
 
 func Loading() {
@@ -33,16 +28,16 @@ func Loading() {
 
 }
 
-func GetProxyList(t *Task) settings.Proxie {
+func proxyToProxyUrl(proxy string) string {
+	proxySplit := strings.Split(proxy, ":")
 
-	for _, proxy := range loading.Data.Proxies.Proxies {
-		if proxy.ID == t.Proxy_List {
-			return proxy
-		}
+	if len(proxySplit) == 2 {
+		return fmt.Sprintf("http://%s:%s", proxySplit[0], proxySplit[1])
+	} else if len(proxySplit) == 4 {
+		return fmt.Sprintf("http://%s:%s@%s:%s", proxySplit[2], proxySplit[3], proxySplit[0], proxySplit[1])
 	}
 
-	return settings.Proxie{}
-
+	return fmt.Sprintf("http://%s", proxy)
 }
 
 func Initialize(t *Task) TaskState {
@@ -52,22 +47,18 @@ func Initialize(t *Task) TaskState {
 	}
 
 	taskProfile := GetProfile(t)
-	if taskProfile.ID == "" {
+	if taskProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
 		return ErrorTaskState
 	}
 
 	proxies := GetProxyList(t)
-	if proxies.ID == "" {
-		err_("PROXY LIST NOT FOUND" + strings.ToUpper(proxies.ID))
+	if proxies.ID == "not_found" {
+		err_("PROXY LIST NOT FOUND")
 		return ErrorTaskState
 	}
 	fmt.Print(proxies.ID)
 	fmt.Print(proxies.ProxyList)
-	// proxy := loading.Data.Proxies.Proxies[1]
-
-	// fmt.Println(proxy)
-	// proxy := utils.GetProxy(t.Proxy)
 
 	// client, err := client.NewClient()
 
@@ -77,9 +68,4 @@ func Initialize(t *Task) TaskState {
 
 	return ContinueTaskState
 
-}
-
-func err_(msg string) {
-	color.Red(msg)
-	os.Exit(0)
 }
