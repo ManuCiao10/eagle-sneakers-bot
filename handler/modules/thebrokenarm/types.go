@@ -36,6 +36,7 @@ type CheckoutLogRequest struct {
 	Status      string    `json:"status"`       // needs to be defined
 	Website     string    `json:"website"`      // siteName, needs to be defined
 	ImageUrl    string    `json:"image_url"`    // needs to be defined
+	Proxy       string    `json:"proxy"`        // needs to be defined
 }
 
 var (

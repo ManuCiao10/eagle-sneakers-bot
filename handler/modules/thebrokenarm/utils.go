@@ -1,6 +1,7 @@
 package thebrokenarm
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/eagle/handler/loading"
@@ -23,7 +24,10 @@ func GetProfile(t *Task) profile.Profile {
 func GetProxyList(t *Task) settings.Proxie {
 
 	for _, proxy := range loading.Data.Proxies.Proxies {
+		fmt.Print(proxy.ID)
+			fmt.Print(t.Proxy_List)
 		if proxy.ID == t.Proxy_List {
+			
 			return proxy
 		}
 	}

@@ -40,6 +40,22 @@ func proxyToProxyUrl(proxy string) string {
 	return fmt.Sprintf("http://%s", proxy)
 }
 
+
+
+func GetProxyURL(proxies string) string{
+	proxySplit := strings.Split(proxies, ":")
+	//split for the last splitbypoint[3]
+
+
+	return proxySplit[3]
+	
+
+	// fmt.Println(proxySplit)
+	// fmt.Println(len(proxySplit))
+
+
+}
+
 func Initialize(t *Task) TaskState {
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
@@ -57,14 +73,25 @@ func Initialize(t *Task) TaskState {
 		err_("PROXY LIST NOT FOUND")
 		return ErrorTaskState
 	}
-	fmt.Print(proxies.ID)
-	fmt.Print(proxies.ProxyList)
+	// var proxyURL string
 
-	// client, err := client.NewClient()
+	test := GetProxyURL(proxies.ProxyList)
+	fmt.Println(test)
+
+	// fmt.Print(proxyURL)
+	// t.CheckoutData.Proxy = proxyURL
+
+	// client, err := client.NewClient(proxyURL)
 
 	// if err != nil {
 	// 	err_("CLIENT ERROR")
 	// }
+
+	t.CheckoutData.Website = "thebrokenarm"
+	t.CheckoutData.Mode = t.Mode
+	t.CheckoutData.ProductMSKU = t.Pid
+
+	// t.Client = client
 
 	return ContinueTaskState
 

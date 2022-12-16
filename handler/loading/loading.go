@@ -1,6 +1,7 @@
 package loading
 
 import (
+	"bufio"
 	"embed"
 	"encoding/csv"
 	"encoding/json"
@@ -44,16 +45,25 @@ func loadProxies() *Proxies {
 
 	var proxies Proxies
 
-	for _, file := range files {
-		content, err := os.ReadFile("proxies/" + file.Name())
+	for _, fileName := range files {
+		file, err := os.Open("proxies/" + fileName.Name())
 		if err != nil {
 			log.Fatal(err)
 		}
+		defer file.Close()
 
-		proxies.Proxies = append(proxies.Proxies, settings.Proxie{
-			ID:        strings.Split(file.Name(), ".")[0],
-			ProxyList: string(content),
-		})
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+
+			proxies.Proxies = append(proxies.Proxies, settings.Proxie{
+				ID:        strings.Split(fileName.Name(), ".")[0],
+				ProxyList: scanner.Text(),
+			})
+
+		}
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
+		}
 
 	}
 	return &proxies

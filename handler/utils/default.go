@@ -17,6 +17,7 @@ import (
 
 var (
 	Debug        = false
+	Dev          = true
 	THEBROKENARM = 1
 	ERROR        = 255
 )
@@ -33,7 +34,7 @@ func SelectMode(label string) string {
 	var s string
 	r := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Fprint(os.Stderr, label+" ")
+		fmt.Fprint(os.Stderr, label+ " ")
 		s, _ = r.ReadString('\n')
 		if s != "" {
 			break
