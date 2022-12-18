@@ -68,18 +68,18 @@ func CvsInfo(filename string, name string) {
 	}
 }
 
-func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNumber, month, year, cvv, proxy_list string) {
+func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNum, month, year, cvv, proxy_list string) {
 	taskMutex.Lock()
 	defer taskMutex.Unlock()
 
 	tasks[index] = &Task{
 		Mode:        strings.ToLower(mode),
 		Pid:         pid,
-		Size:        size,
-		Email:       mail,
+		Size:        strings.ToLower(strings.TrimSpace(size)),
+		Email:       strings.ToLower(mail),
 		Profile:     profile,
-		Method:      payment,
-		Card_Number: cardNumber,
+		Method:      strings.ToLower(payment),
+		Card_Number: cardNum,
 		Month:       month,
 		Year:        year,
 		CVV:         cvv,

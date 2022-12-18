@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	Debug        = false
+	Debug        = true
 	Dev          = true
 	THEBROKENARM = 1
 	ERROR        = 255

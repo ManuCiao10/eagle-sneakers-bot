@@ -1,7 +1,9 @@
 package thebrokenarm
 
 import (
+	"math/rand"
 	"os"
+	"strings"
 
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/profile"
@@ -15,6 +17,7 @@ func GetProfile(t *Task) profile.Profile {
 			return p
 		}
 	}
+	
 	return profile.Profile{
 		ID: "not_found",
 	}
@@ -31,6 +34,18 @@ func GetProxyList(t *Task) settings.Proxie {
 	return settings.Proxie{
 		ID: "not_found",
 	}
+}
+
+func RandomSize() string {
+	sizes := []string{"36", "36.5", "37", "38"}
+
+	return sizes[rand.Intn(len(sizes))]
+}
+
+func SplitSize(size string) string {
+	sizes := strings.Split(size, ";")
+
+	return sizes[rand.Intn(len(sizes))]
 }
 
 func err_(msg string) {

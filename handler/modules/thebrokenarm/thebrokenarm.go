@@ -30,7 +30,7 @@ func Loading() {
 
 }
 
-func proxyToProxyUrl(proxy string) string {
+func ProxyToUrl(proxy string) string {
 	proxySplit := strings.Split(proxy, ":")
 
 	if len(proxySplit) == 2 {
@@ -41,6 +41,7 @@ func proxyToProxyUrl(proxy string) string {
 
 	return fmt.Sprintf("http://%s", proxy)
 }
+
 
 func Initialize(t *Task) TaskState {
 	rand.Seed(time.Now().UnixNano())
@@ -61,22 +62,30 @@ func Initialize(t *Task) TaskState {
 		return ErrorTaskState
 	}
 
-	proxyURL := proxyToProxyUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
-	//FIX HERE for proxy
-	t.CheckoutData.Proxy = proxyURL
+	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
-	_, err := client.NewClient(proxyURL)
+	t.CheckoutData.Proxy = proxyURL
+	client, err := client.NewClient(proxyURL)
 
 	if err != nil {
 		err_("CLIENT ERROR")
+		return ErrorTaskState
+	}
+
+	if t.Size == "random" {
+		t.Size = RandomSize()
+	} else {
+		t.Size = SplitSize(t.Size)
 	}
 
 	t.CheckoutData.Website = "thebrokenarm"
 	t.CheckoutData.Mode = t.Mode
 	t.CheckoutData.ProductMSKU = t.Pid
+	t.CheckoutData.Size = t.Size
 
-	// t.Client = client
+	t.Client = client
 
 	return ContinueTaskState
 
 }
+
