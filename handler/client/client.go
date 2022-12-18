@@ -11,11 +11,8 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"strings"
 
-	"github.com/eagle/handler/account"
 	"github.com/eagle/handler/utils"
-	sessionjar "github.com/juju/persistent-cookiejar"
 )
 
 var (
@@ -98,22 +95,22 @@ func (c *Client) InitCookieJar() {
 }
 
 // InitSessionJar creates session jar, returns if it already existed or not
-func (c *Client) InitSessionJar(account *account.Account) bool {
-	didExist := sessions.DoesSessionExist(account)
+// func (c *Client) InitSessionJar(account *account.Account) bool {
+// 	// didExist := sessions.DoesSessionExist(account)
 
-	jar, err := sessionjar.New(&sessionjar.Options{
-		Filename: fmt.Sprintf("../.sessions/%s/%s.sessions", strings.Replace(utils.SiteIDtoSiteString[account.SiteId], "@", "", -1), account.Email),
-	})
+// 	jar, err := sessionjar.New(&sessionjar.Options{
+// 		Filename: fmt.Sprintf("../.sessions/%s/%s.sessions", strings.Replace(utils.SiteIDtoSiteString[account.SiteId], "@", "", -1), account.Email),
+// 	})
 
-	if err != nil {
-		fmt.Println("Failed to initialize session. ", err)
-		return false
-	}
+// 	if err != nil {
+// 		fmt.Println("Failed to initialize session. ", err)
+// 		return false
+// 	}
 
-	c.jar = jar
-	c.client.Jar = jar
-	return didExist
-}
+// 	c.jar = jar
+// 	c.client.Jar = jar
+// 	return didExist
+// }
 
 func (c *Client) SaveCookies() {
 	if c.client.Jar != nil {

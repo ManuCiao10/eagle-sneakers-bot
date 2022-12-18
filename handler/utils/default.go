@@ -34,7 +34,7 @@ func SelectMode(label string) string {
 	var s string
 	r := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Fprint(os.Stderr, label+ " ")
+		fmt.Fprint(os.Stderr, label+" ")
 		s, _ = r.ReadString('\n')
 		if s != "" {
 			break
@@ -88,7 +88,10 @@ func ConsolePrint(msg string, inputColor string) {
 }
 
 func Time() string {
-	return time.Now().Format("15:04:05.000000")
+	return "[" + time.Now().Format("15:04:05.000000") + "] "
+}
+func Version() string {
+	return "[Eagle " + version.Version + "] "
 }
 
 func Directory(site string) {

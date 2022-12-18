@@ -7,7 +7,6 @@ import (
 
 	"github.com/eagle/handler/client"
 	"github.com/eagle/handler/utils"
-	"github.com/eagle/handler/version"
 )
 
 func Loading() {
@@ -15,7 +14,7 @@ func Loading() {
 	utils.Banner()
 	utils.Directory("thebrokenarm")
 
-	csv_index := utils.SelectMode("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + " PLEASE SELECT CSV:")
+	csv_index := utils.SelectMode(utils.Version() + utils.Time() + "PLEASE SELECT CSV:")
 	task_name := CvsIndex(csv_index, "thebrokenarm")
 	if task_name == "UNEXPECTED" {
 		err_("UNEXPECTED ERROR")
@@ -41,6 +40,7 @@ func Request(t *Task) TaskState {
 	}
 
 	// return Checkout(t)
+	return ErrorTaskState
 
 }
 

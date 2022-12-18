@@ -94,7 +94,7 @@ func DuplicateCrack() {
 		}
 	}
 	if count > 1 {
-		color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "DELETE OLD VERSION")
+		color.Red("[" + time.Now().Format("15:04:05.000000") + "] DELETE OLD VERSION")
 		time.Sleep(2 * time.Second)
 		os.Exit(0)
 	}
