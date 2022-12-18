@@ -29,7 +29,7 @@ func Loading() {
 
 }
 
-func Request(t *Task) {
+func Request(t *Task) TaskState {
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.thebrokenarm.com/products/" + t.Pid + ".json").
 		SetMethod("GET").
@@ -37,29 +37,31 @@ func Request(t *Task) {
 
 	if err != nil {
 		err_("REQUEST ERROR")
-		return
+		return ErrorTaskState
 	}
+
+	// return Checkout(t)
 
 }
 
-func Initialize(t *Task) *Task {
+func Initialize(t *Task) TaskState {
 	rand.Seed(time.Now().UnixNano())
 	//handle more modes when they are added
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
-		// return ErrorTaskState
+		return ErrorTaskState
 	}
 
 	taskProfile := GetProfile(t)
 	if taskProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
-		// return ErrorTaskState
+		return ErrorTaskState
 	}
 
 	p := GetProxyList(t)
 	if p.ID == "not_found" {
 		err_("PROXY LIST NOT FOUND")
-		// return ErrorTaskState
+		return ErrorTaskState
 	}
 
 	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
@@ -69,7 +71,7 @@ func Initialize(t *Task) *Task {
 
 	if err != nil {
 		err_("CLIENT ERROR")
-		// return ErrorTaskState
+		return ErrorTaskState
 	}
 
 	if t.Size == "random" {
