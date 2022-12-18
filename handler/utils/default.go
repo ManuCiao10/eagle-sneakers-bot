@@ -102,7 +102,7 @@ func Directory(site string) {
 	for i, f := range files {
 		i = i + 1
 		s := strconv.Itoa(i)
-		color.Magenta("[Eagle " + version.Version + "]" + " [" + Time() + "] " + color.WhiteString(s+". "+f.Name()))
+		color.Magenta(Version() + Time() + color.WhiteString(s+". "+f.Name()))
 	}
 	println("\n")
 }
