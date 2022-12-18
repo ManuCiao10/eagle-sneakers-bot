@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/eagle/handler/client"
+	"github.com/eagle/handler/task"
 	"github.com/eagle/handler/utils"
 )
 
@@ -28,7 +29,11 @@ func Loading() {
 
 }
 
-func Request(t *Task) TaskState {
+func Request(t *task.Task) task.TaskState {
+	// if t.Mode == "login" {
+	// 	return Login(t)
+	// }
+
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.thebrokenarm.com/products/" + t.Pid + ".json").
 		SetMethod("GET").
@@ -36,32 +41,34 @@ func Request(t *Task) TaskState {
 
 	if err != nil {
 		err_("REQUEST ERROR")
-		return ErrorTaskState
+		return task.ErrorTaskState
 	}
 
+	fmt.Print("REQUESTED")
+
 	// return Checkout(t)
-	return ErrorTaskState
+	return task.ContinueTaskState
 
 }
 
-func Initialize(t *Task) TaskState {
+func Initialize(t *task.Task) task.TaskState {
 	rand.Seed(time.Now().UnixNano())
 	//handle more modes when they are added
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
-		return ErrorTaskState
+		return task.ErrorTaskState
 	}
 
 	taskProfile := GetProfile(t)
 	if taskProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
-		return ErrorTaskState
+		return task.ErrorTaskState
 	}
 
 	p := GetProxyList(t)
 	if p.ID == "not_found" {
 		err_("PROXY LIST NOT FOUND")
-		return ErrorTaskState
+		return task.ErrorTaskState
 	}
 
 	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
@@ -71,7 +78,7 @@ func Initialize(t *Task) TaskState {
 
 	if err != nil {
 		err_("CLIENT ERROR")
-		return ErrorTaskState
+		return task.ErrorTaskState
 	}
 
 	if t.Size == "random" {

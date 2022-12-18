@@ -19,13 +19,17 @@ var (
 	Debug        = true
 	Dev          = true
 	THEBROKENARM = 1
-	ERROR        = 255
+	MONITOR      = 2
+
+	ERROR = 255
 )
 
 func Menu() int {
-	mode := SelectMode(color.MagentaString("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" PLESE SELECT A SITE:")))
+	mode := SelectMode(color.MagentaString(Version() + Time() + color.WhiteString("PLESE SELECT A SITE:")))
 	if mode == "1" {
 		return THEBROKENARM
+	} else if mode == "2" {
+		return MONITOR
 	}
 	return 255
 }
@@ -47,7 +51,6 @@ func SelectMode(label string) string {
 var content embed.FS
 
 func Banner() {
-
 	banner, _ := content.ReadFile("banner.txt")
 
 	cmd := exec.Command("cmd", "/c", "cls")
@@ -59,7 +62,8 @@ func Banner() {
 
 func Site() {
 	version.Version = version.ExecutableName()
-	color.Magenta("[Eagle " + version.Version + "] " + "[" + time.Now().Format("15:04:05.000000") + "]" + color.WhiteString(" 1. THEBROKENARM"))
+	ConsolePrint(color.WhiteString("1. THEBROKENARM"), "magenta")
+	ConsolePrint(color.WhiteString("2. EAGLE MONITOR"), "magenta")
 
 	println("\n")
 }
@@ -67,23 +71,23 @@ func Site() {
 func ConsolePrint(msg string, inputColor string) {
 	switch inputColor {
 	case "red":
-		color.Red("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Red(Version() + Time() + msg)
 	case "green":
-		color.Green("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Green(Version() + Time() + msg)
 	case "yellow":
-		color.Yellow("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Yellow(Version() + Time() + msg)
 	case "blue":
-		color.Blue("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Blue(Version() + Time() + msg)
 	case "magenta":
-		color.Magenta("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Magenta(Version() + Time() + msg)
 	case "cyan":
-		color.Cyan("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Cyan(Version() + Time() + msg)
 	case "white":
-		color.White("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.White(Version() + Time() + msg)
 	case "black":
-		color.Black("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Black(Version() + Time() + msg)
 	default:
-		color.Red("[Eagle " + version.Version + "]" + " [" + time.Now().Format("15:04:05.000000") + "] " + msg)
+		color.Red(Version() + Time() + msg)
 	}
 }
 
@@ -102,7 +106,7 @@ func Directory(site string) {
 	for i, f := range files {
 		i = i + 1
 		s := strconv.Itoa(i)
-		color.Magenta(Version() + Time() + color.WhiteString(s+". "+f.Name()))
+		ConsolePrint(color.WhiteString(s+". "+f.Name()), "magenta")
 	}
 	println("\n")
 }

@@ -7,6 +7,8 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
+// var tasks = make(map[int]*task.Task)
+
 //go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
 
 func main() {
@@ -22,5 +24,10 @@ func main() {
 	utils.Site()
 	site := utils.Menu()
 	modules.Initialize(site)
+
+	// add handler to tasks
+	// for i, t := range tasks {
+
+	// }
 
 }

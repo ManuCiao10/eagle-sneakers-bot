@@ -8,11 +8,13 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+
+	"github.com/eagle/handler/task"
 )
 
 var (
 	taskMutex = sync.RWMutex{}
-	tasks     = make(map[int]*Task)
+	tasks     = make(map[int]*task.Task)
 )
 
 func CvsIndex(csv string, name string) string {
@@ -73,7 +75,7 @@ func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNum, mon
 	taskMutex.Lock()
 	defer taskMutex.Unlock()
 
-	tasks[index] = &Task{
+	tasks[index] = &task.Task{
 		Mode:        strings.ToLower(mode),
 		Pid:         pid,
 		Size:        strings.ToLower(strings.TrimSpace(size)),

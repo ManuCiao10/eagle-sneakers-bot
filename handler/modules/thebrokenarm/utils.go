@@ -8,10 +8,11 @@ import (
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/settings"
+	"github.com/eagle/handler/task"
 	"github.com/fatih/color"
 )
 
-func GetProfile(t *Task) profile.Profile {
+func GetProfile(t *task.Task) profile.Profile {
 	for _, p := range loading.Data.Profiles.Profiles {
 		if p.ID == t.Profile {
 			return p
@@ -23,7 +24,7 @@ func GetProfile(t *Task) profile.Profile {
 	}
 }
 
-func GetProxyList(t *Task) settings.Proxie {
+func GetProxyList(t *task.Task) settings.Proxie {
 
 	for _, proxy := range loading.Data.Proxies.Proxies {
 		if proxy.ID == t.Proxy_List {
