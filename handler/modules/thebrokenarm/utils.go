@@ -17,7 +17,7 @@ func GetProfile(t *Task) profile.Profile {
 			return p
 		}
 	}
-	
+
 	return profile.Profile{
 		ID: "not_found",
 	}
@@ -51,4 +51,14 @@ func SplitSize(size string) string {
 func err_(msg string) {
 	color.Red(msg)
 	os.Exit(0)
+}
+
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
 }

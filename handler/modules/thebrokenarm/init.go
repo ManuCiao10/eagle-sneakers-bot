@@ -3,6 +3,7 @@ package thebrokenarm
 import (
 	"bufio"
 	"encoding/csv"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -88,12 +89,14 @@ func CreateTask(index int, mode, pid, size, mail, profile, payment, cardNum, mon
 
 }
 
-func Contains(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
-		}
+func ProxyToUrl(proxy string) string {
+	proxySplit := strings.Split(proxy, ":")
+
+	if len(proxySplit) == 2 {
+		return fmt.Sprintf("http://%s:%s", proxySplit[0], proxySplit[1])
+	} else if len(proxySplit) == 4 {
+		return fmt.Sprintf("http://%s:%s@%s:%s", proxySplit[2], proxySplit[3], proxySplit[0], proxySplit[1])
 	}
 
-	return false
+	return fmt.Sprintf("http://%s", proxy)
 }

@@ -3,7 +3,6 @@ package thebrokenarm
 import (
 	"fmt"
 	"math/rand"
-	"strings"
 	"time"
 
 	"github.com/eagle/handler/client"
@@ -30,36 +29,37 @@ func Loading() {
 
 }
 
-func ProxyToUrl(proxy string) string {
-	proxySplit := strings.Split(proxy, ":")
+func Request(t *Task) {
+	_, err := t.Client.NewRequest().
+		SetURL("https://www.thebrokenarm.com/products/" + t.Pid + ".json").
+		SetMethod("GET").
+		Do()
 
-	if len(proxySplit) == 2 {
-		return fmt.Sprintf("http://%s:%s", proxySplit[0], proxySplit[1])
-	} else if len(proxySplit) == 4 {
-		return fmt.Sprintf("http://%s:%s@%s:%s", proxySplit[2], proxySplit[3], proxySplit[0], proxySplit[1])
+	if err != nil {
+		err_("REQUEST ERROR")
+		return
 	}
 
-	return fmt.Sprintf("http://%s", proxy)
 }
 
-
-func Initialize(t *Task) TaskState {
+func Initialize(t *Task) *Task {
 	rand.Seed(time.Now().UnixNano())
+	//handle more modes when they are added
 	if !Contains([]string{"login", "normal"}, t.Mode) {
 		err_("MODE IS NOT SUPPORTED FOR THIS SITE")
-		return ErrorTaskState
+		// return ErrorTaskState
 	}
 
 	taskProfile := GetProfile(t)
 	if taskProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
-		return ErrorTaskState
+		// return ErrorTaskState
 	}
 
 	p := GetProxyList(t)
 	if p.ID == "not_found" {
 		err_("PROXY LIST NOT FOUND")
-		return ErrorTaskState
+		// return ErrorTaskState
 	}
 
 	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
@@ -69,7 +69,7 @@ func Initialize(t *Task) TaskState {
 
 	if err != nil {
 		err_("CLIENT ERROR")
-		return ErrorTaskState
+		// return ErrorTaskState
 	}
 
 	if t.Size == "random" {
@@ -85,7 +85,6 @@ func Initialize(t *Task) TaskState {
 
 	t.Client = client
 
-	return ContinueTaskState
+	return Request(t)
 
 }
-
