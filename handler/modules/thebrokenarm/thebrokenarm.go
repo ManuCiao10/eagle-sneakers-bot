@@ -29,14 +29,34 @@ func Loading() {
 
 }
 
-func Request(t *task.Task) task.TaskState {
+func HandleSessionResponse(t *task.Task) task.TaskState {
+	//handle response index body to take the ID for inizialize the challenge
+
+	if t.Client.LatestResponse.StatusCode() != 200 {
+		// retry
+		time.Sleep(t.Delay)
+		return GET_SESSION
+	}
+
+	//parse the body to get the challenge ID
+	if utils.Debug {
+		fmt.Println(t.Delay)
+		fmt.Println(t.Client.LatestResponse.Body())
+	}
+	return task.ContinueTaskState
+
+}
+
+func getSession(t *task.Task) task.TaskState {
 	// if t.Mode == "login" {
 	// 	return Login(t)
 	// }
 
+	//find the cookies for the session
 	_, err := t.Client.NewRequest().
-		SetURL("https://www.thebrokenarm.com/products/" + t.Pid + ".json").
+		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
+		SetDefaultHeadersBA().
 		Do()
 
 	if err != nil {
@@ -44,10 +64,10 @@ func Request(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	fmt.Print("REQUESTED")
+	fmt.Print("GETTING SESSION ...")
 
 	// return Checkout(t)
-	return task.ContinueTaskState
+	return HandleSessionResponse(t)
 
 }
 
@@ -94,6 +114,6 @@ func Initialize(t *task.Task) task.TaskState {
 
 	t.Client = client
 
-	return Request(t)
+	return getSession(t)
 
 }
