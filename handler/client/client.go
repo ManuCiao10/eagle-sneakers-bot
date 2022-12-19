@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	NoCookieJarErr = errors.New("no cookie jar in client")
+	ErrFoo = errors.New("no cookie jar in client")
 )
 
 // NewClient creates a new http client

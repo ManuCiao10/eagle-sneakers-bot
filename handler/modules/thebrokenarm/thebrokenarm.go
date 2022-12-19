@@ -56,7 +56,7 @@ func getSession(t *task.Task) task.TaskState {
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
-		SetDefaultHeadersBA().
+		SetDefaultHeadersTBA().
 		Do()
 
 	if err != nil {
@@ -94,7 +94,7 @@ func Initialize(t *task.Task) task.TaskState {
 	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
 	t.CheckoutData.Proxy = proxyURL
-	client, err := client.NewClient(proxyURL)
+	client, err := client.NewClient()
 
 	if err != nil {
 		err_("CLIENT ERROR")
