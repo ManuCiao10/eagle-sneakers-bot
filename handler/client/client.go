@@ -1,70 +1,102 @@
 package client
 
 import (
-	"crypto/sha256"
-	"crypto/tls"
-	"crypto/x509"
 	"errors"
 	"fmt"
 	"io"
 	"log"
+	"net"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"time"
 
 	"github.com/eagle/handler/utils"
+	"golang.org/x/net/proxy"
 )
 
 var (
-	ErrFoo = errors.New("no cookie jar in client")
+	ErrFoo                = errors.New("no cookie jar in client")
+	DefaultTimeoutSeconds = 30
 )
+
+type TransportOptions struct {
+	DisableKeepAlives      bool
+	DisableCompression     bool
+	MaxIdleConns           int
+	MaxIdleConnsPerHost    int
+	MaxConnsPerHost        int
+	MaxResponseHeaderBytes int64 // Zero means to use a default limit.
+	WriteBufferSize        int   // If zero, a default (currently 4KB) is used.
+	ReadBufferSize         int   // If zero, a default (currently 4KB) is used.
+}
+
+type httpClientConfig struct {
+	debug               bool
+	followRedirects     bool
+	ServerName          string
+	insecureSkipVerify  bool
+	proxyUrl            string
+	serverNameOverwrite string
+	transportOptions    *TransportOptions
+	cookieJar           http.CookieJar
+	// clientProfile               ClientProfile
+	withRandomTlsExtensionOrder bool
+	forceHttp1                  bool
+	timeout                     time.Duration
+}
+
+type directDialer struct {
+	dialer net.Dialer
+}
+
+func validateConfig(config *httpClientConfig) error {
+	return nil
+}
+
+func newDirectDialer(timeout time.Duration) proxy.ContextDialer {
+	return &directDialer{
+		dialer: net.Dialer{
+			Timeout: timeout,
+		},
+	}
+}
+
+func buildFromConfig(config *httpClientConfig) (*http.Client, ClientProfile, error) {
+	var dialer proxy.ContextDialer
+	dialer = newDirectDialer(config.timeout)
+
+}
 
 // NewClient creates a new http client
 // Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
-	tlsClientConfig := &tls.Config{
-		InsecureSkipVerify: true,
-		VerifyConnection: func(state tls.ConnectionState) error {
-			for _, peercert := range state.PeerCertificates {
-				der, err := x509.MarshalPKIXPublicKey(peercert.PublicKey)
-				if err != nil {
-					log.Println("Failed to get public key (https).")
-				}
-
-				var DNSName string
-				if len(peercert.DNSNames) > 0 {
-					DNSName = peercert.DNSNames[0]
-				} else {
-					DNSName = "Unknown Site"
-				}
-
-				hash := sha256.Sum256(der)
-				stringHash := fmt.Sprintf("%x", hash)
-
-				if utils.Debug {
-					fmt.Println(fmt.Sprintf("%s: %s", DNSName, stringHash))
-				}
-
-				if fingerprints[stringHash] == 1 {
-					return nil
-				} else {
-					fmt.Println(DNSName + ": SSL mismatch.")
-				}
-			}
-			return fmt.Errorf("invalid certificate")
-		},
+	config := &httpClientConfig{
+		followRedirects: true,
+		timeout:         time.Duration(DefaultTimeoutSeconds) * time.Second,
 	}
 
-	// parameters[0] = proxy
-	// parameters[1] = sni
+	err := validateConfig(config)
+
+	if err != nil {
+		return nil, err
+	}
+
+	client, clientProfile, err := buildFromConfig(config)
+
+	// parameters[0] = proxy | parameters[1] = sni
 	if len(parameters) > 1 && len(parameters[1]) > 0 {
-		tlsClientConfig.ServerName = parameters[1]
+		config.ServerName = parameters[1]
 	}
 
-	transport := &http.Transport{
-		ForceAttemptHTTP2: true,
-		TLSClientConfig:   tlsClientConfig,
-	}
+	// transport := &http.Transport{
+	// 	Proxy:                 http.ProxyFromEnvironment,
+	// 	DialContext:           utils.DialContext,
+	// 	MaxIdleConns:          100,
+	// 	IdleConnTimeout:       90 * time.Second,
+	// 	TLSHandshakeTimeout:   10 * time.Second,
+	// 	ExpectContinueTimeout: 1 * time.Second,
+	// }
 
 	if len(parameters) > 0 && len(parameters[0]) > 0 {
 		proxyUrl, _ := url.Parse(parameters[0])
