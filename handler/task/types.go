@@ -20,7 +20,7 @@ type Task struct {
 	Proxy_List  string        `json:"proxy_list"`
 	Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	Client       *client.Client     `json:"-"` // http client
+	Client       *client.HTTPClient `json:"-"` // http client
 	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
 }
 
