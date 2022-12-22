@@ -2,6 +2,7 @@ package thebrokenarm
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"time"
 
@@ -56,8 +57,8 @@ func getSession(t *task.Task) task.TaskState {
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
-		SetDefaultHeadersTBA().
-		Do()
+		// SetDefaultHeadersTBA().
+		// Do()
 
 	if err != nil {
 		err_("REQUEST ERROR")
@@ -94,7 +95,21 @@ func Initialize(t *task.Task) task.TaskState {
 	proxyURL := ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
 	t.CheckoutData.Proxy = proxyURL
-	client, err := client.NewClient()
+
+	jar := client.NewCookieJar(nil)
+	options := []client.HttpClientOption{
+		client.WithTimeout(30),
+		// client.WithClientProfile(client.Chrome_105),
+		client.WithNotFollowRedirects(),
+		client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
+		client.WithProxyUrl(proxyURL),
+		//client.WithInsecureSkipVerify(),
+	}
+
+	client, err := client.NewHttpClient(client.NewNoopLogger(), options...)
+	if err != nil {
+		log.Println(err)
+	}
 
 	if err != nil {
 		err_("CLIENT ERROR")

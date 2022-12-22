@@ -9,32 +9,6 @@ import (
 	tls "github.com/bogdanfinn/utls"
 )
 
-// import (
-// 	"io"
-// 	"net/http"
-
-// 	sessionjar "github.com/juju/persistent-cookiejar"
-// )
-
-// type Client struct {
-// 	http.Client
-// 	jar            *sessionjar.Jar
-// 	LatestResponse *Response
-// 	config         *httpClientConfig
-// }
-
-// type Request struct {
-// 	client *Client
-
-// 	method, url, host string
-
-// 	header http.Header
-
-// 	body io.Reader
-
-// 	cookies []*http.Cookie
-// }
-
 type Response struct {
 	headers http.Header
 
@@ -60,9 +34,18 @@ type HttpClient interface {
 	Get(url string) (resp *http.Response, err error)
 	Head(url string) (resp *http.Response, err error)
 	Post(url, contentType string, body io.Reader) (resp *http.Response, err error)
-	StatusCode(resp *http.Response) int
 
+	StatusCode(resp *http.Response) int
 	PostForm(url string, data url.Values) (resp *http.Response, err error)
+	NewRequest(method, url string, body io.Reader) (*http.Request, error)
+	SetURL(req *http.Request, url string) error
+	SetHeader(req *http.Request, key, value string)
+	SetHeaders(req *http.Request, headers map[string]string)
+	SetBody(req *http.Request, body io.Reader)
+	SetBodyString(req *http.Request, body string)
+	SetBodyBytes(req *http.Request, body []byte)
+	SetBodyJSON(req *http.Request, body interface{})
+	SetBodyForm(req *http.Request, data url.Values)
 }
 
 type HTTPClient struct {
