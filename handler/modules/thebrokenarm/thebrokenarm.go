@@ -54,9 +54,9 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
-	_, err := t.Client.NewRequest().
-		SetURL("https://www.the-broken-arm.com/en/").
-		SetMethod("GET").
+	_, err := t.Client.NewRequest("GET", "https://www.the-broken-arm.com/en/",)
+		// SetURL("https://www.the-broken-arm.com/en/").
+		// SetMethod("GET").
 		// SetDefaultHeadersTBA().
 		// Do()
 

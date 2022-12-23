@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 
@@ -10,8 +11,8 @@ import (
 	"golang.org/x/net/proxy"
 )
 
-func NewRequest(method string, url string) (*http.Request, error) {
-	req, err := http.NewRequest(method, url, nil)
+func NewRequest(method string, url string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequest(method, url, body)
 
 	if err != nil {
 		return nil, err
@@ -56,7 +57,7 @@ func NewHttpClient(logger Logger, options ...HttpClientOption) (HttpClient, erro
 		logger = NewNoopLogger()
 	}
 
-	return &HTTPClient{
+	return &Client{
 		Client: *client,
 		logger: logger,
 		config: config,
@@ -102,18 +103,18 @@ func buildFromConfig(config *httpClientConfig) (*http.Client, ClientProfile, err
 	return client, clientProfile, nil
 }
 
-func (c *HTTPClient) SetFollowRedirect(followRedirect bool) {
+func (c *Client) SetFollowRedirect(followRedirect bool) {
 	c.logger.Debug("set follow redirect from %v to %v", c.config.followRedirects, followRedirect)
 
 	c.config.followRedirects = followRedirect
 	c.applyFollowRedirect()
 }
 
-func (c *HTTPClient) GetFollowRedirect() bool {
+func (c *Client) GetFollowRedirect() bool {
 	return c.config.followRedirects
 }
 
-func (c *HTTPClient) applyFollowRedirect() {
+func (c *Client) applyFollowRedirect() {
 	if c.config.followRedirects {
 		c.logger.Info("automatic redirect following is enabled")
 		c.CheckRedirect = nil
@@ -123,7 +124,7 @@ func (c *HTTPClient) applyFollowRedirect() {
 	}
 }
 
-func (c *HTTPClient) SetProxy(proxyUrl string) error {
+func (c *Client) SetProxy(proxyUrl string) error {
 	c.logger.Debug("set proxy from %s to %s", c.config.proxyUrl, proxyUrl)
 	c.config.proxyUrl = proxyUrl
 	c.logger.Info(fmt.Sprintf("set proxy to: %s", proxyUrl))
@@ -131,11 +132,11 @@ func (c *HTTPClient) SetProxy(proxyUrl string) error {
 	return c.applyProxy()
 }
 
-func (c *HTTPClient) GetProxy() string {
+func (c *Client) GetProxy() string {
 	return c.config.proxyUrl
 }
 
-func (c *HTTPClient) applyProxy() error {
+func (c *Client) applyProxy() error {
 	var dialer proxy.ContextDialer
 	dialer = proxy.Direct
 
@@ -155,7 +156,7 @@ func (c *HTTPClient) applyProxy() error {
 	return nil
 }
 
-func (c *HTTPClient) GetCookies(u *url.URL) []*http.Cookie {
+func (c *Client) GetCookies(u *url.URL) []*http.Cookie {
 	c.logger.Info(fmt.Sprintf("get cookies for url: %s", u.String()))
 	if c.Jar == nil {
 		c.logger.Warn("you did not setup a cookie jar")
@@ -165,7 +166,7 @@ func (c *HTTPClient) GetCookies(u *url.URL) []*http.Cookie {
 	return c.Jar.Cookies(u)
 }
 
-func (c *HTTPClient) SetCookies(u *url.URL, cookies []*http.Cookie) {
+func (c *Client) SetCookies(u *url.URL, cookies []*http.Cookie) {
 	c.logger.Info(fmt.Sprintf("set cookies for url: %s", u.String()))
 
 	if c.Jar == nil {
@@ -176,7 +177,7 @@ func (c *HTTPClient) SetCookies(u *url.URL, cookies []*http.Cookie) {
 	c.Jar.SetCookies(u, cookies)
 }
 
-func (c *HTTPClient) Do(req *http.Request) (*http.Response, error) {
+func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	if c.config.debug {
 		requestBytes, err := httputil.DumpRequestOut(req, req.ContentLength > 0)
 
@@ -210,10 +211,10 @@ func (c *HTTPClient) Do(req *http.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-func (c *HTTPClient) StatusCode(resp *http.Response) int {
+func (c *Client) StatusCode(resp *http.Response) int {
 	return resp.StatusCode
 }
 
-func (c *HTTPClient) Status(resp *http.Response) string {
+func (c *Client) Status(resp *http.Response) string {
 	return resp.Status
 }
