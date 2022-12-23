@@ -37,7 +37,7 @@ type HttpClient interface {
 
 	// StatusCode(resp *http.Response) int
 	// PostForm(url string, data url.Values) (resp *http.Response, err error)
-	NewRequest(method, url string, body io.Reader) (*http.Request, error)
+	NewRequest() *Request
 	// SetURL(req *http.Request, url string) error
 	// SetHeader(req *http.Request, key, value string)
 	// SetHeaders(req *http.Request, headers map[string]string)
@@ -48,6 +48,18 @@ type HttpClient interface {
 	// SetBodyForm(req *http.Request, data url.Values)
 }
 
+type Request struct {
+	client *Client
+
+	method, url, host string
+
+	header http.Header
+
+	body io.Reader
+
+	cookies []*http.Cookie
+}
+
 type Client struct {
 	http.Client
 	logger         Logger
@@ -56,48 +68,11 @@ type Client struct {
 }
 
 // NewRequest implements HttpClient
-func (*Client) NewRequest(method string, url string, body io.Reader) (*http.Request, error) {
-	panic("unimplemented")
-}
-
-// SetBody implements HttpClient
-func (*Client) SetBody(req *http.Request, body io.Reader) {
-	panic("unimplemented")
-}
-
-// SetBodyBytes implements HttpClient
-func (*Client) SetBodyBytes(req *http.Request, body []byte) {
-	panic("unimplemented")
-}
-
-// SetBodyForm implements HttpClient
-func (*Client) SetBodyForm(req *http.Request, data url.Values) {
-	panic("unimplemented")
-}
-
-// SetBodyJSON implements HttpClient
-func (*Client) SetBodyJSON(req *http.Request, body interface{}) {
-	panic("unimplemented")
-}
-
-// SetBodyString implements HttpClient
-func (*Client) SetBodyString(req *http.Request, body string) {
-	panic("unimplemented")
-}
-
-// SetHeader implements HttpClient
-func (*Client) SetHeader(req *http.Request, key string, value string) {
-	panic("unimplemented")
-}
-
-// SetHeaders implements HttpClient
-func (*Client) SetHeaders(req *http.Request, headers map[string]string) {
-	panic("unimplemented")
-}
-
-// SetURL implements HttpClient
-func (*Client) SetURL(req *http.Request, url string) error {
-	panic("unimplemented")
+func (c *Client) NewRequest() *Request {
+	return &Request{
+		client: c,
+		header: make(http.Header),
+	}
 }
 
 type ClientProfile struct {

@@ -21,7 +21,7 @@ func NewRequest(method string, url string, body io.Reader) (*http.Request, error
 	return req, nil
 }
 
-func NewHttpClient(logger Logger, options ...HttpClientOption) (HttpClient, error) {
+func NewHttpClient(logger Logger, options ...HttpClientOption) (*Client, error) {
 	config := &httpClientConfig{
 		followRedirects: true,
 		timeout:         time.Duration(DefaultTimeoutSeconds) * time.Second,
@@ -34,7 +34,7 @@ func NewHttpClient(logger Logger, options ...HttpClientOption) (HttpClient, erro
 	err := validateConfig(config)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("invalid config: %v", err)
 	}
 
 	client, clientProfile, err := buildFromConfig(config)
@@ -58,9 +58,10 @@ func NewHttpClient(logger Logger, options ...HttpClientOption) (HttpClient, erro
 	}
 
 	return &Client{
-		Client: *client,
-		logger: logger,
-		config: config,
+		Client:         *client,
+		logger:         logger,
+		config:         config,
+		LatestResponse: &Response{},
 	}, nil
 }
 

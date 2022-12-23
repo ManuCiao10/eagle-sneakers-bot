@@ -54,11 +54,11 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
-	_, err := t.Client.NewRequest("GET", "https://www.the-broken-arm.com/en/",)
-		// SetURL("https://www.the-broken-arm.com/en/").
-		// SetMethod("GET").
-		// SetDefaultHeadersTBA().
-		// Do()
+	err := t.Client.NewRequest()
+	// SetURL("https://www.the-broken-arm.com/en/").
+	// SetMethod("GET").
+	// SetDefaultHeadersTBA().
+	// Do()
 
 	if err != nil {
 		err_("REQUEST ERROR")
@@ -96,12 +96,12 @@ func Initialize(t *task.Task) task.TaskState {
 
 	t.CheckoutData.Proxy = proxyURL
 
-	jar := client.NewCookieJar(nil)
+	// jar := client.NewCookieJar(nil)
 	options := []client.HttpClientOption{
 		client.WithTimeout(30),
 		// client.WithClientProfile(client.Chrome_105),
 		client.WithNotFollowRedirects(),
-		client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
+		// client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 		client.WithProxyUrl(proxyURL),
 		//client.WithInsecureSkipVerify(),
 	}

@@ -48,6 +48,7 @@ func NewCookieJar(options ...CookieJarOption) CookieJar {
 		opt(config)
 	}
 
+	
 	if config.logger == nil {
 		config.logger = NewNoopLogger()
 	}
