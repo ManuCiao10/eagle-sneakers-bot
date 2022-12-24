@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/eagle/handler/client"
+	hclient "github.com/eagle/handler/client"
 	"github.com/eagle/handler/task"
 	"github.com/eagle/handler/utils"
 )
@@ -54,11 +54,11 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
-	err := t.Client.NewRequest()
-	// SetURL("https://www.the-broken-arm.com/en/").
-	// SetMethod("GET").
-	// SetDefaultHeadersTBA().
-	// Do()
+	_, err := t.Client.NewRequest().
+		SetURL("https://www.thebrokenarm.com/").
+		SetMethod("GET").
+		SetDefaultHeadersTBA().
+		Do()
 
 	if err != nil {
 		err_("REQUEST ERROR")
@@ -66,8 +66,6 @@ func getSession(t *task.Task) task.TaskState {
 	}
 
 	fmt.Print("GETTING SESSION ...")
-
-	// return Checkout(t)
 	return HandleSessionResponse(t)
 
 }
@@ -96,17 +94,9 @@ func Initialize(t *task.Task) task.TaskState {
 
 	t.CheckoutData.Proxy = proxyURL
 
-	// jar := client.NewCookieJar(nil)
-	options := []client.HttpClientOption{
-		client.WithTimeout(30),
-		// client.WithClientProfile(client.Chrome_105),
-		client.WithNotFollowRedirects(),
-		// client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
-		client.WithProxyUrl(proxyURL),
-		//client.WithInsecureSkipVerify(),
-	}
+	//fix using the proxy
+	client, err := hclient.NewClient()
 
-	client, err := client.NewHttpClient(client.NewNoopLogger(), options...)
 	if err != nil {
 		log.Println(err)
 	}

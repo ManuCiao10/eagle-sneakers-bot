@@ -3,7 +3,7 @@ package task
 import (
 	"time"
 
-	"github.com/eagle/handler/client"
+	hclient "github.com/eagle/handler/client"
 )
 
 type Task struct {
@@ -20,8 +20,8 @@ type Task struct {
 	Proxy_List  string        `json:"proxy_list"`
 	Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	Client       *client.Client `json:"-"` // http client
-	
+	Client *hclient.Client `json:"-"` // http client
+
 	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
 }
 

@@ -1,15 +1,9 @@
-package client
+package hclient
 
 import (
 	"encoding/json"
-
-	http "github.com/bogdanfinn/fhttp"
-	// "net/http"
+	"net/http"
 )
-
-func (r *Response) StatusCode() int {
-	return r.statusCode
-}
 
 // Header returns the response headers
 func (r *Response) Header() http.Header {
@@ -34,6 +28,11 @@ func (r *Response) BodyAsJSON(data interface{}) error {
 // Status returns the response status
 func (r *Response) Status() string {
 	return r.status
+}
+
+// StatusCode returns the response status code
+func (r *Response) StatusCode() int {
+	return r.statusCode
 }
 
 func (r *Response) GetCookieByName(name string) *http.Cookie {
