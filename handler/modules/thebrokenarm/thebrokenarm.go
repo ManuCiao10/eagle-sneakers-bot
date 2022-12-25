@@ -33,6 +33,7 @@ func Loading() {
 func HandleSessionResponse(t *task.Task) task.TaskState {
 	//handle response index body to take the ID for inizialize the challenge
 
+	fmt.Print(t.Client.LatestResponse.StatusCode())
 	if t.Client.LatestResponse.StatusCode() != 200 {
 		// retry
 		time.Sleep(t.Delay)
@@ -54,8 +55,9 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
+	log.Print("GETTING SESSION ...")
 	_, err := t.Client.NewRequest().
-		SetURL("https://tls.peet.ws/api/all").
+		SetURL("https://www.thebrokenarm.com/").
 		SetMethod("GET").
 		SetDefaultHeadersTBA().
 		Do()
@@ -65,7 +67,6 @@ func getSession(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	fmt.Print("GETTING SESSION ...")
 	return HandleSessionResponse(t)
 
 }

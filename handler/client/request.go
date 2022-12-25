@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -14,12 +15,14 @@ import (
 // SetURL sets the url of the request
 func (r *Request) SetURL(url string) *Request {
 	r.url = url
+	log.Print("SetURL: ", url)
 	return r
 }
 
 // SetMethod sets the method of the request
 func (r *Request) SetMethod(method string) *Request {
 	r.method = method
+	log.Print("SetMethod: ", method)
 	return r
 }
 

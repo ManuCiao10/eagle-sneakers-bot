@@ -1,44 +1,120 @@
 package hclient
 
 import (
+	"crypto/ecdsa"
+	"crypto/elliptic"
+	"crypto/rand"
 	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
+	"encoding/pem"
 	"errors"
+	"flag"
 	"fmt"
 	"io"
 	"log"
+	"math/big"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"os"
+	"time"
 
 	"github.com/eagle/handler/utils"
 )
 
 var (
-	NoCookieJarErr = errors.New("no cookie jar in client")
+	ErrNoCertificates = errors.New("no certificates in client")
 )
 
 // NewClient creates a new http client
 // Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
-	transport := &http.Transport{
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
+	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
+	if err != nil {
+		log.Fatalf("Failed to generate private key: %v", err)
+	}
+	//certificate template
+	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
+	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
+	if err != nil {
+		log.Fatalf("Failed to generate serial number: %v", err)
 	}
 
-	if len(parameters) > 0 && len(parameters[0]) > 0 {
-		proxyUrl, _ := url.Parse(parameters[0])
-		fmt.Printf("Using proxy: %s", proxyUrl.String())
+	dnsName := []string{"the-broken-arm.com"}
+	template := x509.Certificate{
+		SerialNumber: serialNumber,
+		Subject: pkix.Name{
+			Organization: []string{"My Corp"},
+		},
+		DNSNames:  dnsName,
+		NotBefore: time.Now(),
+		NotAfter:  time.Now().Add(3 * time.Hour),
 
-		transport.Proxy = http.ProxyURL(proxyUrl)
+		KeyUsage:              x509.KeyUsageDigitalSignature,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		BasicConstraintsValid: true,
+	}
+	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &privateKey.PublicKey, privateKey)
+	if err != nil {
+		log.Fatalf("Failed to create certificate: %v", err)
+	}
+
+	pemCert := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
+	if pemCert == nil {
+		log.Fatal("Failed to encode certificate to PEM")
+	}
+	if err := os.WriteFile("cert.pem", pemCert, 0644); err != nil {
+		log.Fatal(err)
+	}
+	log.Print("wrote cert.pem\n")
+
+	privBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
+	if err != nil {
+		log.Fatalf("Unable to marshal private key: %v", err)
+	}
+	pemKey := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: privBytes})
+	if pemKey == nil {
+		log.Fatal("Failed to encode key to PEM")
+	}
+	if err := os.WriteFile("key.pem", pemKey, 0600); err != nil {
+		log.Fatal(err)
+	}
+	log.Print("wrote key.pem\n")
+
+	certFile := flag.String("certfile", "cert.pem", "trusted CA certificate")
+	clientCertFile := flag.String("clientcert", "cert.pem", "certificate PEM for client")
+	clientKeyFile := flag.String("clientkey", "key.pem", "key PEM for client")
+	flag.Parse()
+
+	// Load our client certificate and key.
+	clientCert, err := tls.LoadX509KeyPair(*clientCertFile, *clientKeyFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Trusted server certificate.
+	cert, err := os.ReadFile(*certFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	certPool := x509.NewCertPool()
+	if ok := certPool.AppendCertsFromPEM(cert); !ok {
+		log.Fatalf("unable to parse cert from %s", *certFile)
 	}
 
 	return &Client{
 		client: &http.Client{
-			Transport: transport,
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					RootCAs:      certPool,
+					Certificates: []tls.Certificate{clientCert},
+				},
+			},
 		},
 		LatestResponse: &Response{},
 	}, nil
+
 }
 
 // NewRequest creates a new request under a specified http client
@@ -126,8 +202,10 @@ func (c *Client) AddCookieByName(r *Response, u *url.URL, name string) error {
 
 // Do will send the specified request
 func (c *Client) Do(r *http.Request) (*Response, error) {
+	fmt.Print("Sending request: ", r.URL.String())
 	resp, err := c.client.Do(r)
 	if err != nil {
+		fmt.Print(err)
 		return nil, err
 	}
 
@@ -148,7 +226,6 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 		statusCode: resp.StatusCode,
 		cookies:    resp.Cookies(),
 	}
-
 	c.LatestResponse = response
 	if utils.Debug {
 		fmt.Println(fmt.Sprintf("%s %s", r.Method, r.URL.String()))

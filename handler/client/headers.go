@@ -1,8 +1,13 @@
 package hclient
 
-import "github.com/eagle/handler/utils"
+import (
+	"log"
+
+	"github.com/eagle/handler/utils"
+)
 
 func (r *Request) SetDefaultHeadersTBA() *Request {
+	log.Print("SetDefaultHeadersTBA")
 	r.SetHeader("User-Agent", utils.UserAgent)
 	r.SetHeader("authority", "www.the-broken-arm.com")
 	r.SetHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
