@@ -55,9 +55,10 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
-	log.Print("GETTING SESSION ...")
+	
+
 	_, err := t.Client.NewRequest().
-		SetURL("https://www.thebrokenarm.com/").
+		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
 		SetDefaultHeadersTBA().
 		Do()
@@ -66,7 +67,7 @@ func getSession(t *task.Task) task.TaskState {
 		err_("REQUEST ERROR")
 		return task.ErrorTaskState
 	}
-
+	log.Print("GETTING SESSION ...")
 	return HandleSessionResponse(t)
 
 }

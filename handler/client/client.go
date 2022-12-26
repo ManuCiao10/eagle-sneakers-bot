@@ -9,7 +9,6 @@ import (
 	"crypto/x509/pkix"
 	"encoding/pem"
 	"errors"
-	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -17,7 +16,6 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"os"
 	"time"
 
 	"github.com/eagle/handler/utils"
@@ -26,6 +24,19 @@ import (
 var (
 	ErrNoCertificates = errors.New("no certificates in client")
 )
+
+// func GetDNSName(parameters []string) []string {
+// 	for _, peercert := range state.PeerCertificates {
+// 		der, err := x509.MarshalPKIXPublicKey(peercert.PublicKey)
+// 		if err != nil {
+// 			log.Println("Failed to get public key (https).")
+// 		}
+// 		if len(peercert.DNSNames) > 0 {
+// 			return peercert.DNSNames[0]
+// 		}
+// 	}
+// 	return "Unknown Site"
+// }
 
 // NewClient creates a new http client
 // Takes in the optional arguments: proxy, servername
@@ -41,13 +52,16 @@ func NewClient(parameters ...string) (*Client, error) {
 		log.Fatalf("Failed to generate serial number: %v", err)
 	}
 
-	dnsName := []string{"the-broken-arm.com"}
+	//import cerficate sni.cloudflaressl.com.cer
+	// cert, err := tls.LoadX509KeyPair("sni.cloudflaressl.com.cer", "sni.cloudflaressl.com.key")
+
+	// dnsName := GetDNSName(parameters)
 	template := x509.Certificate{
 		SerialNumber: serialNumber,
 		Subject: pkix.Name{
-			Organization: []string{"My Corp"},
+			Organization: []string{"Eagle-bot"},
 		},
-		DNSNames:  dnsName,
+		DNSNames:  []string{"localhost"},
 		NotBefore: time.Now(),
 		NotAfter:  time.Now().Add(3 * time.Hour),
 
@@ -55,6 +69,7 @@ func NewClient(parameters ...string) (*Client, error) {
 		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
 	}
+
 	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &privateKey.PublicKey, privateKey)
 	if err != nil {
 		log.Fatalf("Failed to create certificate: %v", err)
@@ -64,10 +79,6 @@ func NewClient(parameters ...string) (*Client, error) {
 	if pemCert == nil {
 		log.Fatal("Failed to encode certificate to PEM")
 	}
-	if err := os.WriteFile("cert.pem", pemCert, 0644); err != nil {
-		log.Fatal(err)
-	}
-	log.Print("wrote cert.pem\n")
 
 	privBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
 	if err != nil {
@@ -77,38 +88,26 @@ func NewClient(parameters ...string) (*Client, error) {
 	if pemKey == nil {
 		log.Fatal("Failed to encode key to PEM")
 	}
-	if err := os.WriteFile("key.pem", pemKey, 0600); err != nil {
-		log.Fatal(err)
-	}
-	log.Print("wrote key.pem\n")
 
-	certFile := flag.String("certfile", "cert.pem", "trusted CA certificate")
-	clientCertFile := flag.String("clientcert", "cert.pem", "certificate PEM for client")
-	clientKeyFile := flag.String("clientkey", "key.pem", "key PEM for client")
-	flag.Parse()
-
-	// Load our client certificate and key.
-	clientCert, err := tls.LoadX509KeyPair(*clientCertFile, *clientKeyFile)
+	cert, err := tls.X509KeyPair(pemCert, pemKey)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Trusted server certificate.
-	cert, err := os.ReadFile(*certFile)
-	if err != nil {
-		log.Fatal(err)
-	}
 	certPool := x509.NewCertPool()
-	if ok := certPool.AppendCertsFromPEM(cert); !ok {
-		log.Fatalf("unable to parse cert from %s", *certFile)
+	if ok := certPool.AppendCertsFromPEM(pemCert); !ok {
+		log.Fatal("Failed to append certificate to pool")
 	}
+
+	clientCert := []tls.Certificate{cert}
 
 	return &Client{
 		client: &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{
-					RootCAs:      certPool,
-					Certificates: []tls.Certificate{clientCert},
+					RootCAs:            certPool,
+					Certificates:       clientCert,
+					InsecureSkipVerify: true,
 				},
 			},
 		},
