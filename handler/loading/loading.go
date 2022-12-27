@@ -31,7 +31,47 @@ func Load() *Config {
 		Env:      *loadEnv(),
 		Profiles: *loadProfiles(),
 		Proxies:  *loadProxies(),
+		Tasks:    *loadTask(),
 	}
+}
+
+func PathTask() []string {
+	//read thebrokenarm folder
+	//read zaratest folder
+
+	//create an array with all the files in the tasks folder
+
+	sites := []string{"thebrokenarm", "zaratest"}
+
+	var paths []string
+
+	for _, site := range sites {
+		files, err := os.ReadDir(site)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, fileName := range files {
+			paths = append(paths, site+"/"+fileName.Name())
+		}
+	}
+
+	return paths
+
+}
+
+func loadTask() *Tasks {
+
+	//create an array with all the files in the tasks folder
+	paths := PathTask()
+
+	var tasks Tasks
+	tasks.Tasks = make(map[int][]string)
+
+	for id, path := range paths {
+		fmt.Println(id, path)
+	}
+	return &tasks
 }
 
 func CreateSliceProxy(scanner *bufio.Scanner) []string {

@@ -1,22 +1,14 @@
 package hclient
 
 import (
-	"crypto/ecdsa"
-	"crypto/elliptic"
-	"crypto/rand"
 	"crypto/tls"
-	"crypto/x509"
-	"crypto/x509/pkix"
-	"encoding/pem"
 	"errors"
 	"fmt"
 	"io"
 	"log"
-	"math/big"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-	"time"
 
 	"github.com/eagle/handler/utils"
 )
@@ -38,78 +30,38 @@ var (
 // 	return "Unknown Site"
 // }
 
+var fingerprints = map[string]int{
+	"144cd5394a78745de02346553d126115b48955747eb9098c1fae7186cd60947e": 1,
+	"4bd174896d61a0932ed108233c69e4a4079ed35b6942fcf81c8c2cde81cfb8b5": 1,
+}
+
 // NewClient creates a new http client
 // Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
-	privateKey, err := ecdsa.GenerateKey(elliptic.P256(), rand.Reader)
-	if err != nil {
-		log.Fatalf("Failed to generate private key: %v", err)
-	}
-	//certificate template
-	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
-	serialNumber, err := rand.Int(rand.Reader, serialNumberLimit)
-	if err != nil {
-		log.Fatalf("Failed to generate serial number: %v", err)
+	tlsClientConfig := &tls.Config{
+		InsecureSkipVerify: true,
 	}
 
-	//import cerficate sni.cloudflaressl.com.cer
-	// cert, err := tls.LoadX509KeyPair("sni.cloudflaressl.com.cer", "sni.cloudflaressl.com.key")
-
-	// dnsName := GetDNSName(parameters)
-	template := x509.Certificate{
-		SerialNumber: serialNumber,
-		Subject: pkix.Name{
-			Organization: []string{"Eagle-bot"},
-		},
-		DNSNames:  []string{"localhost"},
-		NotBefore: time.Now(),
-		NotAfter:  time.Now().Add(3 * time.Hour),
-
-		KeyUsage:              x509.KeyUsageDigitalSignature,
-		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
-		BasicConstraintsValid: true,
+	// parameters[0] = proxy
+	// parameters[1] = sni
+	if len(parameters) > 1 && len(parameters[1]) > 0 {
+		tlsClientConfig.ServerName = parameters[1]
 	}
 
-	derBytes, err := x509.CreateCertificate(rand.Reader, &template, &template, &privateKey.PublicKey, privateKey)
-	if err != nil {
-		log.Fatalf("Failed to create certificate: %v", err)
+	transport := &http.Transport{
+		ForceAttemptHTTP2: true,
+		TLSClientConfig:   tlsClientConfig,
 	}
 
-	pemCert := pem.EncodeToMemory(&pem.Block{Type: "CERTIFICATE", Bytes: derBytes})
-	if pemCert == nil {
-		log.Fatal("Failed to encode certificate to PEM")
-	}
+	if len(parameters) > 0 && len(parameters[0]) > 0 {
+		proxyUrl, _ := url.Parse(parameters[0])
 
-	privBytes, err := x509.MarshalPKCS8PrivateKey(privateKey)
-	if err != nil {
-		log.Fatalf("Unable to marshal private key: %v", err)
+		transport.Proxy = http.ProxyURL(proxyUrl)
 	}
-	pemKey := pem.EncodeToMemory(&pem.Block{Type: "PRIVATE KEY", Bytes: privBytes})
-	if pemKey == nil {
-		log.Fatal("Failed to encode key to PEM")
-	}
-
-	cert, err := tls.X509KeyPair(pemCert, pemKey)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	certPool := x509.NewCertPool()
-	if ok := certPool.AppendCertsFromPEM(pemCert); !ok {
-		log.Fatal("Failed to append certificate to pool")
-	}
-
-	clientCert := []tls.Certificate{cert}
 
 	return &Client{
 		client: &http.Client{
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{
-					RootCAs:            certPool,
-					Certificates:       clientCert,
-					InsecureSkipVerify: true,
-				},
-			},
+			Transport: transport,
 		},
 		LatestResponse: &Response{},
 	}, nil
@@ -216,7 +168,7 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 
 	// https://help.socketlabs.com/docs/how-to-fix-error-only-one-usage-of-each-socket-address-protocolnetwork-addressport-is-normally-permitted
 	// https://www.geeksforgeeks.org/http-headers-connection/#:~:text=close%20This%20close%20connection%20directive,want%20your%20connection%20to%20close.
-	r.Close = true // perhaps set this to false?
+	// r.Close = true // perhaps set this to false?
 
 	response := &Response{
 		headers:    resp.Header,

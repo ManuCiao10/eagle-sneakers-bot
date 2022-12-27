@@ -4,6 +4,7 @@ import (
 	"time"
 
 	hclient "github.com/eagle/handler/client"
+	"github.com/eagle/handler/profile"
 )
 
 type Task struct {
@@ -11,7 +12,7 @@ type Task struct {
 	Pid         string        `json:"pid"`
 	Size        string        `json:"size"`
 	Email       string        `json:"email"`
-	Profile     string        `json:"profile"`
+	Profile     string        `json:"profile"` // profile name
 	Method      string        `json:"method"`
 	Card_Number string        `json:"card_number"`
 	Month       string        `json:"month"`
@@ -20,9 +21,9 @@ type Task struct {
 	Proxy_List  string        `json:"proxy_list"`
 	Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	Client *hclient.Client `json:"-"` // http client
-
-	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
+	Client          *hclient.Client    `json:"-"` // http client
+	CheckoutProfile profile.Profile    `json:"-"` // profile data
+	CheckoutData    CheckoutLogRequest `json:"-"` // checkout data
 }
 
 type CheckoutLogRequest struct {

@@ -55,10 +55,8 @@ func getSession(t *task.Task) task.TaskState {
 	// }
 
 	//find the cookies for the session
-	
-
 	_, err := t.Client.NewRequest().
-		SetURL("https://www.the-broken-arm.com/en/").
+		SetURL("https://www.shoezgallery.com/en/").
 		SetMethod("GET").
 		SetDefaultHeadersTBA().
 		Do()
@@ -80,8 +78,8 @@ func Initialize(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	taskProfile := GetProfile(t)
-	if taskProfile.ID == "not_found" {
+	t.CheckoutProfile = GetProfile(t)
+	if t.CheckoutProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
 		return task.ErrorTaskState
 	}
@@ -97,7 +95,7 @@ func Initialize(t *task.Task) task.TaskState {
 	t.CheckoutData.Proxy = proxyURL
 
 	//fix using the proxy
-	client, err := hclient.NewClient()
+	client, err := hclient.NewClient(proxyURL)
 
 	if err != nil {
 		log.Println(err)

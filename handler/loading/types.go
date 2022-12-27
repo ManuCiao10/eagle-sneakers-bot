@@ -20,11 +20,15 @@ type Proxies struct {
 	Proxies []settings.Proxie `json:"proxies"`
 }
 
+type Tasks struct {
+	Tasks map[int][]string
+}
+
 type Config struct {
 	// Accounts        Accounts
-	// Tasks           Tasks
 	// QuicktaskGroups map[int][]QuicktaskGroup
-	Proxies  Proxies  `json:"proxies"`
+	Tasks    Tasks
+	Proxies  Proxies
 	Env      Env      `json:"env"`
 	Settings Settings `json:"settings"`
 	Profiles Profiles `json:"profiles"`
