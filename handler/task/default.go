@@ -16,7 +16,14 @@ var (
 	ErrTaskDoesNotExist = errors.New("task does not exist")
 	tasks               = make(map[string]*Task)
 	Dev                 = true
+	taskTypes           = make(map[string]*TaskType)
 )
+
+// DoesTaskTypeExist check if task type exists
+func DoesTaskTypeExist(taskType string) bool {
+	_, ok := taskTypes[taskType]
+	return ok
+}
 
 // DoesTaskExist checks if a task exists
 func DoesTaskExist(id string) bool {
@@ -45,9 +52,10 @@ func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, mont
 	id := shortuuid.New()
 
 	tasks[id] = &Task{
+		TaskType:    tasktype,
 		Mode:        strings.ToLower(mode),
-		Pid:         pid,
-		Size:        strings.ToLower(strings.TrimSpace(size)),
+		Pid:         strings.ToLower(pid),
+		Size:        strings.ToLower(size),
 		Email:       strings.ToLower(mail),
 		Profile:     Profile,
 		Method:      strings.ToLower(payment),

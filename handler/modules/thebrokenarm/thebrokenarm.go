@@ -11,24 +11,24 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
-func Loading() {
-	fmt.Print("\033[H\033[2J")
-	utils.Banner()
-	utils.Directory("thebrokenarm")
+// func Loading() {
+// 	fmt.Print("\033[H\033[2J")
+// 	utils.Banner()
+// 	utils.Directory("thebrokenarm")
 
-	csv_index := utils.SelectMode(utils.Version() + utils.Time() + "PLEASE SELECT CSV:")
-	task_name := CvsIndex(csv_index, "thebrokenarm")
-	if task_name == "UNEXPECTED" {
-		err_("UNEXPECTED ERROR")
-	}
+// 	csv_index := utils.SelectMode(utils.Version() + utils.Time() + "PLEASE SELECT CSV:")
+// 	task_name := CvsIndex(csv_index, "thebrokenarm")
+// 	if task_name == "UNEXPECTED" {
+// 		err_("UNEXPECTED ERROR")
+// 	}
 
-	CvsInfo(task_name, "thebrokenarm")
+// 	CvsInfo(task_name, "thebrokenarm")
 
-	for _, t := range tasks {
-		Initialize(t)
-	}
+// 	for _, t := range tasks {
+// 		Initialize(t)
+// 	}
 
-}
+// }
 
 func HandleSessionResponse(t *task.Task) task.TaskState {
 	//handle response index body to take the ID for inizialize the challenge

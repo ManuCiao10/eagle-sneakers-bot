@@ -2,6 +2,8 @@ module github.com/eagle
 
 go 1.19
 
+require github.com/lithammer/shortuuid v3.0.0+incompatible
+
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -10,10 +12,10 @@ require (
 	github.com/jaypipes/pcidb v1.0.0 // indirect
 	github.com/juju/go4 v0.0.0-20160222163258-40d72ab9641a // indirect
 	github.com/kr/pretty v0.3.0 // indirect
-	github.com/lithammer/shortuuid v3.0.0+incompatible // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
+	golang.org/x/text v0.5.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/errgo.v1 v1.0.1 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
@@ -24,6 +26,7 @@ require (
 
 require (
 	github.com/fatih/color v1.13.0
+	github.com/getsentry/sentry-go v0.16.0
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0
 	github.com/jaypipes/ghw v0.9.0
 	github.com/juju/persistent-cookiejar v1.0.0

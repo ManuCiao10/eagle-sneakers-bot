@@ -44,12 +44,10 @@ func main() {
 
 			if !taskObject.Active {
 				go task_manager.RunTask(taskObject)
-			} else {
-				fmt.Println("Task is already running")
-				//add variable to check if task is done
+			} else if taskObject.Done {
+				task_manager.StopTask(taskObject)
 			}
 		}
 	}
-	// modules.Initialize(site)
 
 }

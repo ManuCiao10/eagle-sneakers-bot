@@ -21,7 +21,6 @@ import (
 var (
 	Data       Config
 	proxyMutex = sync.RWMutex{}
-	taskMutex  = sync.RWMutex{}
 
 	array []string
 )
@@ -38,6 +37,10 @@ func Load() *Config {
 		Proxies:  *loadProxies(),
 		Tasks:    *loadTask(),
 	}
+}
+
+func Trim(s string) string {
+	return strings.TrimSpace(s)
 }
 
 func loadTask() *Tasks {
@@ -69,21 +72,22 @@ func loadTask() *Tasks {
 
 		tasktype := fmt.Sprint(folder, ",", strconv.Itoa(index))
 		taskQuantity := len(task)
+
 		for i := 0; i < taskQuantity; i++ {
 			if i != 0 {
 				taskUUID := task_.CreateTask(
 					strings.ToLower(tasktype),
-					task[i][0],
-					task[i][1],
-					task[i][2],
-					task[i][3],
-					task[i][4],
-					task[i][5],
-					task[i][6],
-					task[i][7],
-					task[i][8],
-					task[i][9],
-					task[i][10],
+					Trim(task[i][0]),
+					Trim(task[i][1]),
+					Trim(task[i][2]),
+					Trim(task[i][3]),
+					Trim(task[i][4]),
+					Trim(task[i][5]),
+					Trim(task[i][6]),
+					Trim(task[i][7]),
+					Trim(task[i][8]),
+					Trim(task[i][9]),
+					Trim(task[i][10]),
 				)
 				tasks.Tasks[tasktype] = append(tasks.Tasks[tasktype], taskUUID)
 			}

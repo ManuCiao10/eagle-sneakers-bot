@@ -1,6 +1,8 @@
 package task
 
 import (
+	"context"
+	"reflect"
 	"time"
 
 	"github.com/eagle/handler/profile"
@@ -22,9 +24,13 @@ type Task struct {
 	Proxy_List  string `json:"proxy_list"`
 
 	Active bool          `json:"-"`     // active status
+	Done   bool          `json:"-"`     // done status
 	Delay  time.Duration `json:"delay"` // delay (in ms)
+	Type   string        `json:"type"`  // registered task type aka site name
 
 	// Client          *hclient.Client    `json:"-"` // http client
+	Context         context.Context    `json:"-"`
+	Cancel          context.CancelFunc `json:"-"` // cancel function
 	CheckoutProfile profile.Profile    `json:"-"` // profile data
 	CheckoutProxy   settings.Proxie    `json:"-"` // proxy data
 	CheckoutData    CheckoutLogRequest `json:"-"` // checkout data
@@ -51,13 +57,12 @@ var (
 	ErrorTaskState    TaskState = "error"
 )
 
-// type TaskType struct {
-// 	firstHandlerState TaskState
-// 	internalType      reflect.Type
-// 	handlers          TaskReflectMap
-// }
+type TaskType struct {
+	firstHandlerState TaskState
+	internalType      reflect.Type
+	handlers          TaskReflectMap
+}
 
 type TaskState string
-
-// type TaskHandlerMap map[TaskState]interface{}
-// type TaskReflectMap map[string]reflect.Value
+type TaskHandlerMap map[TaskState]interface{}
+type TaskReflectMap map[string]reflect.Value
