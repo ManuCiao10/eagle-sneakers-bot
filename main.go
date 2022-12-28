@@ -8,6 +8,7 @@ import (
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/site"
 	"github.com/eagle/handler/task"
+	"github.com/eagle/handler/task_manager"
 	"github.com/eagle/handler/utils"
 )
 
@@ -33,22 +34,21 @@ func main() {
 		}
 		data := site.Parsing(index) //--> thebrokenarm,1
 		for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
-			taskObject, _ := task.GetTask(taskUUID)
+			taskObject, err := task.GetTask(taskUUID)
 
 			fmt.Println(taskObject)
-			// if err != nil {
-			// 	fmt.Println("Failed to get task: ", err.Error())
-			// 	continue
-			// }
+			if err != nil {
+				fmt.Println("Failed to get task: ", err.Error())
+				continue
+			}
 
-			// if !taskObject.Active {
-			// 	go taskmngr.RunTask(taskObject)
-			// } else {
-			// 	fmt.Println("Task is already running")
-			// }
+			if !taskObject.Active {
+				go task_manager.RunTask(taskObject)
+			} else {
+				fmt.Println("Task is already running")
+				//add variable to check if task is done
+			}
 		}
-
-		fmt.Println(data)
 	}
 	// modules.Initialize(site)
 
