@@ -1,0 +1,107 @@
+package task
+
+import (
+	"errors"
+	"io/ioutil"
+	"log"
+	"os"
+	"strings"
+	"sync"
+
+	"github.com/lithammer/shortuuid"
+)
+
+var (
+	taskMutex           = sync.RWMutex{}
+	ErrTaskDoesNotExist = errors.New("task does not exist")
+	tasks               = make(map[string]*Task)
+	Dev                 = true
+)
+
+// DoesTaskExist checks if a task exists
+func DoesTaskExist(id string) bool {
+	taskMutex.RLock()
+	defer taskMutex.RUnlock()
+	_, ok := tasks[id]
+	return ok
+}
+
+// GetTask gets a task
+func GetTask(id string) (*Task, error) {
+	if !DoesTaskExist(id) {
+		return &Task{}, ErrTaskDoesNotExist
+	}
+
+	taskMutex.RLock()
+	defer taskMutex.RUnlock()
+
+	return tasks[id], nil
+}
+
+func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, month, year, cvv, proxy_list string) string {
+	taskMutex.Lock()
+	defer taskMutex.Unlock()
+
+	id := shortuuid.New()
+
+	tasks[id] = &Task{
+		Mode:        strings.ToLower(mode),
+		Pid:         pid,
+		Size:        strings.ToLower(strings.TrimSpace(size)),
+		Email:       strings.ToLower(mail),
+		Profile:     Profile,
+		Method:      strings.ToLower(payment),
+		Card_Number: cardNum,
+		Month:       month,
+		Year:        year,
+		CVV:         cvv,
+		Proxy_List:  strings.Split(proxy_list, ".")[0],
+	}
+	return id
+}
+
+func Contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
+
+func PathTask() []string {
+	var folder []string
+	var paths []string
+
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if Dev {
+		for _, f := range files {
+			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" {
+				folder = append(folder, f.Name())
+			}
+		}
+	} else {
+		for _, f := range files {
+			if f.IsDir() && f.Name() != "proxies" {
+				folder = append(folder, f.Name())
+			}
+		}
+	}
+
+	for _, site := range folder {
+		files, err := os.ReadDir(site)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, fileName := range files {
+			paths = append(paths, site+"/"+fileName.Name())
+		}
+	}
+
+	return paths // return all the paths
+}

@@ -21,7 +21,7 @@ type Proxies struct {
 }
 
 type Tasks struct {
-	Tasks map[int][]string
+	Tasks map[string][]string
 }
 
 type Config struct {

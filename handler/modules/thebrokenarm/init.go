@@ -1,8 +1,6 @@
 package thebrokenarm
 
 import (
-	"bufio"
-	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"

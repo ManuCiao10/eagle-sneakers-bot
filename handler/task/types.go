@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/eagle/handler/profile"
-
+	"github.com/eagle/handler/settings"
 )
 
 type Task struct {
@@ -20,12 +20,14 @@ type Task struct {
 	Year        string `json:"year"`
 	CVV         string `json:"cvv"`
 	Proxy_List  string `json:"proxy_list"`
-	// Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	// Client *hclient.Client `json:"-"` // http client
-	CheckoutProfile profile.Profile `json:"-"` // profile data
-	// CheckoutProxy   .Proxy     `json:"-"` // proxy data
-	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
+	Active bool          `json:"-"`     // active status
+	Delay  time.Duration `json:"delay"` // delay (in ms)
+
+	// Client          *hclient.Client    `json:"-"` // http client
+	CheckoutProfile profile.Profile    `json:"-"` // profile data
+	CheckoutProxy   settings.Proxie    `json:"-"` // proxy data
+	CheckoutData    CheckoutLogRequest `json:"-"` // checkout data
 }
 
 type CheckoutLogRequest struct {
