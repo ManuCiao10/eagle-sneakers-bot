@@ -7,18 +7,26 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/settings"
+	"github.com/eagle/handler/task"
 )
 
 var (
 	Data       Config
 	proxyMutex = sync.RWMutex{}
+
+	taskMutex = sync.RWMutex{}
+	tasks     = make(map[int]*task.Task)
+	Dev       = true
+	array     []string
 )
 
 func Initialize() {
@@ -35,53 +43,106 @@ func Load() *Config {
 	}
 }
 
-func PathTask() []string {
-	//read thebrokenarm folder
-	//read zaratest folder
+func CreateTask(index int, tasktype, mode, pid, size, mail, Profile, payment, cardNum, month, year, cvv, proxy_list string) {
+	taskMutex.Lock()
+	defer taskMutex.Unlock()
 
-	//create an array with all the files in the tasks folder
-
-	sites := []string{"thebrokenarm", "zaratest"}
-
-	var paths []string
-
-	for _, site := range sites {
-		files, err := os.ReadDir(site)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		for _, fileName := range files {
-			paths = append(paths, site+"/"+fileName.Name())
-		}
+	tasks[index] = &task.Task{
+		TaskType:    strings.ToLower(tasktype),
+		Mode:        strings.ToLower(mode),
+		Pid:         pid,
+		Size:        strings.ToLower(strings.TrimSpace(size)),
+		Email:       strings.ToLower(mail),
+		Profile:     Profile,
+		Method:      strings.ToLower(payment),
+		Card_Number: cardNum,
+		Month:       month,
+		Year:        year,
+		CVV:         cvv,
+		Proxy_List:  strings.Split(proxy_list, ".")[0],
 	}
-
-	return paths
-
+	// fmt.Println(tasks[index])
 }
 
-func loadTask() *Tasks {
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
+}
 
-	//create an array with all the files in the tasks folder
+// func Getprofile(name string) profile.Profile {
+// 	for _, p := range Data.Profiles.Profiles {
+// 		fmt.Println(p)
+// 		if p.ID == name {
+// 			return p
+// 		}
+// 	}
+
+// 	return profile.Profile{
+// 		ID: "not_found",
+// 	}
+// }
+
+func loadTask() *Tasks {
 	paths := PathTask()
 
 	var tasks Tasks
 	tasks.Tasks = make(map[int][]string)
 
-	for id, path := range paths {
-		fmt.Println(id, path)
+	for _, path := range paths {
+		index := 1
+
+		folder := strings.Split(path, "/")[0]
+		if contains(array, folder) {
+			index = index + 1
+		} else {
+			array = append(array, folder)
+		}
+
+		csvFile, err := os.Open(path)
+		if err != nil {
+			log.Fatal("ERROR OPENING FILE")
+		}
+		reader := csv.NewReader(bufio.NewReader(csvFile))
+		task, err := reader.ReadAll()
+		if err != nil {
+			log.Fatal("ERROR READING FILE")
+		}
+		defer csvFile.Close()
+
+		// if len(task) <= 1 {
+		// 	log.Fatal("FILE " + strings.ToUpper(path) + " IS EMPTY")
+		// }
+
+		tasktype := fmt.Sprint(folder, ",", strconv.Itoa(index))
+		taskQuantity := len(task)
+		for i := 0; i <= taskQuantity-1; i++ {
+			if i != 0 {
+				CreateTask(i,
+					tasktype,
+					task[i][0],
+					task[i][1],
+					task[i][2],
+					task[i][3],
+					task[i][4],
+					task[i][5],
+					task[i][6],
+					task[i][7],
+					task[i][8],
+					task[i][9],
+					task[i][10],
+					// Getprofile(task[i][4]),
+				)
+			}
+		}
+
+		csvFile.Close()
 	}
+
 	return &tasks
-}
-
-func CreateSliceProxy(scanner *bufio.Scanner) []string {
-	var proxies []string
-
-	for scanner.Scan() {
-		proxies = append(proxies, scanner.Text())
-	}
-
-	return proxies
 }
 
 func loadProxies() *Proxies {
@@ -194,6 +255,52 @@ func loadProfiles() *Profiles {
 			Country:      rec[10],
 		})
 	}
-
 	return &profiles
+}
+
+func PathTask() []string {
+	var folder []string
+	var paths []string
+
+	files, err := ioutil.ReadDir("./")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if Dev {
+		for _, f := range files {
+			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" {
+				folder = append(folder, f.Name())
+			}
+		}
+	} else {
+		for _, f := range files {
+			if f.IsDir() && f.Name() != "proxies" {
+				folder = append(folder, f.Name())
+			}
+		}
+	}
+
+	for _, site := range folder {
+		files, err := os.ReadDir(site)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		for _, fileName := range files {
+			paths = append(paths, site+"/"+fileName.Name())
+		}
+	}
+
+	return paths // return all the paths
+}
+
+func CreateSliceProxy(scanner *bufio.Scanner) []string {
+	var proxies []string
+
+	for scanner.Scan() {
+		proxies = append(proxies, scanner.Text())
+	}
+
+	return proxies
 }

@@ -1,4 +1,4 @@
 Mode,Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List
-login,67gy,36,@manu,Manu,cc,4242424242424242,12,2020,123,test
+login,67gy,36,@manu,TEST,cc,4242424242424242,12,2020,123,test
 normal,67gy,random,@manu,Manu,cc,4242424242424242,12,2020,123,test
 normal,67gy,57;2;4,@manu,Manu,cc,4242424242424242,12,2020,123,test

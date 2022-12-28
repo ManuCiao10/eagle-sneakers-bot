@@ -78,8 +78,10 @@ func Initialize(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	t.CheckoutProfile = GetProfile(t)
-	if t.CheckoutProfile.ID == "not_found" {
+	//check if all the variable in the task are set (size, mode, profile existing etc..)
+	//---> TODO
+	taskProfile := GetProfile(t)
+	if taskProfile.ID == "not_found" {
 		err_("PROFILE NOT FOUND")
 		return task.ErrorTaskState
 	}

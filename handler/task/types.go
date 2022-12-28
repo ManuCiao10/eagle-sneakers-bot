@@ -3,27 +3,29 @@ package task
 import (
 	"time"
 
-	hclient "github.com/eagle/handler/client"
 	"github.com/eagle/handler/profile"
+
 )
 
 type Task struct {
-	Mode        string        `json:"mode"`
-	Pid         string        `json:"pid"`
-	Size        string        `json:"size"`
-	Email       string        `json:"email"`
-	Profile     string        `json:"profile"` // profile name
-	Method      string        `json:"method"`
-	Card_Number string        `json:"card_number"`
-	Month       string        `json:"month"`
-	Year        string        `json:"year"`
-	CVV         string        `json:"cvv"`
-	Proxy_List  string        `json:"proxy_list"`
-	Delay       time.Duration `json:"delay"` // delay (in ms)
+	TaskType    string `json:"task_type"` // Site name, Index file name choosen
+	Mode        string `json:"mode"`
+	Pid         string `json:"pid"`
+	Size        string `json:"size"`
+	Email       string `json:"email"`
+	Profile     string `json:"profile"` // profile name
+	Method      string `json:"method"`
+	Card_Number string `json:"card_number"`
+	Month       string `json:"month"`
+	Year        string `json:"year"`
+	CVV         string `json:"cvv"`
+	Proxy_List  string `json:"proxy_list"`
+	// Delay       time.Duration `json:"delay"` // delay (in ms)
 
-	Client          *hclient.Client    `json:"-"` // http client
-	CheckoutProfile profile.Profile    `json:"-"` // profile data
-	CheckoutData    CheckoutLogRequest `json:"-"` // checkout data
+	// Client *hclient.Client `json:"-"` // http client
+	CheckoutProfile profile.Profile `json:"-"` // profile data
+	// CheckoutProxy   .Proxy     `json:"-"` // proxy data
+	CheckoutData CheckoutLogRequest `json:"-"` // checkout data
 }
 
 type CheckoutLogRequest struct {
