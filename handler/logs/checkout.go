@@ -1,9 +1,5 @@
 package logs
 
-import (
-	"fmt"
-)
-
 // func logCheckoutBackend(checkout *CheckoutLogRequest) {
 // 	checkoutClient, _ := hclient.NewClient()
 // 	checkout.AllowPublic = loading.Data.Settings.Settings.AllowPublicWebhook
@@ -57,5 +53,5 @@ import (
 func LogCheckout(checkout *CheckoutLogRequest, discordWebhook string) {
 	// go logCheckoutBackend(checkout)
 	// go logCheckoutDiscord(checkout, discordWebhook)
-	fmt.Println(checkout)
+	// fmt.Println(checkout)
 }

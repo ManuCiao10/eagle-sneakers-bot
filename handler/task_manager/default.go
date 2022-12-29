@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"reflect"
 	"time"
 
 	"github.com/eagle/handler/loading"
@@ -22,8 +21,9 @@ func handleTaskState(taskState task.TaskState, taskType *task.TaskType, t *task.
 		return task.ErrorTaskState
 	}
 
-	// func (t *task.Monitor, internal *SiteInternal) task.TaskState
-	return task.TaskState(nextTaskHandler.Call([]reflect.Value{reflect.ValueOf(t), reflect.ValueOf(t.Internal)})[0].String())
+	nextTaskHandlerFunc := nextTaskHandler.Interface().(func(*task.Task) task.TaskState)
+
+	return nextTaskHandlerFunc(t)
 }
 
 func RunTask(t *task.Task) {
@@ -70,7 +70,7 @@ func RunTask(t *task.Task) {
 	fmt.Println("Starting task...")
 	t.CheckoutData.TaskStart = time.Now()
 
-	t.Internal = reflect.New(taskType.GetInternalType().Elem()).Interface()
+	// t.Internal = reflect.New(taskType.GetInternalType().Elem()).Interface()
 
 	// loop the task states
 	for {
