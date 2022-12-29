@@ -1,5 +1,10 @@
 <kbd> <img src="https://github.com/ManuCiao10/eagle/blob/master/handler/mods/git.png" /> </kbd>
 
+## Features
+
+- [x] Bot Auto-Update + Loader
+- [x] Auth API Discord
+
 ### Structure
 
 1. The architecture does not depend on the existence of some library of feature laden software.
@@ -22,3 +27,7 @@
 
 1.  Run: env GOOS=windows GOARCH=amd64 go build -o EagleBot\_<version>.exe github.com/eagle
 2.  Upload the file in the dashboard
+
+### Contact
+
+-Discord: Manuciao | YΞ#5388
