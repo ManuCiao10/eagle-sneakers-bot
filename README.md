@@ -4,29 +4,31 @@
 
 - [x] Bot Auto-Update + Loader
 - [x] Auth API Discord
-
-### Structure
-
-1. The architecture does not depend on the existence of some library of feature laden software.
-2. Testable. The business rules can be tested without the UI, Database, Web Server, or any other external element.
-   https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-
-### Security
-
-1.  https://stackify.com/what-is-inetpub/
-2.  Sniffer tipo proxyman, fiddler, burp
+- [x] Discord Rich Presence
+- [x] Logger
+- [x] TLS client
+- [x] Console Windows
+- [x] Proxy handler
+- [x] Webhook + Dashboard
+- [x] Modules Manager
+- [x] Task manager
+- [x] Clean Architecture
 
 ### Download and Install
 
 1.  From the dashboard install the executable file.exe
 2.  Create a Folder Named EagleBot and insert the Executable
-3.  Run the Bot with a double click
-4.  You will have the Auto-Update features
+3.  Run the Bot with a double click on the executable
 
-### Push update
+### Artchitecture
 
-1.  Run: env GOOS=windows GOARCH=amd64 go build -o EagleBot\_<version>.exe github.com/eagle
-2.  Upload the file in the dashboard
+Each of these architectures produce systems that are:
+
+1. Independent of Frameworks. The architecture does not depend on the existence of some library of feature laden software. This allows you to use such frameworks as tools, rather than having to cram your system into their limited constraints.
+2. Testable. The business rules can be tested without the UI, Database, Web Server, or any other external element.
+3. Independent of UI. The UI can change easily, without changing the rest of the system. A Web UI could be replaced with a console UI, for example, without changing the business rules.
+4. Independent of Database. You can swap out Oracle or SQL Server, for Mongo, BigTable, CouchDB, or something else. Your business rules are not bound to the database.
+5. Independent of any external agency. In fact your business rules simply don’t know anything at all about the outside world.
 
 ### Contact
 
