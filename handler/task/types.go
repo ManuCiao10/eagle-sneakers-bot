@@ -23,10 +23,11 @@ type Task struct {
 	CVV         string `json:"cvv"`
 	Proxy_List  string `json:"proxy_list"`
 
-	Active bool          `json:"-"`     // active status
-	Done   bool          `json:"-"`     // done status
-	Delay  time.Duration `json:"delay"` // delay (in ms)
-	Type   string        `json:"type"`  // registered task type aka site name
+	Active   bool          `json:"-"`     // active status
+	Done     bool          `json:"-"`     // done status
+	Delay    time.Duration `json:"delay"` // delay (in ms)
+	Type     string        `json:"type"`  // registered task type aka site name
+	Internal interface{}   `json:"-"`     // internal data, gotten from second func argument
 
 	// Client          *hclient.Client    `json:"-"` // http client
 	Context         context.Context    `json:"-"`
@@ -52,9 +53,8 @@ type CheckoutLogRequest struct {
 }
 
 var (
-	DoneTaskState     TaskState = "done"
-	ContinueTaskState TaskState = "continue"
-	ErrorTaskState    TaskState = "error"
+	DoneTaskState  TaskState = "done"
+	ErrorTaskState TaskState = "error"
 )
 
 type TaskType struct {

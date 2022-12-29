@@ -52,11 +52,11 @@ func loadTask() *Tasks {
 	for _, path := range paths {
 		index := 1
 
-		folder := strings.Split(path, "/")[0]
-		if task_.Contains(array, folder) {
+		type_ := strings.Split(path, "/")[0]
+		if task_.Contains(array, type_) {
 			index = index + 1
 		} else {
-			array = append(array, folder)
+			array = append(array, type_)
 		}
 
 		csvFile, err := os.Open(path)
@@ -70,7 +70,7 @@ func loadTask() *Tasks {
 		}
 		defer csvFile.Close()
 
-		tasktype := fmt.Sprint(folder, ",", strconv.Itoa(index))
+		tasktype := fmt.Sprint(type_, ",", strconv.Itoa(index))
 		taskQuantity := len(task)
 
 		for i := 0; i < taskQuantity; i++ {
@@ -88,6 +88,7 @@ func loadTask() *Tasks {
 					Trim(task[i][8]),
 					Trim(task[i][9]),
 					Trim(task[i][10]),
+					Trim(type_),
 				)
 				tasks.Tasks[tasktype] = append(tasks.Tasks[tasktype], taskUUID)
 			}

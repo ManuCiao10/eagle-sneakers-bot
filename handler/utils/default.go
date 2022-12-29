@@ -11,7 +11,6 @@ import (
 	"strings"
 	"time"
 
-	// "github.com/eagle/handler/version"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
 )

@@ -12,40 +12,15 @@ import (
 )
 
 var (
-	taskMutex           = sync.RWMutex{}
-	ErrTaskDoesNotExist = errors.New("task does not exist")
-	tasks               = make(map[string]*Task)
-	Dev                 = true
-	taskTypes           = make(map[string]*TaskType)
+	taskMutex               = sync.RWMutex{}
+	ErrTaskDoesNotExist     = errors.New("task does not exist")
+	tasks                   = make(map[string]*Task)
+	Dev                     = true
+	taskTypes               = make(map[string]*TaskType)
+	ErrTaskTypeDoesNotExist = errors.New("task type does not exist")
 )
 
-// DoesTaskTypeExist check if task type exists
-func DoesTaskTypeExist(taskType string) bool {
-	_, ok := taskTypes[taskType]
-	return ok
-}
-
-// DoesTaskExist checks if a task exists
-func DoesTaskExist(id string) bool {
-	taskMutex.RLock()
-	defer taskMutex.RUnlock()
-	_, ok := tasks[id]
-	return ok
-}
-
-// GetTask gets a task
-func GetTask(id string) (*Task, error) {
-	if !DoesTaskExist(id) {
-		return &Task{}, ErrTaskDoesNotExist
-	}
-
-	taskMutex.RLock()
-	defer taskMutex.RUnlock()
-
-	return tasks[id], nil
-}
-
-func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, month, year, cvv, proxy_list string) string {
+func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, month, year, cvv, proxy_list, type_ string) string {
 	taskMutex.Lock()
 	defer taskMutex.Unlock()
 
@@ -64,17 +39,9 @@ func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, mont
 		Year:        year,
 		CVV:         cvv,
 		Proxy_List:  strings.Split(proxy_list, ".")[0],
+		Type:        strings.ToLower(type_),
 	}
 	return id
-}
-
-func Contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }
 
 func PathTask() []string {
@@ -112,4 +79,13 @@ func PathTask() []string {
 	}
 
 	return paths // return all the paths
+}
+
+func Contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }

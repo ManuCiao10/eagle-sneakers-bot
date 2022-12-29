@@ -2,12 +2,29 @@ package task_manager
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"reflect"
 	"time"
 
+	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
+	"github.com/eagle/handler/utils"
 	"github.com/getsentry/sentry-go"
 )
+
+func handleTaskState(taskState task.TaskState, taskType *task.TaskType, t *task.Task) task.TaskState {
+	nextTaskHandler, err := taskType.GetHandler(taskState)
+
+	if err != nil {
+		log.Println("Task handler error: ", err)
+		return task.ErrorTaskState
+	}
+
+	// func (t *task.Monitor, internal *SiteInternal) task.TaskState
+	return task.TaskState(nextTaskHandler.Call([]reflect.Value{reflect.ValueOf(t), reflect.ValueOf(t.Internal)})[0].String())
+}
 
 func RunTask(t *task.Task) {
 	t.Context, t.Cancel = context.WithCancel(context.Background())
@@ -24,6 +41,70 @@ func RunTask(t *task.Task) {
 
 	if !task.DoesTaskTypeExist(t.Type) {
 		return
+	}
+
+	taskType, err := task.GetTaskType(t.Type)
+
+	if err != nil {
+		log.Println("Task type error: ", err)
+		t.Active = false
+		return
+	}
+
+	hasHandlers := taskType.HasHandlers()
+
+	if !hasHandlers {
+		fmt.Printf("Task type %s has no handlers\n", t.Type)
+		t.Done = true
+		return
+	}
+
+	nextState := taskType.GetFirstHandlerState()
+
+	if len(nextState) == 0 {
+		fmt.Printf("Task type %s has no first handler state\n", t.Type)
+		t.Done = true
+		return
+	}
+	//add log
+	fmt.Println("Starting task...")
+	t.CheckoutData.TaskStart = time.Now()
+
+	t.Internal = reflect.New(taskType.GetInternalType().Elem()).Interface()
+
+	// loop the task states
+	for {
+		nextState = handleTaskState(nextState, taskType, t)
+		if utils.Debug {
+			fmt.Println(t, nextState)
+		}
+
+		if nextState == task.DoneTaskState || t.Context.Err() != nil {
+			t.CheckoutData.TaskEnd = time.Now()
+			t.CheckoutData.CheckoutMs = int(t.CheckoutData.TaskEnd.Sub(t.CheckoutData.TaskStart).Milliseconds())
+			logs.LogCheckout(&logs.CheckoutLogRequest{
+				TaskStart:   t.CheckoutData.TaskStart,
+				TaskEnd:     t.CheckoutData.TaskEnd,
+				Price:       t.CheckoutData.Price,
+				ProductName: t.CheckoutData.ProductName,
+				ProductMSKU: t.CheckoutData.ProductMSKU,
+				Mode:        t.CheckoutData.Mode,
+				CheckoutMs:  t.CheckoutData.CheckoutMs,
+				Size:        t.CheckoutData.Size,
+				Status:      t.CheckoutData.Status,
+				Website:     t.CheckoutData.Website,
+				ImageUrl:    t.CheckoutData.ImageUrl,
+			}, loading.Data.Settings.Settings.DiscordWebhook)
+			// you can report that the task stopped here
+			t.Active = false
+			break
+		} else if nextState == task.ErrorTaskState {
+			// report errors
+			t.Active = false
+			break
+		}
+
+		time.Sleep(1 * time.Millisecond)
 	}
 }
 
