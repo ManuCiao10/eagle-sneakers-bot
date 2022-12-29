@@ -2,10 +2,6 @@ package logs
 
 import (
 	"fmt"
-	"log"
-	"net/url"
-	"strconv"
-	"strings"
 )
 
 // func logCheckoutBackend(checkout *CheckoutLogRequest) {
