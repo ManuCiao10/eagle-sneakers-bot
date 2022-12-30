@@ -15,7 +15,7 @@ import (
 
 	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/settings"
-	task_ "github.com/eagle/handler/task"
+	task_handler "github.com/eagle/handler/task"
 )
 
 var (
@@ -44,7 +44,7 @@ func Trim(s string) string {
 }
 
 func loadTask() *Tasks {
-	paths := task_.PathTask()
+	paths := task_handler.PathTask()
 
 	var tasks Tasks
 	tasks.Tasks = make(map[string][]string)
@@ -53,7 +53,7 @@ func loadTask() *Tasks {
 		index := 1
 
 		type_ := strings.Split(path, "/")[0]
-		if task_.Contains(array, type_) {
+		if task_handler.Contains(array, type_) {
 			index = index + 1
 		} else {
 			array = append(array, type_)
@@ -61,12 +61,14 @@ func loadTask() *Tasks {
 
 		csvFile, err := os.Open(path)
 		if err != nil {
-			log.Fatal("ERROR OPENING FILE")
+			log.Fatal("error opening file")
 		}
 		reader := csv.NewReader(bufio.NewReader(csvFile))
+
 		task, err := reader.ReadAll()
 		if err != nil {
-			log.Fatal("ERROR READING FILE")
+			fmt.Println("error reading file:", type_)
+			continue
 		}
 		defer csvFile.Close()
 
@@ -75,7 +77,7 @@ func loadTask() *Tasks {
 
 		for i := 0; i < taskQuantity; i++ {
 			if i != 0 {
-				taskUUID := task_.CreateTask(
+				taskUUID := task_handler.CreateTask(
 					strings.ToLower(tasktype),
 					Trim(task[i][0]),
 					Trim(task[i][1]),

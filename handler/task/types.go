@@ -5,8 +5,9 @@ import (
 	"reflect"
 	"time"
 
+	"github.com/eagle/client"
+
 	"github.com/eagle/handler/profile"
-	"github.com/eagle/handler/settings"
 )
 
 type Task struct {
@@ -21,7 +22,6 @@ type Task struct {
 	Month       string `json:"month"`
 	Year        string `json:"year"`
 	CVV         string `json:"cvv"`
-	Proxy_List  string `json:"proxy_list"`
 
 	Active   bool          `json:"-"`     // active status
 	Done     bool          `json:"-"`     // done status
@@ -29,11 +29,11 @@ type Task struct {
 	Type     string        `json:"type"`  // registered task type aka site name
 	Internal interface{}   `json:"-"`     // internal data, gotten from second func argument
 
-	// Client          *hclient.Client    `json:"-"` // http client
+	Client          *client.Client     `json:"-"` // http client
 	Context         context.Context    `json:"-"`
 	Cancel          context.CancelFunc `json:"-"` // cancel function
 	CheckoutProfile profile.Profile    `json:"-"` // profile data
-	CheckoutProxy   settings.Proxie    `json:"-"` // proxy data
+	CheckoutProxy   string             // proxy data
 	CheckoutData    CheckoutLogRequest `json:"-"` // checkout data
 }
 
@@ -50,6 +50,7 @@ type CheckoutLogRequest struct {
 	Website     string    `json:"website"`      // siteName, needs to be defined
 	ImageUrl    string    `json:"image_url"`    // needs to be defined
 	Proxy       string    `json:"proxy"`        // needs to be defined
+	Profile     string    `json:"profile"`      // needs to be defined
 }
 
 var (

@@ -1,4 +1,4 @@
-package hclient
+package client
 
 import (
 	sessionjar "github.com/juju/persistent-cookiejar"

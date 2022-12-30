@@ -66,8 +66,7 @@ func RunTask(t *task.Task) {
 		t.Done = true
 		return
 	}
-	//add log
-	fmt.Println("Starting task...")
+	logs.LogInfo(t, "Starting task...")
 	t.CheckoutData.TaskStart = time.Now()
 
 	// t.Internal = reflect.New(taskType.GetInternalType().Elem()).Interface()

@@ -13,5 +13,3 @@ var (
 	ADD_TO_CART    task.TaskState = "add_to_cart"
 	CHECKOUT_ORDER task.TaskState = "checkout_order"
 )
-
-

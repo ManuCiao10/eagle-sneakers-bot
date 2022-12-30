@@ -1,11 +1,11 @@
-package hclient
+package client
 
-import (
-	"github.com/eagle/handler/utils"
+var (
+	UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 )
 
 func (r *Request) SetDefaultHeadersTBA() *Request {
-	r.SetHeader("User-Agent", utils.UserAgent)
+	r.SetHeader("User-Agent", UserAgent)
 	r.SetHeader("authority", "www.the-broken-arm.com")
 	r.SetHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8")
 	r.SetHeader("accept-language", "en-GB,en;q=0.9")

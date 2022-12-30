@@ -14,6 +14,10 @@
 - [x] Task manager
 - [x] Clean Architecture
 
+### Build
+
+1.  Run Makefile with the command `make`
+
 ### Download and Install
 
 1.  From the dashboard install the executable file.exe
@@ -22,7 +26,7 @@
 
 ### Artchitecture
 
-Each of these architectures produce systems that are:
+Each of these [architectures](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) produce systems that are:
 
 1. Independent of Frameworks. The architecture does not depend on the existence of some library of feature laden software. This allows you to use such frameworks as tools, rather than having to cram your system into their limited constraints.
 2. Testable. The business rules can be tested without the UI, Database, Web Server, or any other external element.

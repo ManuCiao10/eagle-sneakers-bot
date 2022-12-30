@@ -27,19 +27,19 @@ func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, mont
 	id := shortuuid.New()
 
 	tasks[id] = &Task{
-		TaskType:    tasktype,
-		Mode:        strings.ToLower(mode),
-		Pid:         strings.ToLower(pid),
-		Size:        strings.ToLower(size),
-		Email:       strings.ToLower(mail),
-		Profile:     Profile,
-		Method:      strings.ToLower(payment),
-		Card_Number: cardNum,
-		Month:       month,
-		Year:        year,
-		CVV:         cvv,
-		Proxy_List:  strings.Split(proxy_list, ".")[0],
-		Type:        strings.ToLower(type_),
+		TaskType:      tasktype,
+		Mode:          strings.ToLower(mode),
+		Pid:           strings.ToLower(pid),
+		Size:          strings.ToLower(size),
+		Email:         strings.ToLower(mail),
+		Profile:       Profile,
+		Method:        strings.ToLower(payment),
+		Card_Number:   cardNum,
+		Month:         month,
+		Year:          year,
+		CVV:           cvv,
+		CheckoutProxy: strings.Split(proxy_list, ".")[0],
+		Type:          strings.ToLower(type_),
 	}
 	return id
 }

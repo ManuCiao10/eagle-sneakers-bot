@@ -1,4 +1,4 @@
-package hclient
+package client
 
 import (
 	"bytes"
@@ -7,8 +7,10 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+)
 
-	"github.com/eagle/handler/utils"
+var (
+	Debug = true
 )
 
 // SetURL sets the url of the request
@@ -86,7 +88,7 @@ func (r *Request) Do() (*Response, error) {
 		req.Host = r.host
 	}
 
-	if utils.Debug {
+	if Debug {
 		fmt.Println("Request Body:", r.body)
 	}
 

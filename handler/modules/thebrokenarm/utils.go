@@ -1,6 +1,7 @@
 package thebrokenarm
 
 import (
+	"fmt"
 	"math/rand"
 	"os"
 	"strings"
@@ -11,6 +12,18 @@ import (
 	"github.com/eagle/handler/task"
 	"github.com/fatih/color"
 )
+
+func ProxyToUrl(proxy string) string {
+	proxySplit := strings.Split(proxy, ":")
+
+	if len(proxySplit) == 2 {
+		return fmt.Sprintf("http://%s:%s", proxySplit[0], proxySplit[1])
+	} else if len(proxySplit) == 4 {
+		return fmt.Sprintf("http://%s:%s@%s:%s", proxySplit[2], proxySplit[3], proxySplit[0], proxySplit[1])
+	}
+
+	return fmt.Sprintf("http://%s", proxy)
+}
 
 func GetProfile(t *task.Task) profile.Profile {
 	for _, p := range loading.Data.Profiles.Profiles {
@@ -27,7 +40,7 @@ func GetProfile(t *task.Task) profile.Profile {
 func GetProxyList(t *task.Task) settings.Proxie {
 
 	for _, proxy := range loading.Data.Proxies.Proxies {
-		if proxy.ID == t.Proxy_List {
+		if proxy.ID == t.CheckoutProxy {
 			return proxy
 		}
 	}

@@ -1,4 +1,4 @@
-package hclient
+package client
 
 import (
 	"crypto/tls"
@@ -9,31 +9,11 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
-
-	"github.com/eagle/handler/utils"
 )
 
 var (
 	ErrNoCertificates = errors.New("no certificates in client")
 )
-
-// func GetDNSName(parameters []string) []string {
-// 	for _, peercert := range state.PeerCertificates {
-// 		der, err := x509.MarshalPKIXPublicKey(peercert.PublicKey)
-// 		if err != nil {
-// 			log.Println("Failed to get public key (https).")
-// 		}
-// 		if len(peercert.DNSNames) > 0 {
-// 			return peercert.DNSNames[0]
-// 		}
-// 	}
-// 	return "Unknown Site"
-// }
-
-var fingerprints = map[string]int{
-	"144cd5394a78745de02346553d126115b48955747eb9098c1fae7186cd60947e": 1,
-	"4bd174896d61a0932ed108233c69e4a4079ed35b6942fcf81c8c2cde81cfb8b5": 1,
-}
 
 // NewClient creates a new http client
 // Takes in the optional arguments: proxy, servername
@@ -178,10 +158,10 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 		cookies:    resp.Cookies(),
 	}
 	c.LatestResponse = response
-	if utils.Debug {
-		fmt.Println(fmt.Sprintf("%s %s", r.Method, r.URL.String()))
-		fmt.Println(fmt.Sprintf("Response Body: %s", response.BodyAsString()))
-	}
+	// if utils.Debug {
+	// 	fmt.Println(fmt.Sprintf("%s %s", r.Method, r.URL.String()))
+	// 	fmt.Println(fmt.Sprintf("Response Body: %s", response.BodyAsString()))
+	// }
 
 	return response, nil
 }

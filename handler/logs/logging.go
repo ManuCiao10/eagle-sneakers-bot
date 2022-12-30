@@ -1,0 +1,70 @@
+package logs
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/eagle/handler/task"
+	"github.com/eagle/handler/utils"
+)
+
+func LogErr(t *task.Task, data ...interface{}) {
+	TimeStamp := utils.Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorRed + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}
+
+func LogInfo(t *task.Task, data ...interface{}) {
+	TimeStamp := utils.Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorWhite + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}
+
+func LogWarn(t *task.Task, data ...interface{}) {
+	TimeStamp := utils.Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorYellow + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}
+
+func LogSuccess(t *task.Task, data ...interface{}) {
+	TimeStamp := utils.Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorGreen + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}
+
+// LogLogTail is a function to log all the logs in a file

@@ -46,12 +46,12 @@ func Parsing(site int) string {
 	utils.Directory(sites[site])
 
 	csv_index := utils.SelectMode(utils.Version() + utils.Time() + "PLEASE SELECT CSV:")
-	//check if csv_index is valid
+
 	t_name := Validing(csv_index, sites[site])
 	if t_name == "UNEXPECTED" {
 		err_("INVALID SELECTION")
 	}
 	task_type = fmt.Sprint(sites[site], ",", csv_index)
 
-	return task_type
+	return task_type //--> site,index_csv
 }
