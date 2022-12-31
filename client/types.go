@@ -1,9 +1,10 @@
 package client
 
 import (
-	sessionjar "github.com/juju/persistent-cookiejar"
 	"io"
-	"net/http"
+
+	sessionjar "github.com/juju/persistent-cookiejar"
+	http "github.com/saucesteals/fhttp"
 )
 
 type Client struct {
@@ -24,6 +25,13 @@ type Request struct {
 	cookies []*http.Cookie
 }
 
+type Session struct {
+	Client    *http.Client
+	Headers   map[string]string
+	Cookies   map[string]string
+	Randomize bool
+}
+
 type Response struct {
 	headers http.Header
 
@@ -32,4 +40,6 @@ type Response struct {
 	status     string
 	statusCode int
 	cookies    []*http.Cookie
+
+	Error string
 }

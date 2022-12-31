@@ -1,48 +1,40 @@
 package client
 
 import (
-	"crypto/tls"
 	"errors"
 	"fmt"
 	"io"
-	"log"
-	"net/http"
-	"net/http/cookiejar"
-	"net/url"
+
+	http "github.com/saucesteals/fhttp"
+	"github.com/saucesteals/mimic"
 )
 
 var (
 	ErrNoCertificates = errors.New("no certificates in client")
+	latestVersion     = mimic.MustGetLatestVersion(mimic.PlatformWindows)
+	m, _              = mimic.Chromium(mimic.BrandChrome, latestVersion)
 )
 
-// NewClient creates a new http client
-// Takes in the optional arguments: proxy, servername
+func createClient(proxy string) (*http.Client, error) {
+	transport, err := createTransport(proxy)
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{
+		Transport: m.ConfigureTransport(transport),
+	}, nil
+}
+
+// NewClient Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
-	tlsClientConfig := &tls.Config{
-		InsecureSkipVerify: true,
-	}
-
-	// parameters[0] = proxy
-	// parameters[1] = sni
-	if len(parameters) > 1 && len(parameters[1]) > 0 {
-		tlsClientConfig.ServerName = parameters[1]
-	}
-
-	transport := &http.Transport{
-		ForceAttemptHTTP2: true,
-		TLSClientConfig:   tlsClientConfig,
-	}
-
-	if len(parameters) > 0 && len(parameters[0]) > 0 {
-		proxyUrl, _ := url.Parse(parameters[0])
-
-		transport.Proxy = http.ProxyURL(proxyUrl)
+	newClient, err := createClient(parameters[0])
+	if err != nil {
+		createCResponse(&Response{Error: err.Error()})
 	}
 
 	return &Client{
-		client: &http.Client{
-			Transport: transport,
-		},
+		client:         newClient,
 		LatestResponse: &Response{},
 	}, nil
 
@@ -56,87 +48,42 @@ func (c *Client) NewRequest() *Request {
 	}
 }
 
-func (c *Client) InitCookieJar() {
-	if c.client.Jar == nil {
-		c.client.Jar, _ = cookiejar.New(nil)
-	}
+// SetURL sets the url of the request
+func (r *Request) SetURL(url string) *Request {
+	r.url = url
+	return r
 }
 
-// InitSessionJar creates session jar, returns if it already existed or not
-// func (c *Client) InitSessionJar(account *account.Account) bool {
-// 	didExist := sessions.DoesSessionExist(account)
-
-// 	jar, err := sessionjar.New(&sessionjar.Options{
-// 		Filename: fmt.Sprintf("../.sessions/%s/%s.sessions", strings.Replace(utils.SiteIDtoSiteString[account.SiteId], "@", "", -1), account.Email),
-// 	})
-
-// 	if err != nil {
-// 		fmt.Println("Failed to initialize session. ", err)
-// 		return false
-// 	}
-
-// 	c.jar = jar
-// 	c.client.Jar = jar
-// 	return didExist
-// }
-
-func (c *Client) SaveCookies() {
-	if c.client.Jar != nil {
-		err := c.jar.Save()
-		if err != nil {
-			log.Println(err)
-			return
-		}
-	}
+// SetMethod sets the method of the request
+func (r *Request) SetMethod(method string) *Request {
+	r.method = method
+	return r
 }
 
-// AddCookie adds a new cookie to the request client cookie jar
-func (c *Client) AddCookie(u *url.URL, cookie *http.Cookie) error {
-	if c.client.Jar == nil {
-		c.client.Jar, _ = cookiejar.New(nil)
+// AddHeader adds a specified header to the request
+// If the header already exists, the value will be appended by the new specified value
+// If the header does not exist, the header will be set to the specified value
+func (r *Request) AddHeader(key, value string) *Request {
+	if header, ok := r.header[key]; ok {
+		header = append(header, value)
+		r.header[key] = header
+	} else {
+		r.header[key] = []string{value}
 	}
-
-	currentCookies := c.client.Jar.Cookies(u)
-	currentCookies = append(currentCookies, cookie)
-	c.client.Jar.SetCookies(u, currentCookies)
-
-	return nil
+	return r
 }
 
-// RemoveCookie removes the specified cookie from the request client cookie jar
-func (c *Client) RemoveCookie(u *url.URL, cookie string) error {
-	if c.client.Jar == nil {
-		c.client.Jar, _ = cookiejar.New(nil)
-	}
-
-	newCookie := &http.Cookie{
-		Name:  cookie,
-		Value: "",
-	}
-
-	c.client.Jar.SetCookies(u, []*http.Cookie{newCookie})
-
-	return nil
-}
-
-func (c *Client) AddCookieByName(r *Response, u *url.URL, name string) error {
-	cookie := r.GetCookieByName(name)
-	if cookie != nil {
-		err := c.AddCookie(u, cookie)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
+// SetHeader sets a specified header to the request
+// This overrides any previously set values of the specified header
+func (r *Request) SetHeader(key, value string) *Request {
+	r.header[key] = []string{value}
+	return r
 }
 
 // Do will send the specified request
 func (c *Client) Do(r *http.Request) (*Response, error) {
-	fmt.Print("Sending request: ", r.URL.String())
 	resp, err := c.client.Do(r)
 	if err != nil {
-		fmt.Print(err)
 		return nil, err
 	}
 
@@ -148,7 +95,7 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 
 	// https://help.socketlabs.com/docs/how-to-fix-error-only-one-usage-of-each-socket-address-protocolnetwork-addressport-is-normally-permitted
 	// https://www.geeksforgeeks.org/http-headers-connection/#:~:text=close%20This%20close%20connection%20directive,want%20your%20connection%20to%20close.
-	// r.Close = true // perhaps set this to false?
+	r.Close = true // perhaps set this to false?
 
 	response := &Response{
 		headers:    resp.Header,
@@ -157,11 +104,12 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 		statusCode: resp.StatusCode,
 		cookies:    resp.Cookies(),
 	}
+
 	c.LatestResponse = response
-	// if utils.Debug {
-	// 	fmt.Println(fmt.Sprintf("%s %s", r.Method, r.URL.String()))
-	// 	fmt.Println(fmt.Sprintf("Response Body: %s", response.BodyAsString()))
-	// }
+	if Debug {
+		fmt.Printf("%s %s\n", r.Method, r.URL.String())
+		fmt.Printf("Response Body: %s\n", response.BodyAsString())
+	}
 
 	return response, nil
 }

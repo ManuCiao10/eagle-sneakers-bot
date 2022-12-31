@@ -23,13 +23,13 @@ type Task struct {
 	Year        string `json:"year"`
 	CVV         string `json:"cvv"`
 
-	Active   bool          `json:"-"`     // active status
-	Done     bool          `json:"-"`     // done status
-	Delay    time.Duration `json:"delay"` // delay (in ms)
-	Type     string        `json:"type"`  // registered task type aka site name
-	Internal interface{}   `json:"-"`     // internal data, gotten from second func argument
+	Active   bool          `json:"-"`    // active status
+	Done     bool          `json:"-"`    // done status
+	Delay    time.Duration `json:"-"`    // delay (in ms)
+	Type     string        `json:"type"` // registered task type aka site name
+	Internal interface{}   `json:"-"`    // internal data, gotten from second func argument
 
-	Client          *client.Client     `json:"-"` // http client
+	Client          *client.Client     `json:"-"` // client
 	Context         context.Context    `json:"-"`
 	Cancel          context.CancelFunc `json:"-"` // cancel function
 	CheckoutProfile profile.Profile    `json:"-"` // profile data

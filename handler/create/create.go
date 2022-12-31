@@ -6,6 +6,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/eagle/handler/utils"
 	"github.com/fatih/color"
 )
 
@@ -27,22 +28,22 @@ func Initialize() {
 	// 	log.Fatal(err)
 	// }
 
-	// if _, err := os.Stat("settings.json"); os.IsNotExist(err) {
-	// 	_, err := os.Create("settings.json")
+	if _, err := os.Stat("settings.json"); os.IsNotExist(err) {
+		_, err := os.Create("settings.json")
 
-	// 	if err != nil {
-	// 		log.Fatal(err)
-	// 	}
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	// 	if utils.Dev {
-	// 		ioutil.WriteFile("settings.json", JsonTemplateDEV, 0644)
-	// 	} else {
-	// 		err = ioutil.WriteFile("settings.json", JsonTemplate, 0644)
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-	// 	}
-	// }
+		if utils.Dev {
+			ioutil.WriteFile("settings.json", JsonTemplateDEV, 0644)
+		} else {
+			err = ioutil.WriteFile("settings.json", JsonTemplate, 0644)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
+	}
 
 	// if _, err := os.Stat("profiles.csv"); os.IsNotExist(err) {
 	// 	_, err := os.Create("profiles.csv")

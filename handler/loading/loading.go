@@ -31,7 +31,7 @@ func Initialize() {
 
 func Load() *Config {
 	return &Config{
-		// Settings: *loadSettings(),
+		Settings: *loadSettings(),
 		Env:      *loadEnv(),
 		Profiles: *loadProfiles(),
 		Proxies:  *loadProxies(),
@@ -67,8 +67,7 @@ func loadTask() *Tasks {
 
 		task, err := reader.ReadAll()
 		if err != nil {
-			fmt.Println("error reading file:", type_)
-			continue
+			log.Fatal("error reading file:", type_)
 		}
 		defer csvFile.Close()
 

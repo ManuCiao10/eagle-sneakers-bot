@@ -31,7 +31,7 @@ func main() {
 		create.Initialize()
 		auth.Initialize()
 		version.Initialize()
-		// console.Initialize() 
+		// console.Initialize()
 		presence.Initialize()
 	}
 

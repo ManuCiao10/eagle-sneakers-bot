@@ -10,8 +10,8 @@ func Initialize() {
 	monitorType.SetFirstHandlerState(INITIALIZE)
 
 	monitorType.AddHandlers(task.TaskHandlerMap{
-		INITIALIZE: initialize,
-		// GET_SESSION: getSession,
+		INITIALIZE:  initialize,
+		GET_SESSION: getSession,
 		// LOGIN:       login,
 		// CLEAR_CART:  clearCart,
 		// GET_ITEM:    getItem,

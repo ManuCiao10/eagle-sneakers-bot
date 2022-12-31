@@ -4,16 +4,21 @@ go 1.19
 
 require github.com/lithammer/shortuuid v3.0.0+incompatible
 
+require github.com/refraction-networking/utls v1.1.6-0.20221101174805-9c1996abbbba // indirect
+
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/jaypipes/pcidb v1.0.0 // indirect
 	github.com/juju/go4 v0.0.0-20160222163258-40d72ab9641a // indirect
+	github.com/klauspost/compress v1.15.12 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
+	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
@@ -33,5 +38,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9
+	github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7
 	golang.org/x/sys v0.3.0 // indirect
 )

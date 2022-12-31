@@ -1,9 +1,13 @@
 package thebrokenarm
 
 import (
+	"log"
 	"math/rand"
+	"strconv"
 	"time"
 
+	"github.com/eagle/client"
+	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
 )
@@ -37,11 +41,17 @@ func initialize(t *task.Task) task.TaskState {
 
 	t.CheckoutProxy = ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
-	// client, err := hclient.NewClient(t.CheckoutProxy)
+	delay, err := strconv.Atoi(loading.Data.Settings.Settings.Delay.Retry)
+	if err != nil {
+		log.Fatal("Failed to convert delay in a task to int.")
+	}
+	t.Delay = time.Duration(delay) * time.Millisecond
 
-	// if err != nil {
-	// 	return task.ErrorTaskState
-	// }
+	client, err := client.NewClient(t.CheckoutProxy)
+
+	if err != nil {
+		return task.ErrorTaskState
+	}
 	t.CheckoutData.Proxy = t.CheckoutProxy
 	t.CheckoutData.Website = t.Type
 	t.CheckoutData.Mode = t.Mode
@@ -49,6 +59,6 @@ func initialize(t *task.Task) task.TaskState {
 	t.CheckoutData.Size = t.Size
 	t.CheckoutData.Profile = t.CheckoutProfile.ID
 
-	// t.Client = client
+	t.Client = client
 	return GET_SESSION
 }

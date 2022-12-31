@@ -1,41 +1,42 @@
 package thebrokenarm
 
-// func HandleSessionResponse(t *task.Task) task.TaskState {
-// 	//handle response index body to take the ID for inizialize the challenge
+import (
+	"fmt"
+	"time"
 
-// 	fmt.Print(t.Client.LatestResponse.StatusCode())
-// 	if t.Client.LatestResponse.StatusCode() != 200 {
-// 		// retry
-// 		time.Sleep(t.Delay)
-// 		return GET_SESSION
-// 	}
+	"github.com/eagle/handler/logs"
+	"github.com/eagle/handler/task"
+)
 
-// 	//parse the body to get the challenge ID
-// 	if utils.Debug {
-// 		fmt.Println(t.Delay)
-// 		fmt.Println(t.Client.LatestResponse.Body())
-// 	}
-// 	return task.ContinueTaskState
+func getSession(t *task.Task) task.TaskState {
+	// if t.Mode == "login" {
+	// 	return Login(t)
+	// }
+	logs.LogWarn(t, "getting session")
+	_, err := t.Client.NewRequest().
+		SetURL("https://www.the-broken-arm.com/en/").
+		SetMethod("GET").
+		SetDefaultHeadersTBA().
+		Do()
 
-// }
+	if err != nil {
+		// handle error and retry
+		logs.LogWarn(t, "failed to get session, retrying...")
+		return GET_SESSION
+	}
 
-// func getSession(t *task.Task) task.TaskState {
-// 	// if t.Mode == "login" {
-// 	// 	return Login(t)
-// 	// }
+	return handleResponse(t)
+}
 
-// 	//find the cookies for the session
-// 	_, err := t.Client.NewRequest().
-// 		SetURL("https://www.shoezgallery.com/en/").
-// 		SetMethod("GET").
-// 		SetDefaultHeadersTBA().
-// 		Do()
+func handleResponse(t *task.Task) task.TaskState {
+	//find the cookies for the session
+	fmt.Println(t.Delay)
 
-// 	if err != nil {
-// 		err_("REQUEST ERROR")
-// 		return task.ErrorTaskState
-// 	}
-// 	log.Print("GETTING SESSION ...")
-// 	return HandleSessionResponse(t)
+	if t.Client.LatestResponse.StatusCode() != 200 {
+		// retry
+		time.Sleep(t.Delay)
+		return GET_SESSION
+	}
 
-// }
+	return LOGIN //add LOGIN
+}
