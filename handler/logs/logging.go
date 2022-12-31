@@ -5,11 +5,10 @@ import (
 	"strings"
 
 	"github.com/eagle/handler/task"
-	"github.com/eagle/handler/utils"
 )
 
 func LogErr(t *task.Task, data ...interface{}) {
-	TimeStamp := utils.Time()
+	TimeStamp := Time()
 	siteName := strings.ToUpper(t.Type)
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
@@ -23,7 +22,7 @@ func LogErr(t *task.Task, data ...interface{}) {
 }
 
 func LogInfo(t *task.Task, data ...interface{}) {
-	TimeStamp := utils.Time()
+	TimeStamp := Time()
 	siteName := strings.ToUpper(t.Type)
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
@@ -38,7 +37,7 @@ func LogInfo(t *task.Task, data ...interface{}) {
 }
 
 func LogWarn(t *task.Task, data ...interface{}) {
-	TimeStamp := utils.Time()
+	TimeStamp := Time()
 	siteName := strings.ToUpper(t.Type)
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
@@ -53,7 +52,7 @@ func LogWarn(t *task.Task, data ...interface{}) {
 }
 
 func LogSuccess(t *task.Task, data ...interface{}) {
-	TimeStamp := utils.Time()
+	TimeStamp := Time()
 	siteName := strings.ToUpper(t.Type)
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)

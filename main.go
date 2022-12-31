@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/eagle/handler/auth"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/site"
@@ -43,8 +43,7 @@ func main() {
 		if !Run {
 			index := utils.Menu()
 			if index == utils.ERROR {
-				utils.ConsolePrint("INVALID OPTION!", "red")
-				os.Exit(0)
+				logs.LogsMsgErr("invalid option")
 			}
 			data := site.Parsing(index)
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {

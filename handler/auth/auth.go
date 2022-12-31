@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/eagle/handler/loading"
-	"github.com/eagle/handler/utils"
+	"github.com/eagle/handler/logs"
 	"github.com/fatih/color"
 	"github.com/jaypipes/ghw"
 )
@@ -93,7 +93,7 @@ func ValidateKey(key string) bool {
 
 	r, err := http.NewRequest("GET", "https://api.hyper.co/v6/licenses/"+key, nil)
 	if err != nil {
-		utils.ConsolePrint("AUTH SERVER ERROR", "red")
+		logs.LogsMsgWarn("auth server error")
 		return false
 	}
 	time.Sleep(2 * time.Second)
@@ -102,12 +102,12 @@ func ValidateKey(key string) bool {
 
 	resp, err := client.Do(r)
 	if err != nil {
-		utils.ConsolePrint("COULD NOT REQUEST AUTH", "red")
+		logs.LogsMsgWarn("could not request auth")
 		return false
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		utils.ConsolePrint("COULD NOT READ RESPONSE BODY", "red")
+		logs.LogsMsgWarn("could not read response body")
 		return false
 	}
 

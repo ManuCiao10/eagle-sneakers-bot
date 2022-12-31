@@ -7,10 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/eagle/handler/loading"
-	"github.com/fatih/color"
+	"github.com/eagle/handler/logs"
 )
 
 var (
@@ -94,9 +93,7 @@ func DuplicateCrack() {
 		}
 	}
 	if count > 1 {
-		color.Red("[" + time.Now().Format("15:04:05.000000") + "] DELETE OLD VERSION")
-		time.Sleep(2 * time.Second)
-		os.Exit(0)
+		logs.LogsMsgErr("delete old version")
 	}
 }
 
@@ -118,15 +115,15 @@ func Initialize() {
 	version := strings.Split(new_version, " ")[1]
 	if version != ExecutableName() {
 		if !DowloadUpdate(version) {
-			color.Red("[" + time.Now().Format("15:04:05.000000") + "] " + "ERROR DOWNLOADING UPDATE")
-			time.Sleep(2 * time.Second)
-			os.Exit(0)
+			logs.LogsMsgErr("error downloading update")
 		}
-		color.White("[" + time.Now().Format("15:04:05.000000") + "] " + "DOWNLOADING " + new_version)
-		color.Yellow("[" + time.Now().Format("15:04:05.000000") + "] " + "UPDATE DOWNLOADED")
-		time.Sleep(2 * time.Second)
-		os.Exit(0)
+		logs.LogsMsgInfo("downloading... " + new_version)
+		logs.LogsMsgSuccess("update downloaded")
 	}
 	Version = version
 
+}
+
+func GetVersion() string {
+	return "[Eagle " + Version + "] "
 }

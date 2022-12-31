@@ -5,7 +5,9 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/utils"
+	"github.com/eagle/handler/version"
 )
 
 var (
@@ -36,8 +38,7 @@ func Validing(csv string, name string) string {
 }
 
 func err_(err string) {
-	utils.ConsolePrint(err, "red")
-	os.Exit(0)
+	logs.LogsMsgErr(err)
 }
 
 func Parsing(site int) string {
@@ -45,7 +46,7 @@ func Parsing(site int) string {
 	utils.Banner()
 	utils.Directory(sites[site])
 
-	csv_index := utils.SelectMode(utils.Version() + utils.Time() + "PLEASE SELECT CSV:")
+	csv_index := utils.SelectMode(version.GetVersion() + logs.Time() + "PLEASE SELECT CSV:")
 
 	t_name := Validing(csv_index, sites[site])
 	if t_name == "UNEXPECTED" {

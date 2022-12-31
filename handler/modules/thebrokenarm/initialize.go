@@ -1,7 +1,6 @@
 package thebrokenarm
 
 import (
-	"log"
 	"math/rand"
 	"strconv"
 	"time"
@@ -43,15 +42,16 @@ func initialize(t *task.Task) task.TaskState {
 
 	delay, err := strconv.Atoi(loading.Data.Settings.Settings.Delay.Retry)
 	if err != nil {
-		log.Fatal("Failed to convert delay in a task to int.")
+		logs.LogsMsgErr("Check the delay in the settings.json file.")
 	}
 	t.Delay = time.Duration(delay) * time.Millisecond
 
-	client, err := client.NewClient(t.CheckoutProxy)
+	client, err := client.NewClient()
 
 	if err != nil {
 		return task.ErrorTaskState
 	}
+
 	t.CheckoutData.Proxy = t.CheckoutProxy
 	t.CheckoutData.Website = t.Type
 	t.CheckoutData.Mode = t.Mode

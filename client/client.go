@@ -13,6 +13,7 @@ var (
 	ErrNoCertificates = errors.New("no certificates in client")
 	latestVersion     = mimic.MustGetLatestVersion(mimic.PlatformWindows)
 	m, _              = mimic.Chromium(mimic.BrandChrome, latestVersion)
+	proxy             = ""
 )
 
 func createClient(proxy string) (*http.Client, error) {
@@ -28,11 +29,14 @@ func createClient(proxy string) (*http.Client, error) {
 
 // NewClient Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
-	newClient, err := createClient(parameters[0])
+	if len(parameters) > 0 && len(parameters[0]) > 0 {
+		proxy = parameters[0]
+	}
+
+	newClient, err := createClient(proxy)
 	if err != nil {
 		createCResponse(&Response{Error: err.Error()})
 	}
-
 	return &Client{
 		client:         newClient,
 		LatestResponse: &Response{},

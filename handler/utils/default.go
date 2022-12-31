@@ -9,8 +9,8 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-	"time"
 
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
 )
@@ -22,12 +22,11 @@ var (
 	MONITOR      = 2
 	Active       bool
 
-	ERROR     = 255
-	
+	ERROR = 255
 )
 
 func Menu() int {
-	mode := SelectMode(color.MagentaString(Version() + Time() + color.WhiteString("PLESE SELECT A SITE:")))
+	mode := SelectMode(color.MagentaString(version.GetVersion() + logs.Time() + color.WhiteString("PLESE SELECT A SITE:")))
 	if mode == "1" {
 		return THEBROKENARM
 	} else if mode == "2" {
@@ -64,42 +63,34 @@ func Banner() {
 
 func Site() {
 	version.Version = version.ExecutableName()
-	ConsolePrint(color.WhiteString("1. THEBROKENARM"), "magenta")
-	ConsolePrint(color.WhiteString("2. EAGLE MONITOR"), "magenta")
+	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("1. THEBROKENARM"))
+	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("2. EAGLE MONITOR"))
 
 	println("\n")
 }
 
-func ConsolePrint(msg string, inputColor string) {
-	switch inputColor {
-	case "red":
-		color.Red(Version() + Time() + msg)
-	case "green":
-		color.Green(Version() + Time() + msg)
-	case "yellow":
-		color.Yellow(Version() + Time() + msg)
-	case "blue":
-		color.Blue(Version() + Time() + msg)
-	case "magenta":
-		color.Magenta(Version() + Time() + msg)
-	case "cyan":
-		color.Cyan(Version() + Time() + msg)
-	case "white":
-		color.White(Version() + Time() + msg)
-	case "black":
-		color.Black(Version() + Time() + msg)
-	default:
-		color.Red(Version() + Time() + msg)
-	}
-}
-
-func Time() string {
-	return "[" + time.Now().Format("15:04:05.000000") + "] "
-}
-
-func Version() string {
-	return "[Eagle " + version.Version + "] "
-}
+// func ConsolePrint(msg string, inputColor string) {
+// 	switch inputColor {
+// 	case "red":
+// 		color.Red(Version() + Time() + msg)
+// 	case "green":
+// 		color.Green(Version() + Time() + msg)
+// 	case "yellow":
+// 		color.Yellow(Version() + Time() + msg)
+// 	case "blue":
+// 		color.Blue(Version() + Time() + msg)
+// 	case "magenta":
+// 		color.Magenta(Version() + Time() + msg)
+// 	case "cyan":
+// 		color.Cyan(Version() + Time() + msg)
+// 	case "white":
+// 		color.White(Version() + Time() + msg)
+// 	case "black":
+// 		color.Black(Version() + Time() + msg)
+// 	default:
+// 		color.Red(Version() + Time() + msg)
+// 	}
+// }
 
 func Directory(site string) {
 	files, err := os.ReadDir("./" + site)
@@ -109,7 +100,7 @@ func Directory(site string) {
 	for i, f := range files {
 		i = i + 1
 		s := strconv.Itoa(i)
-		ConsolePrint(color.WhiteString(s+". "+f.Name()), "magenta")
+		color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString(s+". "+f.Name()))
 	}
 	println("\n")
 }

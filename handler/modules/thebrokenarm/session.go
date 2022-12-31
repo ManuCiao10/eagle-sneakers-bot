@@ -1,17 +1,20 @@
 package thebrokenarm
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
 )
 
+/*
+-- Modes --
+if t.Mode == "login" {
+ 	return Login(t)
+}
+*/
+
 func getSession(t *task.Task) task.TaskState {
-	// if t.Mode == "login" {
-	// 	return Login(t)
-	// }
 	logs.LogWarn(t, "getting session")
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
@@ -29,14 +32,12 @@ func getSession(t *task.Task) task.TaskState {
 }
 
 func handleResponse(t *task.Task) task.TaskState {
-	//find the cookies for the session
-	fmt.Println(t.Delay)
-
 	if t.Client.LatestResponse.StatusCode() != 200 {
 		// retry
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
+	//get cookies and set them in the client
 
 	return LOGIN //add LOGIN
 }

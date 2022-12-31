@@ -6,12 +6,13 @@ import (
 	"os"
 	"time"
 
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/utils"
-	"github.com/fatih/color"
 )
 
 func Initialize() {
-	color.Magenta("[" + time.Now().Format("15:04:05.000000") + "] " + "CHECKING FOLDERS...")
+	logs.LogsMsg("checking folders...")
+	time.Sleep(1 * time.Second)
 
 	// if _, err := os.Stat("Proxies"); os.IsNotExist(err) {
 	// 	err := os.Mkdir("Proxies", 0755)
