@@ -34,20 +34,25 @@ func getSession(t *task.Task) task.TaskState {
 
 func handleResponse(t *task.Task) task.TaskState {
 	if t.Client.LatestResponse.StatusCode() != 200 {
-		// handle error and retry
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
-	orderId := utils.GetID(t.Client.LatestResponse.BodyAsString())
-	if orderId == "" {
-		// handle error and retry
-		logs.LogErr(t, "failed to get orderId == -1")
+	Id := utils.GetId(t.Client.LatestResponse.BodyAsString())
+	if Id == "" {
+		logs.LogErr(t, "failed to get Id == -1")
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
+	t.Client.SaveCookies()
 
-	//get the ID from the response
-	//get cf cookies --> https://www.the-broken-arm.com/cdn-cgi/challenge-platform/h/g/cv/result/ID
+	//add t.Client.LatestResponse.Cookies() to the request
+	// for _, v := range t.Client.LatestResponse.Cookies() {
+	// 	fmt.Println(v)
+	// 	t.Client.NewRequest().AddCookie(v)
+	// }
 
-	return LOGIN
+	//save id to struct TBAInternal
+	TBAInternal.ProductID = Id
+
+	return GET_CLOUD
 }

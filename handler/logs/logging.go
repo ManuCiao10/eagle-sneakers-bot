@@ -67,3 +67,33 @@ func LogSuccess(t *task.Task, data ...interface{}) {
 }
 
 // LogLogTail is a function to log all the logs in a file
+
+func LogCyan(t *task.Task, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorCyan + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}
+
+func LogBlue(t *task.Task, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Type)
+	taskMode := strings.ToUpper(t.Mode)
+	taskSize := strings.ToUpper(t.Size)
+	taskPid := strings.ToUpper(t.Pid)
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorBlue + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+}

@@ -12,9 +12,6 @@ func Initialize() {
 	monitorType.AddHandlers(task.TaskHandlerMap{
 		INITIALIZE:  initialize,
 		GET_SESSION: getSession,
-		// LOGIN:       login,
-		// CLEAR_CART:  clearCart,
-		// GET_ITEM:    getItem,
-		// ADD_TO_CART: addToCart,
+		GET_CLOUD:   getCloud,
 	})
 }

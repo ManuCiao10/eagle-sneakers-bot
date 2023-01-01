@@ -60,5 +60,6 @@ func initialize(t *task.Task) task.TaskState {
 	t.CheckoutData.Profile = t.CheckoutProfile.ID
 
 	t.Client = client
+
 	return GET_SESSION
 }

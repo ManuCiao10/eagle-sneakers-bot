@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func GetID(body string) string {
+func GetId(body string) string {
 	regex := regexp.MustCompile(`r:'(.*)'`)
 	orderId := regex.FindStringSubmatch(body)
 	if len(orderId[1]) > 1 {

@@ -5,11 +5,16 @@ import (
 )
 
 var (
-	INITIALIZE     task.TaskState = "initialize"
-	GET_SESSION    task.TaskState = "get_session"
-	LOGIN          task.TaskState = "login"
-	CLEAR_CART     task.TaskState = "clear_cart"
-	GET_ITEM       task.TaskState = "get_item"
-	ADD_TO_CART    task.TaskState = "add_to_cart"
-	CHECKOUT_ORDER task.TaskState = "checkout_order"
+	INITIALIZE  task.TaskState = "initialize"
+	GET_SESSION task.TaskState = "get_session"
+	GET_CLOUD   task.TaskState = "get_cloud"
+	PRODUCT     task.TaskState = "product"
 )
+
+var TBAInternal = struct {
+	ProductID string
+}{}
+
+// type TBAInternal struct {
+// 	ProductID string
+// }
