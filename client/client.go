@@ -37,11 +37,11 @@ func NewClient(parameters ...string) (*Client, error) {
 	if err != nil {
 		createCResponse(&Response{Error: err.Error()})
 	}
+
 	return &Client{
 		client:         newClient,
 		LatestResponse: &Response{},
 	}, nil
-
 }
 
 // NewRequest creates a new request under a specified http client

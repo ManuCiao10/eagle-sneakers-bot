@@ -5,6 +5,7 @@ import (
 
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
+	"github.com/eagle/handler/utils"
 )
 
 /*
@@ -24,7 +25,7 @@ func getSession(t *task.Task) task.TaskState {
 
 	if err != nil {
 		// handle error and retry
-		logs.LogWarn(t, "failed to get session, retrying...")
+		logs.LogErr(t, "failed to get session, retrying...")
 		return GET_SESSION
 	}
 
@@ -33,11 +34,20 @@ func getSession(t *task.Task) task.TaskState {
 
 func handleResponse(t *task.Task) task.TaskState {
 	if t.Client.LatestResponse.StatusCode() != 200 {
-		// retry
+		// handle error and retry
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
-	//get cookies and set them in the client
+	orderId := utils.GetID(t.Client.LatestResponse.BodyAsString())
+	if orderId == "" {
+		// handle error and retry
+		logs.LogErr(t, "failed to get orderId == -1")
+		time.Sleep(t.Delay)
+		return GET_SESSION
+	}
 
-	return LOGIN //add LOGIN
+	//get the ID from the response
+	//get cf cookies --> https://www.the-broken-arm.com/cdn-cgi/challenge-platform/h/g/cv/result/ID
+
+	return LOGIN
 }

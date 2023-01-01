@@ -9,3 +9,8 @@ func (r *Response) BodyAsString() string {
 func (r *Response) StatusCode() int {
 	return r.statusCode
 }
+
+// Body returns the response body
+func (r *Response) Body() []byte {
+	return r.body
+}
