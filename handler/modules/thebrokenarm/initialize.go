@@ -40,7 +40,7 @@ func initialize(t *task.Task) task.TaskState {
 	}
 	t.Delay = time.Duration(delay) * time.Millisecond
 
-	client, err := client.NewClient(t.CheckoutProxy) //t.CheckoutProxy
+	client, err := client.NewClient() //t.CheckoutProxy
 
 	if err != nil {
 		return task.ErrorTaskState
