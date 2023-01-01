@@ -26,11 +26,18 @@ func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, mont
 
 	id := shortuuid.New()
 
+	size = strings.ToLower(size)
+	if size == "random" {
+		size = RandomSize()
+	} else {
+		size = SplitSize(size)
+	}
+
 	tasks[id] = &Task{
 		TaskType:      tasktype,
 		Mode:          strings.ToLower(mode),
 		Pid:           strings.ToLower(pid),
-		Size:          strings.ToLower(size),
+		Size:          size,
 		Email:         strings.ToLower(mail),
 		Profile:       Profile,
 		Method:        strings.ToLower(payment),
@@ -55,7 +62,7 @@ func PathTask() []string {
 
 	if Dev {
 		for _, f := range files {
-			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client"{
+			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" {
 				folder = append(folder, f.Name())
 			}
 		}

@@ -20,12 +20,6 @@ func initialize(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	if t.Size == "random" {
-		t.Size = RandomSize()
-	} else {
-		t.Size = SplitSize(t.Size)
-	}
-
 	t.CheckoutProfile = GetProfile(t)
 	if t.CheckoutProfile.ID == "not_found" {
 		logs.LogErr(t, "profile not found")
@@ -46,7 +40,7 @@ func initialize(t *task.Task) task.TaskState {
 	}
 	t.Delay = time.Duration(delay) * time.Millisecond
 
-	client, err := client.NewClient()
+	client, err := client.NewClient(t.CheckoutProxy) //t.CheckoutProxy
 
 	if err != nil {
 		return task.ErrorTaskState

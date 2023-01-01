@@ -1,2 +1,4 @@
 Mode,Url / PID,Size,E-mail,Profile,Payment Method,Card Number,Month,Year,CVV,Proxy List
 normal,LMSAI9,36,@manu,TEST,cc,4242424242424242,12,2020,123,test
+normal,LMSAI900,random,@manu,Manu,cc,4242424242424242,12,2020,123,test
+normal,LMSAI10,57;2;4,@manu,Manu,cc,4242424242424242,12,2020,123,test

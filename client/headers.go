@@ -1,6 +1,8 @@
 package client
 
-import http "github.com/saucesteals/fhttp"
+import (
+	http "github.com/saucesteals/fhttp"
+)
 
 var (
 	UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
@@ -26,8 +28,10 @@ func (r *Request) SetDefaultHeadersTBA() *Request {
 }
 
 // set cookie in request
+func (r *Request) SetCookie(c []*http.Cookie) *Request {
+	for _, v := range c {
+		r.SetHeader("Cookie", v.String())
+	}
 
-func (r *Request) SetCookie(c *http.Cookie) *Request {
-	r.cookies = append(r.cookies, c)
 	return r
 }

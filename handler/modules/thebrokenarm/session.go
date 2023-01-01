@@ -45,13 +45,6 @@ func handleResponse(t *task.Task) task.TaskState {
 	}
 	t.Client.SaveCookies()
 
-	//add t.Client.LatestResponse.Cookies() to the request
-	// for _, v := range t.Client.LatestResponse.Cookies() {
-	// 	fmt.Println(v)
-	// 	t.Client.NewRequest().AddCookie(v)
-	// }
-
-	//save id to struct TBAInternal
 	TBAInternal.ProductID = Id
 
 	return GET_CLOUD
