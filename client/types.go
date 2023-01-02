@@ -25,13 +25,6 @@ type Request struct {
 	cookies []*http.Cookie
 }
 
-type Session struct {
-	Client    *http.Client
-	Headers   map[string]string
-	Cookies   map[string]string
-	Randomize bool
-}
-
 type Response struct {
 	headers http.Header
 

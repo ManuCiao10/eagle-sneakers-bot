@@ -15,7 +15,3 @@ var (
 var TBAInternal = struct {
 	ProductID string
 }{}
-
-// type TBAInternal struct {
-// 	ProductID string
-// }

@@ -1,6 +1,8 @@
 package client
 
 import (
+	"C"
+	"encoding/json"
 	"log"
 
 	http "github.com/saucesteals/fhttp"
@@ -36,9 +38,17 @@ func (c *Client) SaveCookies() {
 	}
 }
 
+// BodyAsJSON unmarshalls the current response body to the specified data structure
+func (r *Response) BodyAsJSON(data interface{}) error {
+	return json.Unmarshal(r.body, data)
+}
+
 // get response cookies
 func (r *Response) Cookies() []*http.Cookie {
-	
 	return r.cookies
 }
 
+func createCResponse(resp *Response) *C.char {
+	errorJson, _ := json.Marshal(resp)
+	return C.CString(string(errorJson))
+}

@@ -4,6 +4,7 @@ import (
 	"github.com/eagle/handler/task"
 )
 
+// probably getCloud not needed GET_CLOUD:   getCloud,
 func Initialize() {
 	monitorType := task.RegisterTaskType("thebrokenarm")
 
@@ -12,8 +13,7 @@ func Initialize() {
 	monitorType.AddHandlers(task.TaskHandlerMap{
 		INITIALIZE:  initialize,
 		GET_SESSION: getSession,
-		GET_CLOUD:   getCloud,
 		ADD_TO_CART: addToCart,
-		// CHECKOUT:    checkout,
+		CHECKOUT:    checkout,
 	})
 }

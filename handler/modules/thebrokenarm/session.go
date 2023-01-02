@@ -16,7 +16,7 @@ if t.Mode == "login" {
 */
 
 func getSession(t *task.Task) task.TaskState {
-	logs.LogWarn(t, "getting session")
+	logs.LogPurple(t, "getting session")
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
@@ -43,9 +43,9 @@ func handleResponse(t *task.Task) task.TaskState {
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
-	// t.Client.SaveCookies()
+	t.Client.SaveCookies()
 
 	TBAInternal.ProductID = Id
 
-	return GET_CLOUD
+	return ADD_TO_CART
 }
