@@ -43,7 +43,7 @@ func handleResponse(t *task.Task) task.TaskState {
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
-	t.Client.SaveCookies()
+	// t.Client.SaveCookies()
 
 	TBAInternal.ProductID = Id
 

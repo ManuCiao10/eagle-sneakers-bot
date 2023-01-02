@@ -8,7 +8,8 @@ var (
 	INITIALIZE  task.TaskState = "initialize"
 	GET_SESSION task.TaskState = "get_session"
 	GET_CLOUD   task.TaskState = "get_cloud"
-	PRODUCT     task.TaskState = "product"
+	ADD_TO_CART task.TaskState = "product"
+	CHECKOUT    task.TaskState = "checkout"
 )
 
 var TBAInternal = struct {

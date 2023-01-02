@@ -1,6 +1,7 @@
 package thebrokenarm
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/eagle/handler/logs"
@@ -16,7 +17,7 @@ func getCloud(t *task.Task) task.TaskState {
 		SetURL(link).
 		SetMethod("POST").
 		SetDefaultHeadersTBA().
-		SetCookie(t.Client.LatestResponse.Cookies()).
+		// SetCookie(t.Client.LatestResponse.Cookies()).
 		Do()
 
 	if err != nil {
@@ -35,6 +36,6 @@ func handlecloudflare(t *task.Task) task.TaskState {
 	}
 
 	logs.LogBlue(t, "got cloudflare token")
-	// SetCookie(t.Client.LatestResponse.Cookies())
-	return PRODUCT
+	fmt.Println(t.Client.LatestResponse.Cookies())
+	return ADD_TO_CART
 }

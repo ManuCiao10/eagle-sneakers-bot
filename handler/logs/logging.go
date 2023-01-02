@@ -13,6 +13,10 @@ func LogErr(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	// add split url
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 	// authKey := loading.Data.Settings.Settings.AuthKey
 
@@ -27,6 +31,9 @@ func LogInfo(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey
@@ -42,6 +49,9 @@ func LogWarn(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey
@@ -57,6 +67,9 @@ func LogSuccess(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey
@@ -74,6 +87,9 @@ func LogCyan(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey
@@ -89,6 +105,9 @@ func LogBlue(t *task.Task, data ...interface{}) {
 	taskMode := strings.ToUpper(t.Mode)
 	taskSize := strings.ToUpper(t.Size)
 	taskPid := strings.ToUpper(t.Pid)
+	if len(taskPid) > 10 {
+		taskPid = "URL"
+	}
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey

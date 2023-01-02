@@ -12,6 +12,8 @@ var (
 	carts     int
 	checkouts int
 	failures  int
+
+	firstRun = true
 )
 
 func Initialize() {
@@ -37,6 +39,10 @@ func SetConsoleTitle(title string) (int, error) {
 }
 
 func updateTitle() {
-	SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %s ", version.Version))
-	// _, _ = SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %d ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d",version.Version, carts, checkouts, failures))
+	if firstRun {
+		SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %s ", version.Version))
+		firstRun = false
+		return
+	}
+	_, _ = SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %d ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d", version.Version, carts, checkouts, failures))
 }

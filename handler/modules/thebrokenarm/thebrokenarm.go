@@ -13,5 +13,7 @@ func Initialize() {
 		INITIALIZE:  initialize,
 		GET_SESSION: getSession,
 		GET_CLOUD:   getCloud,
+		ADD_TO_CART: addToCart,
+		// CHECKOUT:    checkout,
 	})
 }
