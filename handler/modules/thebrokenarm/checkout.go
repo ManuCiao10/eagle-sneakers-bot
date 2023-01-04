@@ -10,8 +10,9 @@ import (
 	"github.com/eagle/handler/task"
 )
 
+// fix cookies
 func checkout(t *task.Task) task.TaskState {
-	logs.LogPurple(t, "preparing to checkout")
+	logs.LogPurple(t, "preparing to checkout...")
 
 	data := strings.NewReader(`payment_option=card&amount=2600&currency=eur&stripe_auto_save_card=false&card_form_payment=true&save_card_form=false&payment_request=false`)
 
@@ -26,7 +27,6 @@ func checkout(t *task.Task) task.TaskState {
 		// handle error and retry
 		return CHECKOUT
 	}
-
 	return handleCheckout(t)
 }
 
@@ -37,7 +37,7 @@ func handleCheckout(t *task.Task) task.TaskState {
 		return CHECKOUT
 	}
 
-	logs.LogSuccess(t, "checkout")
+	logs.LogSuccess(t, "checkout successful")
 	// console.AddCheckout()
 	time.Sleep(t.Delay)
 

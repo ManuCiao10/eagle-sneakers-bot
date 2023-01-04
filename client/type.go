@@ -22,3 +22,14 @@ func createTransport(proxy string) (*http.Transport, error) {
 		return &http.Transport{}, nil
 	}
 }
+
+func createClient(proxy string) (*http.Client, error) {
+	transport, err := createTransport(proxy)
+	if err != nil {
+		return nil, err
+	}
+
+	return &http.Client{
+		Transport: m.ConfigureTransport(transport),
+	}, nil
+}

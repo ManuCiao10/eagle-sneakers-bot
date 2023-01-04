@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/url"
 
 	http "github.com/saucesteals/fhttp"
 	"github.com/saucesteals/mimic"
@@ -15,17 +16,6 @@ var (
 	m, _              = mimic.Chromium(mimic.BrandChrome, latestVersion)
 	proxy             = ""
 )
-
-func createClient(proxy string) (*http.Client, error) {
-	transport, err := createTransport(proxy)
-	if err != nil {
-		return nil, err
-	}
-
-	return &http.Client{
-		Transport: m.ConfigureTransport(transport),
-	}, nil
-}
 
 // NewClient Takes in the optional arguments: proxy, servername
 func NewClient(parameters ...string) (*Client, error) {
@@ -84,4 +74,13 @@ func (c *Client) Do(r *http.Request) (*Response, error) {
 	}
 
 	return response, nil
+}
+
+// AddCookie adds a new cookie to the request client cookie jar
+func (c *Client) AddCookie(u *url.URL, cookie []*http.Cookie) *Request {
+	c.client.Jar.SetCookies(u, cookie)
+	return &Request{
+		client: c,
+		header: make(http.Header),
+	}
 }

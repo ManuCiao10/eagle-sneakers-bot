@@ -7,12 +7,13 @@ import (
 	http "github.com/saucesteals/fhttp"
 )
 
+// set body
 func (r *Request) SetBody(body string) *Request {
 	r.body = strings.NewReader(body)
 	return r
 }
 
-//set strings.NewReader body
+// set strings.NewReader body
 func (r *Request) SetBodyReader(body *strings.Reader) *Request {
 	r.body = body
 	return r
@@ -75,3 +76,13 @@ func (r *Request) Do() (*Response, error) {
 
 	return r.client.Do(req)
 }
+
+// // SetMethod sets the method of the request
+// func (r *Request) SetCookie(name, value string) *Request {
+// 	r.cookies = append(r.cookies, &http.Cookie{
+// 		Name:  name,
+// 		Value: value,
+// 	})
+
+// 	return r
+// }
