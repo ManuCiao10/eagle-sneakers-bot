@@ -2,7 +2,6 @@ package thebrokenarm
 
 import (
 	"encoding/json"
-	"strings"
 	"time"
 
 	"github.com/eagle/handler/logs"
@@ -15,21 +14,21 @@ type addToCartResponse struct {
 	Success bool `json:"success"`
 }
 
+// func getTokenCart(t *task.Task) string {
+
 func addToCart(t *task.Task) task.TaskState {
-	logs.LogPurple(t, "checking stock...")
+	logs.LogPurple(t, "adding to cart...")
 
-	//token = getTokenCart(t)
-	//id_product = t.Pid
-	//fix cookies
+	// token = getTokenCart(t)
 
-	data := strings.NewReader(`token=c21124404c5def43c52a677dc3c1b525&id_product=8802&id_customization=0&group%5B6%5D=1647&friend_name=&friend_email=&id_product=8802&add=1&action=update`)
+	data := "token=7f2711d779a862633d2f07dcadfe0f08&id_product=" + t.Pid + "&id_product=" + t.Pid + "&add=1&action=update"
 
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/panier").
 		SetMethod("POST").
 		SetCartHeadersTBA().
 		SetHeader("cookie", TBAInternal.Cookies).
-		SetBodyReader(data).
+		SetBody(data).
 		Do()
 
 	if err != nil {
