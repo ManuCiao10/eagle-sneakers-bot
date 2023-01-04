@@ -48,6 +48,15 @@ func (r *Response) Cookies() []*http.Cookie {
 	return r.cookies
 }
 
+// get response cookies as string
+func (r *Response) CookiesAsString() string {
+	var cookies string
+	for _, cookie := range r.cookies {
+		cookies += cookie.String() + ";"
+	}
+	return cookies
+}
+
 func createCResponse(resp *Response) *C.char {
 	errorJson, _ := json.Marshal(resp)
 	return C.CString(string(errorJson))

@@ -1,6 +1,7 @@
 package thebrokenarm
 
 import (
+	"strings"
 	"time"
 
 	"github.com/eagle/handler/logs"
@@ -8,15 +9,8 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
-/*
--- Modes --
-if t.Mode == "login" {
- 	return Login(t)
-}
-*/
-
 func getSession(t *task.Task) task.TaskState {
-	logs.LogPurple(t, "getting session")
+	logs.LogPurple(t, "getting session...")
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
@@ -43,8 +37,16 @@ func handleResponse(t *task.Task) task.TaskState {
 		time.Sleep(t.Delay)
 		return GET_SESSION
 	}
+	saveCookie(t)
 
 	TBAInternal.ProductID = Id
 
 	return GET_CLOUD
+}
+
+func saveCookie(t *task.Task) {
+	cookiesjar := strings.Split(t.Client.LatestResponse.CookiesAsString(), ";")
+	sessionID := cookiesjar[0]
+	PrestaShop := cookiesjar[2]
+	TBAInternal.Cookies = sessionID + ";" + PrestaShop
 }

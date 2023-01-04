@@ -14,4 +14,5 @@ var (
 
 var TBAInternal = struct {
 	ProductID string
+	Cookies   string
 }{}

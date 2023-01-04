@@ -1,25 +1,35 @@
 package thebrokenarm
 
 import (
-	"bytes"
+	"encoding/json"
+	"strings"
+	"time"
 
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
 )
 
+var success addToCartResponse
+
+type addToCartResponse struct {
+	Success bool `json:"success"`
+}
+
 func addToCart(t *task.Task) task.TaskState {
 	logs.LogPurple(t, "checking stock...")
-	// if len(t.Pid) > 10 {
-	// 	t.Pid = splitPid(t.Pid)
-	// }
 
-	data := "token=7f2711d779a862633d2f07dcadfe0f08&id_product=" + t.Pid + "&id_customization=0&author=&friend_name=&friend_email=&id_product=" + t.Pid + " &add=1&action=update"
+	//token = getTokenCart(t)
+	//id_product = t.Pid
+	//fix cookies
+
+	data := strings.NewReader(`token=c21124404c5def43c52a677dc3c1b525&id_product=8802&id_customization=0&group%5B6%5D=1647&friend_name=&friend_email=&id_product=8802&add=1&action=update`)
 
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/panier").
 		SetMethod("POST").
-		SetDefaultHeadersTBA().
-		SetBody(data).
+		SetCartHeadersTBA().
+		SetHeader("cookie", TBAInternal.Cookies).
+		SetBodyReader(data).
 		Do()
 
 	if err != nil {
@@ -28,15 +38,22 @@ func addToCart(t *task.Task) task.TaskState {
 	}
 
 	return handleAddToCart(t)
-
 }
 
 func handleAddToCart(t *task.Task) task.TaskState {
-	if bytes.Contains(t.Client.LatestResponse.Body(), []byte("cloudflare")) {
+
+	if err := json.Unmarshal(t.Client.LatestResponse.Body(), &success); err != nil {
 		logs.LogErr(t, "failed to add to cart, retrying...")
+		time.Sleep(t.Delay)
 		return ADD_TO_CART
 	}
-	logs.LogSuccess(t, "added to cart")
+
+	if !success.Success {
+		logs.LogErr(t, "product out of stock, retrying...")
+		time.Sleep(t.Delay)
+		return ADD_TO_CART
+	}
+	logs.LogCyan(t, "added to cart")
 	// console.AddCart()
 
 	return CHECKOUT
