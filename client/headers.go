@@ -1,14 +1,7 @@
 package client
 
-import (
-	"fmt"
-
-	http "github.com/saucesteals/fhttp"
-)
-
 var (
-	UserAgent   = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
-	cookiesCart string
+	UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36"
 )
 
 func (r *Request) SetDefaultHeadersTBA() *Request {
@@ -46,11 +39,5 @@ func (r *Request) SetCartHeadersTBA() *Request {
 	r.SetHeader("User-Agent", UserAgent)
 	r.SetHeader("x-requested-with", "XMLHttpRequest")
 
-	return r
-}
-
-func (r *Request) SetCookie(cookies []*http.Cookie) *Request {
-	fmt.Println("set cookie...")
-	r.cookies = append(r.cookies, cookies...)
 	return r
 }
