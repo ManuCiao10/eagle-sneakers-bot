@@ -1,6 +1,7 @@
 package loading
 
 import (
+	"github.com/eagle/handler/account"
 	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/settings"
 )
@@ -14,22 +15,30 @@ type Env struct {
 }
 
 type Profiles struct {
-	Profiles []profile.Profile `json:"profiles"`
+	Profiles []profile.Profile
 }
 type Proxies struct {
-	Proxies []settings.Proxie `json:"proxies"`
+	Proxies []settings.Proxie
 }
 
 type Tasks struct {
 	Tasks map[string][]string
 }
 
+type Quicktask struct {
+	Quicktask map[string][]string
+}
+
+type Accounts struct {
+	Accounts map[int][]account.Account
+}
+
 type Config struct {
-	// Accounts        Accounts
-	// QuicktaskGroups map[int][]QuicktaskGroup
-	Tasks    Tasks
-	Proxies  Proxies
-	Env      Env      `json:"env"`
-	Settings Settings `json:"settings"`
-	Profiles Profiles `json:"profiles"`
+	Accounts  Accounts
+	Quicktask Quicktask
+	Tasks     Tasks
+	Proxies   Proxies
+	Env       Env      `json:"env"`
+	Settings  Settings `json:"settings"`
+	Profiles  Profiles
 }

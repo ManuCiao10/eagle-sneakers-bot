@@ -14,6 +14,7 @@ import (
 	"sync"
 
 	"github.com/eagle/handler/profile"
+	quicktask_handler "github.com/eagle/handler/quicktask"
 	"github.com/eagle/handler/settings"
 	task_handler "github.com/eagle/handler/task"
 )
@@ -31,16 +32,51 @@ func Initialize() {
 
 func Load() *Config {
 	return &Config{
-		Settings: *loadSettings(),
-		Env:      *loadEnv(),
-		Profiles: *loadProfiles(),
-		Proxies:  *loadProxies(),
-		Tasks:    *loadTask(),
+		Settings:  *loadSettings(),
+		Env:       *loadEnv(),
+		Profiles:  *loadProfiles(),
+		Proxies:   *loadProxies(),
+		Tasks:     *loadTask(),
+		Quicktask: *loadQuicktasks(),
+		// Accounts:  *loadAccounts(),
 	}
 }
 
-func Trim(s string) string {
-	return strings.TrimSpace(s)
+func loadQuicktasks() *Quicktask {
+	var quicktask Quicktask
+	quicktask.Quicktask = make(map[string][]string)
+
+	csvFile, err := os.Open("MQT.csv")
+	if err != nil {
+		log.Fatal("error opening file MQT.csv")
+	}
+	reader := csv.NewReader(bufio.NewReader(csvFile))
+
+	task, err := reader.ReadAll()
+	if err != nil {
+		log.Fatal("error reading file: MQT.csv")
+	}
+	defer csvFile.Close()
+
+	numberSite := len(task)
+	for i := 0; i < numberSite; i++ {
+		if i != 0 {
+			siteName := task[i][0]
+			quickUUID := quicktask_handler.CreateQuicktask(
+				Trim(task[i][0]),
+				Trim(task[i][1]),
+				Trim(task[i][2]),
+				Trim(task[i][3]),
+				Trim(task[i][4]),
+				Trim(task[i][5]),
+				Trim(task[i][6]),
+				Trim(task[i][7]),
+				Trim(task[i][8]),
+			)
+			quicktask.Quicktask[siteName] = append(quicktask.Quicktask[siteName], quickUUID)
+		}
+	}
+	return &quicktask
 }
 
 func loadTask() *Tasks {
@@ -210,14 +246,4 @@ func loadProfiles() *Profiles {
 		})
 	}
 	return &profiles
-}
-
-func CreateSliceProxy(scanner *bufio.Scanner) []string {
-	var proxies []string
-
-	for scanner.Scan() {
-		proxies = append(proxies, scanner.Text())
-	}
-
-	return proxies
 }

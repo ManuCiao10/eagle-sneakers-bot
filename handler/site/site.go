@@ -8,7 +8,6 @@ import (
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
-	"github.com/eagle/modules/eagle_monitor"
 )
 
 var (
@@ -16,8 +15,6 @@ var (
 		1: "thebrokenarm",
 		2: "monitor",
 	}
-
-	task_type string
 )
 
 func Validing(csv string, name string) string {
@@ -45,21 +42,22 @@ func err_(err string) {
 func Parsing(site int) string {
 	if site == utils.ERROR {
 		logs.LogsMsgErr("invalid option")
-	} else if site == utils.MONITOR {
-		eagle_monitor.Initialize()
 	}
 
-	fmt.Print("\033[H\033[2J")
-	utils.Banner()
-	utils.Directory(sites[site])
+	if site != utils.MONITOR {
+		fmt.Print("\033[H\033[2J")
+		utils.Banner()
+		utils.Directory(sites[site])
+		csv_index := utils.SelectMode(version.GetVersion() + logs.Time() + "PLEASE SELECT CSV:")
 
-	csv_index := utils.SelectMode(version.GetVersion() + logs.Time() + "PLEASE SELECT CSV:")
-
-	t_name := Validing(csv_index, sites[site])
-	if t_name == "UNEXPECTED" {
-		err_("INVALID SELECTION")
+		t_name := Validing(csv_index, sites[site])
+		if t_name == "UNEXPECTED" {
+			err_("INVALID SELECTION")
+		}
+		task_type := fmt.Sprint(sites[site], ",", csv_index)
+		return task_type //--> site,index_csv
 	}
-	task_type = fmt.Sprint(sites[site], ",", csv_index)
 
-	return task_type //--> site,index_csv
+	return "monitor"
+
 }
