@@ -8,6 +8,7 @@ import (
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/utils"
 	"github.com/eagle/handler/version"
+	"github.com/eagle/modules/eagle_monitor"
 )
 
 var (
@@ -42,6 +43,12 @@ func err_(err string) {
 }
 
 func Parsing(site int) string {
+	if site == utils.ERROR {
+		logs.LogsMsgErr("invalid option")
+	} else if site == utils.MONITOR {
+		eagle_monitor.Initialize()
+	}
+
 	fmt.Print("\033[H\033[2J")
 	utils.Banner()
 	utils.Directory(sites[site])

@@ -6,7 +6,6 @@ import (
 	"github.com/eagle/handler/auth"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
-	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/site"
@@ -31,7 +30,7 @@ func main() {
 		create.Initialize()
 		auth.Initialize()
 		version.Initialize()
-		// console.Initialize()
+		// console.Initialize() Only for windows
 		presence.Initialize()
 	}
 
@@ -42,9 +41,6 @@ func main() {
 	for {
 		if !Run {
 			index := utils.Menu()
-			if index == utils.ERROR {
-				logs.LogsMsgErr("invalid option")
-			}
 			data := site.Parsing(index)
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
 				taskObject, err := task.GetTask(taskUUID)

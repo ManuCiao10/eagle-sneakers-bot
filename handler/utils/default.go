@@ -25,6 +25,7 @@ var (
 	ERROR = 255
 )
 
+// add grid sites
 func Menu() int {
 	mode := SelectMode(color.MagentaString(version.GetVersion() + logs.Time() + color.WhiteString("PLESE SELECT A SITE:")))
 	if mode == "1" {
@@ -32,7 +33,7 @@ func Menu() int {
 	} else if mode == "2" {
 		return MONITOR
 	}
-	return 255
+	return ERROR
 }
 
 func SelectMode(label string) string {
@@ -68,29 +69,6 @@ func Site() {
 
 	println("\n")
 }
-
-// func ConsolePrint(msg string, inputColor string) {
-// 	switch inputColor {
-// 	case "red":
-// 		color.Red(Version() + Time() + msg)
-// 	case "green":
-// 		color.Green(Version() + Time() + msg)
-// 	case "yellow":
-// 		color.Yellow(Version() + Time() + msg)
-// 	case "blue":
-// 		color.Blue(Version() + Time() + msg)
-// 	case "magenta":
-// 		color.Magenta(Version() + Time() + msg)
-// 	case "cyan":
-// 		color.Cyan(Version() + Time() + msg)
-// 	case "white":
-// 		color.White(Version() + Time() + msg)
-// 	case "black":
-// 		color.Black(Version() + Time() + msg)
-// 	default:
-// 		color.Red(Version() + Time() + msg)
-// 	}
-// }
 
 func Directory(site string) {
 	files, err := os.ReadDir("./" + site)
