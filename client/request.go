@@ -1,6 +1,8 @@
 package client
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -77,12 +79,9 @@ func (r *Request) Do() (*Response, error) {
 	return r.client.Do(req)
 }
 
-// // SetMethod sets the method of the request
-// func (r *Request) SetCookie(name, value string) *Request {
-// 	r.cookies = append(r.cookies, &http.Cookie{
-// 		Name:  name,
-// 		Value: value,
-// 	})
-
-// 	return r
-// }
+// SetJSONBody sets the body to a json value
+func (r *Request) SetJSONBody(body interface{}) *Request {
+	b, _ := json.Marshal(body)
+	r.body = bytes.NewBuffer(b)
+	return r
+}

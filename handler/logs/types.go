@@ -28,3 +28,13 @@ type CheckoutLogRequest struct {
 	ImageUrl    string    `json:"image_url"`
 	AllowPublic bool      `json:"allow_public"`
 }
+
+type LogtailData struct {
+	AuthKey     string `json:"auth_key"`
+	SiteName    string `json:"site_name"`
+	TaskType    string `json:"task_type"`
+	TaskMode    string `json:"task_mode"`
+	TaskProduct string `json:"task_product"`
+	Message     string `json:"message"`
+	Count       int    `json:"count"`
+}

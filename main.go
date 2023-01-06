@@ -7,6 +7,7 @@ import (
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/eaglemonitor"
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/site"
@@ -27,6 +28,7 @@ func main() {
 	eaglemonitor.Initialize()
 	thebrokenarm.Initialize()
 	loading.Initialize()
+	logs.LogtailInitialize()
 
 	if !Dev {
 		create.Initialize()

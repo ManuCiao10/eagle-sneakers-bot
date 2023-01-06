@@ -33,12 +33,18 @@ func LogsMsgSuccess(data ...interface{}) {
 	fmt.Println(colorGreen + fmt.Sprintf("%s%s", TimeStamp, stringData) + colorReset)
 }
 
-//magenta
-
 func LogsMsg(data ...interface{}) {
 	TimeStamp := Time()
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 	fmt.Println(colorPurple + fmt.Sprintf("%s%s", TimeStamp, stringData) + colorReset)
 }
 
-//cyan
+func LogsMsgCyan(data ...interface{}) {
+	TimeStamp := Time()
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+	fmt.Println(colorCyan + fmt.Sprintf("%s%s", TimeStamp, stringData) + colorReset)
+}
+
+func Time() string {
+	return "[" + time.Now().Format("15:04:05.000000") + "] "
+}
