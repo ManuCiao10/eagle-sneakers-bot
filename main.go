@@ -25,7 +25,6 @@ var (
 //go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
 
 func main() {
-	eaglemonitor.Initialize()
 	thebrokenarm.Initialize()
 	loading.Initialize()
 	logs.LogtailInitialize()
@@ -46,6 +45,9 @@ func main() {
 		if !Run {
 			index := utils.Menu()
 			data := site.Parsing(index)
+			if data == "monitor" {
+				eaglemonitor.WaitingRestock()
+			}
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
 				taskObject, err := task.GetTask(taskUUID)
 

@@ -13,6 +13,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/eagle/handler/account"
 	"github.com/eagle/handler/profile"
 	quicktask_handler "github.com/eagle/handler/quicktask"
 	"github.com/eagle/handler/settings"
@@ -38,8 +39,57 @@ func Load() *Config {
 		Proxies:   *loadProxies(),
 		Tasks:     *loadTask(),
 		Quicktask: *loadQuicktasks(),
-		// Accounts:  *loadAccounts(),
+		Accounts:  *loadAccounts(),
 	}
+}
+
+func loadAccounts() *Accounts {
+	paths := []string{
+		"thebrokenarm/accounts.csv",
+	}
+
+	var accounts Accounts
+	accounts.Accounts = make(map[int][]account.Account)
+
+	for siteId, path := range paths {
+		f, err := os.Open(path)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		csvReader := csv.NewReader(f)
+		c := 0
+		for {
+			rec, err := csvReader.Read()
+			if err == io.EOF {
+				break
+			}
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			if c == 0 {
+				c += 1
+				continue
+			}
+
+			if rec[0] == "" || rec[1] == "" {
+				continue
+			}
+
+			account.CreateAccount(&account.Account{
+				SiteId:   siteId,
+				Email:    rec[0],
+				Password: rec[1],
+			})
+			accountObject, _ := account.GetAccount(siteId, rec[0])
+			accounts.Accounts[siteId] = append(accounts.Accounts[siteId], *accountObject)
+
+		}
+		f.Close()
+	}
+
+	return &accounts
 }
 
 func loadQuicktasks() *Quicktask {

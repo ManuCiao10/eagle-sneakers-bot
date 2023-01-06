@@ -81,7 +81,9 @@ func PathTask() []string {
 		}
 
 		for _, fileName := range files {
-			paths = append(paths, site+"/"+fileName.Name())
+			if fileName.Name() != "accounts.csv" {
+				paths = append(paths, site+"/"+fileName.Name())
+			}
 		}
 	}
 

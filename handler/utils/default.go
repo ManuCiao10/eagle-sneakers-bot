@@ -71,14 +71,19 @@ func Site() {
 }
 
 func Directory(site string) {
+	var i = 1
 	files, err := os.ReadDir("./" + site)
 	if err != nil {
 		log.Fatal(err)
 	}
-	for i, f := range files {
-		i = i + 1
-		s := strconv.Itoa(i)
-		color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString(s+". "+f.Name()))
+
+	for _, f := range files {
+		if f.Name() != "accounts.csv" {
+			s := strconv.Itoa(i)
+			color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString(s+". "+f.Name()))
+			i++
+		}
+
 	}
 	println("\n")
 }
