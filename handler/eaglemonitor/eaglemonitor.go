@@ -12,17 +12,16 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
-var (
-	allPidMqt []string
-)
-
-func WaitingRestock() {
+func Initialize() {
 	fmt.Print("\033[H\033[2J")
 	utils.Banner()
 	auth.Welcome()
-	logs.LogsMsgCyan("waiting for restock...")
-	//loop in the discord channel
+
+	logs.LogsMsgCyan("waiting for monitor...")
+
+	// getValues()
 	pid := "PIDLV1"
+
 	dataMonitor := "thebrokenarm"
 	for {
 		for _, taskUUID := range loading.Data.Quicktask.Quicktask[dataMonitor] {
@@ -37,16 +36,27 @@ func WaitingRestock() {
 
 			if Contains(allPidMqt, pid) {
 				logs.LogsMsgCyan("restock detected!")
-				//send discord webhook
+				monitorWebhook(&MonitorDetected{
+					pid:          pid,
+					size:         "L",
+					taskQuantity: 15,
+					proxy:        "proxy",
+					taskFile:     "taskfile",
+					delay:        1000,
+					store:        dataMonitor,
+				}, loading.Data.Settings.Settings.DiscordWebhook)
+
+				//run task
 				// if !taskObject.Active {
 				// 	go task_manager.RunTask(taskObject)
 				// } else if taskObject.Done {
 				// 	task_manager.StopTask(taskObject)
+				// send webhook terminate task
 				// }
 			}
 
 		}
-		time.Sleep(5 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 
 	}
 
