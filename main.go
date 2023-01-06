@@ -27,9 +27,7 @@ func main() {
 	eaglemonitor.Initialize()
 	thebrokenarm.Initialize()
 	loading.Initialize()
-	//print quicktask
-	fmt.Println(loading.Data.Quicktask.Quicktask)
-	fmt.Println(loading.Data.Tasks.Tasks)
+
 	if !Dev {
 		create.Initialize()
 		auth.Initialize()
@@ -47,7 +45,6 @@ func main() {
 			index := utils.Menu()
 			data := site.Parsing(index)
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
-				fmt.Println("Task UUID: ", taskUUID)
 				taskObject, err := task.GetTask(taskUUID)
 
 				if err != nil {

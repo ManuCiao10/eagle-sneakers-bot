@@ -30,6 +30,7 @@ require (
 )
 
 require (
+	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/fatih/color v1.13.0
 	github.com/getsentry/sentry-go v0.16.0
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0
@@ -40,5 +41,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9
 	github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7
+	github.com/valyala/fastjson v1.6.4
 	golang.org/x/sys v0.3.0 // indirect
+	nhooyr.io/websocket v1.8.7
 )
