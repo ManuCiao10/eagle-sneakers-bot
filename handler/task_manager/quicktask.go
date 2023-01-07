@@ -29,7 +29,6 @@ func handleQuickTaskState(taskState quicktask.TaskState, taskType *quicktask.Tas
 
 // RunQuickTask runs a QuickTask
 func RunQuickTask(t *quicktask.Quicktask) {
-	fmt.Println("Running task", "of type", t.Type)
 	t.Context, t.Cancel = context.WithCancel(context.Background())
 	t.Active = true
 

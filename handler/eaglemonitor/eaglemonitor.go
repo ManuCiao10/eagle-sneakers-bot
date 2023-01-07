@@ -17,6 +17,10 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
+var (
+	run = false
+)
+
 func monitorInitialize() {
 	Token := loading.Data.Env.Env.TBAtoken
 
@@ -59,36 +63,36 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 	for _, dataDiscord := range m.Embeds {
+		pid := getPid(dataDiscord)
 		store := getStore(dataDiscord)
 		size := getSize(dataDiscord)
-		pid := getPid(dataDiscord)
 
-		if store != "" {
-			for _, taskUUID := range loading.Data.Quicktask.Quicktask[store] {
-				taskObject, err := quicktask.GetQuicktask(taskUUID)
+		for _, taskUUID := range loading.Data.Quicktask.Quicktask[store] {
+			taskObject, err := quicktask.GetQuicktask(taskUUID)
 
-				if err != nil {
-					fmt.Println("Failed to get task: ", err.Error())
-					continue
-				}
+			if err != nil {
+				fmt.Println("Failed to get task: ", err.Error())
+				continue
+			}
 
-				delay := loading.Data.Settings.Settings.Delay.Retry
-				delayInt, err := strconv.Atoi(delay)
-				if err != nil {
-					fmt.Println("Failed to convert delay to int: ", err.Error())
-					continue
-				}
-				quantity, err := strconv.Atoi(taskObject.Tasks_Quantity)
-				if err != nil {
-					fmt.Println("Failed to convert quantity to int: ", err.Error())
-					continue
-				}
-				pidMqt := strings.Split(taskObject.Other, ";")
-				allPidMqt = append(allPidMqt, pidMqt...)
+			delay := loading.Data.Settings.Settings.Delay.Retry
+			delayInt, err := strconv.Atoi(delay)
+			if err != nil {
+				fmt.Println("Failed to convert delay to int: ", err.Error())
+				continue
+			}
+			quantity, err := strconv.Atoi(taskObject.Tasks_Quantity)
+			if err != nil {
+				fmt.Println("Failed to convert quantity to int: ", err.Error())
+				continue
+			}
+			pidMqt := strings.Split(taskObject.Other, ";")
+			allPidMqt = append(allPidMqt, pidMqt...)
 
-				if utils.Contains(allPidMqt, pid) {
+			if utils.Contains(allPidMqt, pid) {
+				if !run {
+					run = true
 					logs.LogsMsgCyan("restock detected!")
-
 					monitorWebhook(&MonitorDetected{
 						pid:          pid,
 						size:         size,
@@ -98,19 +102,20 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 						delay:        delayInt,
 						store:        store,
 					}, loading.Data.Settings.Settings.DiscordWebhook)
-
-					if !taskObject.Active {
-						go task_manager.RunQuickTask(taskObject)
-					} else if taskObject.Done {
-						task_manager.StopQuickTask(taskObject)
-						//send webhook
-						//add auto-stop after delay in settings.json
-					}
 				}
 
+				if !taskObject.Active {
+					go task_manager.RunQuickTask(taskObject)
+				} else if taskObject.Done {
+					task_manager.StopQuickTask(taskObject)
+					break
+					//send webhook
+					//add auto-stop after delay in settings.json
+				}
 			}
-			time.Sleep(50 * time.Millisecond)
+
 		}
+		time.Sleep(50 * time.Millisecond)
 	}
 
 }

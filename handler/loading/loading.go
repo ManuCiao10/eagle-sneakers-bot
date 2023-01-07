@@ -111,19 +111,25 @@ func loadQuicktasks() *Quicktask {
 	numberSite := len(task)
 	for i := 0; i < numberSite; i++ {
 		if i != 0 {
+			taskQuantity, err := strconv.Atoi(task[i][1])
+			if err != nil {
+				log.Fatal("error reading taskQuantity: MQT.csv")
+			}
 			siteName := task[i][0]
-			quickUUID := quicktask_handler.CreateQuicktask(
-				Trim(task[i][0]),
-				Trim(task[i][1]),
-				Trim(task[i][2]),
-				Trim(task[i][3]),
-				Trim(task[i][4]),
-				Trim(task[i][5]),
-				Trim(task[i][6]),
-				Trim(task[i][7]),
-				Trim(task[i][8]),
-			)
-			quicktask.Quicktask[siteName] = append(quicktask.Quicktask[siteName], quickUUID)
+			for t := 0; t < taskQuantity; t++ {
+				quickUUID := quicktask_handler.CreateQuicktask(
+					Trim(task[i][0]),
+					Trim(task[i][1]),
+					Trim(task[i][2]),
+					Trim(task[i][3]),
+					Trim(task[i][4]),
+					Trim(task[i][5]),
+					Trim(task[i][6]),
+					Trim(task[i][7]),
+					Trim(task[i][8]),
+				)
+				quicktask.Quicktask[siteName] = append(quicktask.Quicktask[siteName], quickUUID)
+			}
 		}
 	}
 	return &quicktask

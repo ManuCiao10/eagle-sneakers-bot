@@ -139,13 +139,11 @@ func LogPurple(t *task.Task, data ...interface{}) {
 // log for quickTask
 func LogQuick(t *quicktask.Quicktask, data ...interface{}) {
 	TimeStamp := Time()
-	siteName := strings.ToUpper(t.Type)
-	taskMode := strings.ToUpper(t.Mode)
-	taskSize := strings.ToUpper(t.Size)
-	taskPid := strings.ToUpper(t.Pid)
-	if len(taskPid) > 10 {
-		taskPid = "URL"
-	}
+	siteName := strings.ToUpper(t.Site)
+	taskMode := "quicktask"
+	taskSize := "random"
+	taskPid := strings.ToUpper(t.Other)
+
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
 	// authKey := loading.Data.Settings.Settings.AuthKey
