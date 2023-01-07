@@ -13,6 +13,7 @@ import (
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/quicktask"
+	"github.com/eagle/handler/task_manager"
 	"github.com/eagle/handler/utils"
 )
 
@@ -87,6 +88,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 				if utils.Contains(allPidMqt, pid) {
 					logs.LogsMsgCyan("restock detected!")
+
 					monitorWebhook(&MonitorDetected{
 						pid:          pid,
 						size:         size,
@@ -97,13 +99,13 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 						store:        store,
 					}, loading.Data.Settings.Settings.DiscordWebhook)
 
-					//run task and create the quickTask
-					// if !taskObject.Active {
-					// 	go task_manager.RunTask(taskObject)
-					// } else if taskObject.Done {
-					// 	task_manager.StopTask(taskObject)
-					// send webhook terminate task
-					// }
+					if !taskObject.Active {
+						go task_manager.RunQuickTask(taskObject)
+					} else if taskObject.Done {
+						task_manager.StopQuickTask(taskObject)
+						//send webhook
+						//add auto-stop after delay in settings.json
+					}
 				}
 
 			}

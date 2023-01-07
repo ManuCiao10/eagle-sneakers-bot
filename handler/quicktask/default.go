@@ -9,9 +9,12 @@ import (
 )
 
 var (
-	quicktaskMutex      = sync.RWMutex{}
-	quickTask           = make(map[string]*Quicktask)
-	ErrTaskDoesNotExist = errors.New("task does not exist")
+	quicktaskMutex             = sync.RWMutex{}
+	quickTask                  = make(map[string]*Quicktask)
+	ErrTaskDoesNotExist        = errors.New("task does not exist")
+	taskTypes                  = make(map[string]*TaskType)
+	ErrTaskTypeDoesNotExist    = errors.New("task type does not exist")
+	ErrTaskHandlerDoesNotExist = errors.New("task handler does not exist")
 )
 
 func CreateQuicktask(Site, Tasks_Quantity, Profiles, Accounts, Email, Proxylist, Payment_Method, Credit_Card, Other string) string {
