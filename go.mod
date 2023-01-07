@@ -12,6 +12,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/jaypipes/pcidb v1.0.0 // indirect
 	github.com/juju/go4 v0.0.0-20160222163258-40d72ab9641a // indirect
 	github.com/klauspost/compress v1.15.12 // indirect
@@ -31,6 +32,7 @@ require (
 
 require (
 	github.com/avast/retry-go v3.0.0+incompatible
+	github.com/bwmarrin/discordgo v0.26.1
 	github.com/fatih/color v1.13.0
 	github.com/getsentry/sentry-go v0.16.0
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0

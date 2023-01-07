@@ -2,72 +2,113 @@ package eaglemonitor
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
+	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
-	"github.com/eagle/handler/auth"
+	"github.com/bwmarrin/discordgo"
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/quicktask"
 	"github.com/eagle/handler/utils"
 )
 
-func Initialize() {
-	fmt.Print("\033[H\033[2J")
-	utils.Banner()
-	auth.Welcome()
+func monitorInitialize() {
+	Token := loading.Data.Env.Env.TBAtoken
 
-	logs.LogsMsgCyan("waiting for monitor...")
-
-	// getValues()
-	pid := "PIDLV1"
-
-	dataMonitor := "thebrokenarm"
-	for {
-		for _, taskUUID := range loading.Data.Quicktask.Quicktask[dataMonitor] {
-			taskObject, err := quicktask.GetQuicktask(taskUUID)
-
-			if err != nil {
-				fmt.Println("Failed to get task: ", err.Error())
-				continue
-			}
-			pidMqt := strings.Split(taskObject.Other, ";")
-			allPidMqt = append(allPidMqt, pidMqt...)
-
-			if Contains(allPidMqt, pid) {
-				logs.LogsMsgCyan("restock detected!")
-				monitorWebhook(&MonitorDetected{
-					pid:          pid,
-					size:         "L",
-					taskQuantity: 15,
-					proxy:        "proxy",
-					taskFile:     "taskfile",
-					delay:        1000,
-					store:        dataMonitor,
-				}, loading.Data.Settings.Settings.DiscordWebhook)
-
-				//run task
-				// if !taskObject.Active {
-				// 	go task_manager.RunTask(taskObject)
-				// } else if taskObject.Done {
-				// 	task_manager.StopTask(taskObject)
-				// send webhook terminate task
-				// }
-			}
-
-		}
-		time.Sleep(50 * time.Millisecond)
-
+	// Create a new Discord session using the provided bot token.
+	dg, err := discordgo.New("Bot " + Token)
+	if err != nil {
+		fmt.Println("error creating Discord session,", err)
+		return
 	}
+
+	// Register the messageCreate func as a callback for MessageCreate events.
+	dg.AddHandler(messageCreate)
+	// we only care about receiving message events.
+	dg.Identify.Intents = discordgo.IntentsGuildMessages
+
+	// Open a websocket connection to Discord and begin listening.
+	err = dg.Open()
+	if err != nil {
+		fmt.Println("error opening connection,", err)
+		return
+	}
+
+	logs.LogsMsgCyan("EagleBot is now running...")
+
+	// Wait here until CTRL-C or other term signal is received.
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
+	<-sc
+
+	// Cleanly close down the Discord session.
+	dg.Close()
 
 }
 
-func Contains(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
+// This function will be called (due to AddHandler above) every time a new
+// message is created on any channel that the authenticated bot has access to.
+func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	// Ignore all messages created by the bot itself, it's a good practice.
+	if m.Author.ID == s.State.User.ID {
+		return
+	}
+	for _, dataDiscord := range m.Embeds {
+		store := getStore(dataDiscord)
+		size := getSize(dataDiscord)
+		pid := getPid(dataDiscord)
+
+		if store != "" {
+			for _, taskUUID := range loading.Data.Quicktask.Quicktask[store] {
+				taskObject, err := quicktask.GetQuicktask(taskUUID)
+
+				if err != nil {
+					fmt.Println("Failed to get task: ", err.Error())
+					continue
+				}
+
+				delay := loading.Data.Settings.Settings.Delay.Retry
+				delayInt, err := strconv.Atoi(delay)
+				if err != nil {
+					fmt.Println("Failed to convert delay to int: ", err.Error())
+					continue
+				}
+				quantity, err := strconv.Atoi(taskObject.Tasks_Quantity)
+				if err != nil {
+					fmt.Println("Failed to convert quantity to int: ", err.Error())
+					continue
+				}
+				pidMqt := strings.Split(taskObject.Other, ";")
+				allPidMqt = append(allPidMqt, pidMqt...)
+
+				if utils.Contains(allPidMqt, pid) {
+					logs.LogsMsgCyan("restock detected!")
+					monitorWebhook(&MonitorDetected{
+						pid:          pid,
+						size:         size,
+						taskQuantity: quantity,
+						proxy:        taskObject.Proxylist,
+						taskFile:     taskObject.Accounts,
+						delay:        delayInt,
+						store:        store,
+					}, loading.Data.Settings.Settings.DiscordWebhook)
+
+					//run task and create the quickTask
+					// if !taskObject.Active {
+					// 	go task_manager.RunTask(taskObject)
+					// } else if taskObject.Done {
+					// 	task_manager.StopTask(taskObject)
+					// send webhook terminate task
+					// }
+				}
+
+			}
+			time.Sleep(50 * time.Millisecond)
 		}
 	}
 
-	return false
 }

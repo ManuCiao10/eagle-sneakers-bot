@@ -62,7 +62,7 @@ func PathTask() []string {
 
 	if Dev {
 		for _, f := range files {
-			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" {
+			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" && f.Name() != "monitors" {
 				folder = append(folder, f.Name())
 			}
 		}
@@ -88,13 +88,4 @@ func PathTask() []string {
 	}
 
 	return paths // return all the paths
-}
-
-func Contains(s []string, e string) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
 }

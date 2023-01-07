@@ -26,5 +26,4 @@ func main() {
 	utils.Site()
 
 	cmd.Initialize()
-
 }

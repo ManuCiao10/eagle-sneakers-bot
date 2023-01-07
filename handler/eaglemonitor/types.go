@@ -14,6 +14,7 @@ type MonitorDetected struct {
 	store        string
 }
 
+// Discord Webhook
 type Author struct {
 	Name    string `json:"name"`
 	URL     string `json:"url"`

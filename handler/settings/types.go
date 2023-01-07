@@ -20,6 +20,7 @@ type Env struct {
 	AUTH_DOWNLOAD  string `json:"AUTH_DOWNLOAD"`
 	ACC_DOWLOAD    string `json:"ACC_DOWLOAD"`
 	DISCORD_APP_ID string `json:"DISCORD_APP_ID"`
+	TBAtoken       string `json:"TBAtoken"`
 }
 
 type Proxie struct {

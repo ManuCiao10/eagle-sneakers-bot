@@ -16,3 +16,12 @@ func SplitSize(size string) string {
 
 	return sizes[rand.Intn(len(sizes))]
 }
+
+func Contains(array []string, value string) bool {
+	for _, item := range array {
+		if item == value {
+			return true
+		}
+	}
+	return false
+}
