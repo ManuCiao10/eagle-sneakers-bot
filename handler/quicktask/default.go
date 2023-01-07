@@ -2,6 +2,7 @@ package quicktask
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 	"sync"
 
@@ -33,6 +34,7 @@ func CreateQuicktask(Site, Tasks_Quantity, Profiles, Accounts, Email, Proxylist,
 		Payment_Method: strings.ToLower(Payment_Method),
 		Credit_Card:    Credit_Card,
 		Other:          Other,
+		Type:           fmt.Sprint(strings.ToLower(Site) + "monitor"),
 	}
 
 	return id

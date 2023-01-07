@@ -12,7 +12,7 @@ import (
 	"github.com/getsentry/sentry-go"
 )
 
-var Debug = true
+var Debug = false
 
 func handleQuickTaskState(taskState quicktask.TaskState, taskType *quicktask.TaskType, t *quicktask.Quicktask) quicktask.TaskState {
 	nextTaskHandler, err := taskType.GetHandler(taskState)

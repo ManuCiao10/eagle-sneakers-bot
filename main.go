@@ -6,6 +6,7 @@ import (
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/modules/thebrokenarm"
+	"github.com/eagle/handler/modules/thebrokenarm_monitor"
 	"github.com/eagle/handler/utils"
 )
 
@@ -13,6 +14,7 @@ import (
 
 func main() {
 	thebrokenarm.Initialize()
+	thebrokenarm_monitor.Initialize()
 	loading.Initialize()
 	logs.LogtailInitialize()
 	// create.Initialize()

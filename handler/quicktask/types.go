@@ -28,7 +28,7 @@ type Quicktask struct {
 	Context context.Context    `json:"-"`
 	Cancel  context.CancelFunc `json:"-"` // cancel function
 
-	Type         string             `json:"type"` // registered task type aka site name
+	Type         string             `json:"type"` // site name + monitor
 	CheckoutData CheckoutLogRequest `json:"-"`    // checkout data
 }
 
