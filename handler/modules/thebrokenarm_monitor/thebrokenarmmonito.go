@@ -14,6 +14,6 @@ func Initialize() {
 		LOGIN:      login,
 		SESSION:    session,
 		GUEST:      guest,
-		// CHECKOUT:   checkout,
+		CHECKOUT:   checkout,
 	})
 }

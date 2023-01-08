@@ -8,7 +8,7 @@ import (
 )
 
 func guest(t *quicktask.Quicktask) quicktask.TaskState {
-
+	logs.LogQuick(t, "checking stock...")
 	data := "token=c21124404c5def43c52a677dc3c1b525&id_product=" + t.Pid + "&id_product=" + t.Pid + "&add=1&action=update"
 
 	_, err := t.Client.NewRequest().
@@ -28,7 +28,6 @@ func guest(t *quicktask.Quicktask) quicktask.TaskState {
 }
 
 func handleAddToCart(t *quicktask.Quicktask) quicktask.TaskState {
-	logs.LogQuick(t, "checking stock...")
 	err := t.Client.LatestResponse.BodyAsJSON(&dataResponse)
 	if err != nil {
 		logs.LogQuickErr(t, "failed to add to cart, retrying...")
@@ -36,7 +35,7 @@ func handleAddToCart(t *quicktask.Quicktask) quicktask.TaskState {
 		return GUEST
 	}
 	if !dataResponse.Success {
-		logs.LogQuickErr(t, "product out of stock, retrying...")
+		logs.LogQuickErr(t, "error adding to cart, retrying...")
 		time.Sleep(t.Delay)
 		return GUEST
 	}

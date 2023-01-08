@@ -19,12 +19,20 @@ var siteIdMap = map[string]int{
 }
 
 var TBAInternalQuick = struct {
-	Account   account.Account
-	Cookies   string
-	ProductID string
+	Account    account.Account
+	Cookies    string
+	ProductID  string
+	payPalLink string
 }{}
 
 var dataResponse Response
+
+var payPal Token
+
+type Token struct {
+	Success bool   `json:"success"`
+	Token   string `json:"token"`
+}
 
 type Response struct {
 	Success  bool        `json:"success"`
