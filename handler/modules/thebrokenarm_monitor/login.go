@@ -2,32 +2,51 @@ package thebrokenarm_monitor
 
 import (
 	"net/url"
+	"strings"
 	"time"
 
+	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/quicktask"
 )
 
 func login(t *quicktask.Quicktask) quicktask.TaskState {
 	requestBody := url.Values{}
-	requestBody.Add("login_email", TBAInternalQuick.Account.Email)
-	requestBody.Add("login_password", TBAInternalQuick.Account.Password)
-	requestBody.Add("back_url", "https://www.buzzsneakers.gr/oloklirosi-parangelias")
-	requestBody.Add("ajax", "yes")
-	requestBody.Add("task", "login")
+	requestBody.Add("back", "")
+	requestBody.Add("email", TBAInternalQuick.Account.Email)
+	requestBody.Add("password", TBAInternalQuick.Account.Password)
+	requestBody.Add("submitLogin", "1")
 
 	_, err := t.Client.NewRequest().
-		SetURL("https://www.buzzsneakers.gr/eisodos").
+		SetURL("https://www.the-broken-arm.com/en/connexion").
 		SetMethod("POST").
-		// SetDefaultHeadersBuzz().
+		SetLoginHeadersTBA().
 		SetFormBody(requestBody).
 		Do()
 
 	if err != nil {
-		// logs.Log(c, "Error logging in.")
+		logs.LogQuickErr(t, "failed to login, retrying...")
 		time.Sleep(t.Delay)
 		return LOGIN
 	}
-	return quicktask.ErrorTaskState
+	saveCookie(t)
 
-	// return handleLoginResponse(c, b)
+	return handleLoginResponse(t)
+}
+
+func handleLoginResponse(t *quicktask.Quicktask) quicktask.TaskState {
+	if strings.Contains(t.Client.LatestResponse.BodyAsString(), "Authentication failed.") {
+		logs.LogQuickErr(t, "failed to login...")
+		return quicktask.ErrorTaskState
+	}
+
+	logs.LogQuickSuccess(t, "logged in")
+
+	return quicktask.ErrorTaskState
+}
+
+func saveCookie(t *quicktask.Quicktask) {
+	cookiesjar := strings.Split(t.Client.LatestResponse.CookiesAsString(), ";")
+	sessionID := cookiesjar[0]
+	PrestaShop := cookiesjar[2]
+	TBAInternalQuick.Cookies = sessionID + ";" + PrestaShop
 }

@@ -12,5 +12,8 @@ func Initialize() {
 	monitorType.AddHandlers(quicktask.TaskHandlerMap{
 		INITIALIZE: initialize,
 		LOGIN:      login,
+		SESSION:    session,
+		GUEST:      guest,
+		// CHECKOUT:   checkout,
 	})
 }

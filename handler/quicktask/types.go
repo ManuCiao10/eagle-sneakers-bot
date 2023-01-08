@@ -25,7 +25,7 @@ type Quicktask struct {
 
 	mode    string
 	size    string
-	pid     string
+	Pid     string
 	Client  *client.Client     `json:"-"` // client
 	Context context.Context    `json:"-"`
 	Cancel  context.CancelFunc `json:"-"` // cancel function

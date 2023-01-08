@@ -1,6 +1,7 @@
 package thebrokenarm
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/eagle/handler/logs"
@@ -10,7 +11,8 @@ import (
 var success addToCartResponse
 
 type addToCartResponse struct {
-	Success bool `json:"success"`
+	Success  bool        `json:"success"`
+	Quantity interface{} `json:"quantity"`
 }
 
 func addToCart(t *task.Task) task.TaskState {
@@ -22,7 +24,7 @@ func addToCart(t *task.Task) task.TaskState {
 		SetURL("https://www.the-broken-arm.com/en/panier").
 		SetMethod("POST").
 		SetCartHeadersTBA().
-		// SetHeader("cookie", TBAInternal.Cookies).
+		SetHeader("cookie", TBAInternal.Cookies).
 		SetBody(data).
 		Do()
 
@@ -41,12 +43,18 @@ func handleAddToCart(t *task.Task) task.TaskState {
 		time.Sleep(t.Delay)
 		return ADD_TO_CART
 	}
-
+	fmt.Println(t.Client.LatestResponse.BodyAsString())
 	if !success.Success {
 		logs.LogErr(t, "product out of stock, retrying...")
 		time.Sleep(t.Delay)
 		return ADD_TO_CART
 	}
+	if success.Quantity == nil {
+		logs.LogErr(t, "product out of stock, retrying...")
+		time.Sleep(t.Delay)
+		return ADD_TO_CART
+	}
+
 	logs.LogCyan(t, "added to cart")
 	// console.AddCart()
 

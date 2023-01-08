@@ -1,7 +1,6 @@
 package thebrokenarm_monitor
 
 import (
-	"fmt"
 	"math/rand"
 	"strconv"
 	"time"
@@ -14,28 +13,20 @@ import (
 )
 
 func initialize(t *quicktask.Quicktask) quicktask.TaskState {
-	//get a random account from the list only if the Used state is false
-	if t.Accounts != "" {
-		TBAInternalQuick.Account = GetRandomAccount(siteIdMap[t.Site])
-		if TBAInternalQuick.Account.Email == "" {
-			logs.LogQuick(t, "no account available")
-			return quicktask.ErrorTaskState
-		}
-	} else {
-		logs.LogQuick(t, "no account specified")
+	if !utils.Contains([]string{"guest", "accouts"}, t.Accounts) {
+		logs.LogQuickErr(t, "mode not supported for this site.")
 		return quicktask.ErrorTaskState
 	}
-	fmt.Println("Account: ", TBAInternalQuick.Account.Email, TBAInternalQuick.Account.Password)
 
 	t.CheckoutProfile = GetProfile(t)
 	if t.CheckoutProfile.ID == "not_found" {
-		logs.LogQuick(t, "profile not found")
+		logs.LogQuickErr(t, "profile not found")
 		return quicktask.ErrorTaskState
 	}
 
 	p := GetProxyList(t)
 	if p.ID == "not_found" {
-		logs.LogQuick(t, "proxy list not found")
+		logs.LogQuickErr(t, "proxy list not found")
 		return quicktask.ErrorTaskState
 	}
 
@@ -53,5 +44,15 @@ func initialize(t *quicktask.Quicktask) quicktask.TaskState {
 		return quicktask.ErrorTaskState
 	}
 	t.Client = client
-	return LOGIN
+
+	if t.Accounts == "accounts" {
+		TBAInternalQuick.Account = GetRandomAccount(siteIdMap[t.Site])
+		if TBAInternalQuick.Account.Email == "" {
+			logs.LogQuickErr(t, "no account available")
+			return quicktask.ErrorTaskState
+		}
+		return LOGIN
+	}
+
+	return SESSION
 }

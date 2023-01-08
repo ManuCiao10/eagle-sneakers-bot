@@ -88,6 +88,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			}
 			pidMqt := strings.Split(taskObject.Other, ";")
 			allPidMqt = append(allPidMqt, pidMqt...)
+			taskObject.Pid = pid
 
 			if utils.Contains(allPidMqt, pid) {
 				if !run {
@@ -112,7 +113,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 			}
 		}
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(1 * time.Millisecond)
 	}
 
 }

@@ -142,7 +142,6 @@ func LogQuick(t *quicktask.Quicktask, data ...interface{}) {
 	siteName := strings.ToUpper(t.Site)
 	taskMode := "quicktask"
 	taskSize := "random"
-	taskPid := strings.ToUpper(t.Other)
 
 	stringData := strings.ToUpper(fmt.Sprint(data...))
 
@@ -150,5 +149,66 @@ func LogQuick(t *quicktask.Quicktask, data ...interface{}) {
 
 	//log everything is doing a user (with key)
 	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
-	fmt.Println(colorWhite + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, taskPid, stringData) + colorReset)
+	fmt.Println(colorWhite + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, t.Pid, stringData) + colorReset)
+}
+
+//LogQuickError is a function to log error in quicktask
+
+func LogQuickErr(t *quicktask.Quicktask, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Site)
+	taskMode := "quicktask"
+	taskSize := "random"
+
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorRed + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, t.Pid, stringData) + colorReset)
+}
+
+func LogQuickSuccess(t *quicktask.Quicktask, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Site)
+	taskMode := "quicktask"
+
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorGreen + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, t.Pid, TimeStamp, t.Pid, stringData) + colorReset)
+}
+
+func LogQuickSess(t *quicktask.Quicktask, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Site)
+	taskMode := "quicktask"
+	taskSize := "random"
+
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorPurple + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, t.Pid, stringData) + colorReset)
+}
+
+func LogQuickCart(t *quicktask.Quicktask, data ...interface{}) {
+	TimeStamp := Time()
+	siteName := strings.ToUpper(t.Site)
+	taskMode := "quicktask"
+	taskSize := "random"
+
+	stringData := strings.ToUpper(fmt.Sprint(data...))
+
+	// authKey := loading.Data.Settings.Settings.AuthKey
+
+	//log everything is doing a user (with key)
+	// go LogLogTail(siteName, taskType, taskMode, taskSize, stringData, authKey)
+	fmt.Println(colorCyan + fmt.Sprintf("[%s %s] [%s] %s[%s] %s", siteName, taskMode, taskSize, TimeStamp, t.Pid, stringData) + colorReset)
 }

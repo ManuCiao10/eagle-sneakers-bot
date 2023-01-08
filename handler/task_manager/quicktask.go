@@ -77,8 +77,6 @@ func RunQuickTask(t *quicktask.Quicktask) {
 
 	// loop the task states
 	for {
-		time.Sleep(1 * time.Second)
-
 		nextState = handleQuickTaskState(nextState, taskType, t)
 		if Debug {
 			fmt.Println(t, nextState)
