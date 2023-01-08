@@ -81,6 +81,7 @@ func loadAccounts() *Accounts {
 				SiteId:   siteId,
 				Email:    rec[0],
 				Password: rec[1],
+				Used:     false,
 			})
 			accountObject, _ := account.GetAccount(siteId, rec[0])
 			accounts.Accounts[siteId] = append(accounts.Accounts[siteId], *accountObject)

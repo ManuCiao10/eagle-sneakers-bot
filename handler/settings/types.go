@@ -8,6 +8,7 @@ type Settings struct {
 	CapmonsterKey  string `json:"capmonster_key"`
 	Solver         string `json:"solver"`
 	Delay          Delay  `json:"delay"`
+	TaskShoutDown  string `json:"task_shutdown"`
 }
 
 type Delay struct {

@@ -6,9 +6,11 @@ import (
 	"time"
 
 	"github.com/eagle/client"
+	"github.com/eagle/handler/profile"
 )
 
 type Quicktask struct {
+	Id             string
 	Site           string
 	Tasks_Quantity string
 	Profiles       string
@@ -21,15 +23,18 @@ type Quicktask struct {
 	Active         bool
 	Done           bool
 
-	Mode    string
-	Size    string
-	Pid     string
+	mode    string
+	size    string
+	pid     string
 	Client  *client.Client     `json:"-"` // client
 	Context context.Context    `json:"-"`
 	Cancel  context.CancelFunc `json:"-"` // cancel function
+	Delay   time.Duration      `json:"-"` // delay (in ms)
 
-	Type         string             `json:"type"` // site name + monitor
-	CheckoutData CheckoutLogRequest `json:"-"`    // checkout data
+	Type            string             `json:"type"` // site name + monitor
+	CheckoutData    CheckoutLogRequest `json:"-"`    // checkout data
+	CheckoutProxy   string             // proxy data
+	CheckoutProfile profile.Profile    `json:"-"` // profile data
 }
 
 type CheckoutLogRequest struct {

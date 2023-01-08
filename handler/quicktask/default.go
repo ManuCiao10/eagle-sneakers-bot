@@ -25,6 +25,7 @@ func CreateQuicktask(Site, Tasks_Quantity, Profiles, Accounts, Email, Proxylist,
 	id := shortuuid.New()
 
 	quickTask[id] = &Quicktask{
+		Id:             id,
 		Site:           strings.ToLower(Site),
 		Tasks_Quantity: Tasks_Quantity,
 		Profiles:       Profiles,

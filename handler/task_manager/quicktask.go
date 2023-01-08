@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/eagle/handler/loading"
@@ -75,9 +77,23 @@ func RunQuickTask(t *quicktask.Quicktask) {
 
 	// loop the task states
 	for {
+		time.Sleep(1 * time.Second)
+
 		nextState = handleQuickTaskState(nextState, taskType, t)
 		if Debug {
 			fmt.Println(t, nextState)
+		}
+		delay, err := strconv.Atoi(loading.Data.Settings.Settings.TaskShoutDown)
+		if err != nil {
+			logs.LogsMsgErr("Check the delay in the settings.json file.")
+		}
+		timeOut := time.Duration(delay) * time.Minute
+		if time.Since(t.CheckoutData.TaskStart) > timeOut {
+			logs.LogQuick(t, "Task timed out.")
+			logs.LogTimeout(loading.Data.Settings.Settings.DiscordWebhook)
+			t.Done = true
+			t.Active = false
+			os.Exit(0)
 		}
 
 		if nextState == quicktask.DoneTaskState || t.Context.Err() != nil {
@@ -104,7 +120,6 @@ func RunQuickTask(t *quicktask.Quicktask) {
 			t.Active = false
 			break
 		}
-
 		time.Sleep(1 * time.Millisecond)
 	}
 }

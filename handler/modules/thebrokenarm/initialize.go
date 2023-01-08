@@ -9,13 +9,14 @@ import (
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/task"
+	"github.com/eagle/handler/utils"
 )
 
 func initialize(t *task.Task) task.TaskState {
 	//TODO --> check if all the variable in the task are set (size, mode, profile existing etc..)
 	rand.Seed(time.Now().UnixNano())
 
-	if !Contains([]string{"login", "normal"}, t.Mode) {
+	if !utils.Contains([]string{"login", "normal"}, t.Mode) {
 		logs.LogErr(t, "mode is not supported for this site.")
 		return task.ErrorTaskState
 	}
@@ -32,7 +33,7 @@ func initialize(t *task.Task) task.TaskState {
 		return task.ErrorTaskState
 	}
 
-	t.CheckoutProxy = ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
+	t.CheckoutProxy = utils.ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
 	delay, err := strconv.Atoi(loading.Data.Settings.Settings.Delay.Retry)
 	if err != nil {

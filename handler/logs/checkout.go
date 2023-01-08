@@ -63,3 +63,21 @@ func LogCheckout(checkout *CheckoutLogRequest, discordWebhook string) {
 	go logCheckoutBackend(checkout)
 	go LogCheckoutDiscord(checkout, discordWebhook)
 }
+
+func LogTimeout(discordWebhook string) {
+	checkoutClient, _ := client.NewClient()
+
+	requestData := fmt.Sprintf(`{"content":null,"embeds":[{"title":"**Checkout Timeout!**","description":"Checkout timed out...","color":16711680,"fields":[{"name":"Store","value":"%s","inline":true}],"thumbnail":{"url":"https://media.discordapp.net/attachments/1013517214906859540/1039155134556536894/01IHswd8_400x400.jpeg"}}],"attachments":[]}`, "N/A")
+
+	_, err := checkoutClient.NewRequest().
+		SetURL(discordWebhook).
+		SetMethod("POST").
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Accept", "*/*").
+		SetBody(requestData).
+		Do()
+
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+}

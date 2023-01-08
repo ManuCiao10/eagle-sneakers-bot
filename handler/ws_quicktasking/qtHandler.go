@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/eagle/handler/loading"
+	"github.com/eagle/handler/profile"
 	"github.com/eagle/handler/task"
 	"github.com/valyala/fastjson"
 )

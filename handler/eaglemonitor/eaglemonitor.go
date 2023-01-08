@@ -43,7 +43,7 @@ func monitorInitialize() {
 		return
 	}
 
-	logs.LogsMsgCyan("EagleBot is now running...")
+	logs.LogsMsgCyan("EagleBot is now monitoring...")
 
 	// Wait here until CTRL-C or other term signal is received.
 	sc := make(chan os.Signal, 1)
@@ -108,12 +108,9 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 					go task_manager.RunQuickTask(taskObject)
 				} else if taskObject.Done {
 					task_manager.StopQuickTask(taskObject)
-					break
-					//send webhook
-					//add auto-stop after delay in settings.json
 				}
-			}
 
+			}
 		}
 		time.Sleep(50 * time.Millisecond)
 	}
