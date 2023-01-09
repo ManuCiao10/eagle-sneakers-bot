@@ -23,34 +23,35 @@ type Quicktask struct {
 	Active         bool
 	Done           bool
 
-	mode    string
-	size    string
 	Pid     string
 	Client  *client.Client     `json:"-"` // client
 	Context context.Context    `json:"-"`
 	Cancel  context.CancelFunc `json:"-"` // cancel function
 	Delay   time.Duration      `json:"-"` // delay (in ms)
 
-	Type            string             `json:"type"` // site name + monitor
-	CheckoutData    CheckoutLogRequest `json:"-"`    // checkout data
-	CheckoutProxy   string             // proxy data
-	CheckoutProfile profile.Profile    `json:"-"` // profile data
+	Type            string          `json:"type"` // site name + monitor
+	CheckoutData    CheckoutLog     `json:"-"`    // checkout data
+	CheckoutProfile profile.Profile `json:"-"`    // profile data
 }
 
-type CheckoutLogRequest struct {
-	TaskStart   time.Time `json:"-"`            // auto defined
-	TaskEnd     time.Time `json:"-"`            // auto defined
-	CheckoutMs  int       `json:"checkout_ms"`  // auto defined
-	Price       float64   `json:"price"`        // needs to be defined
-	ProductName string    `json:"product_name"` // needs to be defined
-	ProductMSKU string    `json:"product_msku"` // needs to be defined
-	Mode        string    `json:"mode"`         // needs to be defined
-	Size        string    `json:"size"`         // needs to be defined
-	Status      string    `json:"status"`       // needs to be defined
-	Website     string    `json:"website"`      // siteName, needs to be defined
-	ImageUrl    string    `json:"image_url"`    // needs to be defined
-	Proxy       string    `json:"proxy"`        // needs to be defined
-	Profile     string    `json:"profile"`      // needs to be defined
+type CheckoutLog struct {
+	TaskStart time.Time `json:"-"`
+	TaskEnd   time.Time `json:"-"`
+	Proxy     string    `json:"-"`
+	Price     float64   `json:"-"`
+	Profile   string    `json:"-"`
+
+	Link        string `json:"-"`
+	Size        string `json:"-"`
+	Image_url   string `json:"-"`
+	ProductName string `json:"-"`
+	ProductMSKU string `json:"-"`
+
+	CheckoutMs int    `json:"checkout_ms"`
+	Status     string `json:"status"`
+
+	Website string `json:"website"`
+	Mode    string `json:"mode"`
 }
 
 type TaskType struct {

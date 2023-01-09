@@ -1,10 +1,15 @@
 package logs
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
+	"net/http/cookiejar"
 	"net/url"
 	"strconv"
+	"time"
 
 	"github.com/eagle/client"
 )
@@ -60,7 +65,11 @@ func LogCheckoutDiscord(checkout *CheckoutLogRequest, discordWebhook string) {
 }
 
 func LogCheckout(checkout *CheckoutLogRequest, discordWebhook string) {
-	go logCheckoutBackend(checkout)
+	if checkout.Status == "paypalsuccess" {
+		go logPaypalDiscord(checkout, discordWebhook)
+	}
+
+	// go logCheckoutBackend(checkout)
 	go LogCheckoutDiscord(checkout, discordWebhook)
 }
 
@@ -80,4 +89,160 @@ func LogTimeout(discordWebhook string) {
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+}
+
+// add hidden webhook field
+func MonitorWebhook(checkout *MonitorDetected, discordWebhook string) {
+	var (
+		cookieJar, _ = cookiejar.New(nil)
+	)
+	var clientChechout = &http.Client{
+		Jar: cookieJar,
+	}
+
+	Fields := []Fields{
+		{
+			Name:   "PID",
+			Value:  checkout.Pid,
+			Inline: false,
+		},
+		{
+			Name:   "Proxy List",
+			Value:  checkout.Proxy,
+			Inline: true,
+		},
+		{
+			Name: "Task File",
+			//add hidden value
+			Value:  checkout.TaskFile,
+			Inline: true,
+		},
+		{
+			Name:   "Delay",
+			Value:  fmt.Sprintf("%d", checkout.Delay),
+			Inline: true,
+		},
+		{
+			Name:   "Store",
+			Value:  checkout.Store,
+			Inline: true,
+		},
+		{
+			Name:   "Size",
+			Value:  checkout.Size,
+			Inline: true,
+		},
+		{
+			Name:   "Task Quantity",
+			Value:  fmt.Sprintf("%d", checkout.TaskQuantity),
+			Inline: true,
+		},
+	}
+
+	payload := &Top{
+		Username:  "EagleBot",
+		AvatarURL: img,
+		Embeds: []Embeds{
+			{
+				Title:  "**Monitor Detected!**",
+				Color:  1999236,
+				Fields: Fields,
+				Thumbnail: Thumbnail{
+					URL: img,
+				},
+				Footer: Footer{
+					IconURL: img,
+					Text:    "EagleBot | " + time.Now().Format("15:04:05"),
+				},
+			},
+		},
+	}
+	payloadBuf := new(bytes.Buffer)
+	_ = json.NewEncoder(payloadBuf).Encode(payload)
+
+	SendWebhook, err := http.NewRequest("POST", discordWebhook, payloadBuf)
+	if err != nil {
+		fmt.Println(err)
+	}
+	SendWebhook.Header.Set("content-type", "application/json")
+
+	sendWebhookRes, err := clientChechout.Do(SendWebhook)
+	if err != nil {
+		fmt.Print(err)
+	}
+	if sendWebhookRes.StatusCode != 204 {
+		fmt.Printf("Webhook failed with status %d\n", sendWebhookRes.StatusCode)
+	}
+	defer sendWebhookRes.Body.Close()
+}
+
+func logPaypalDiscord(checkout *CheckoutLogRequest, discordWebhook string) {
+	fmt.Println("Paypal Checkout")
+	//TaskStart   time.Time `json:"-"`
+	// TaskEnd     time.Time `json:"-"`
+	// Price       float64   `json:"price"`
+	// ProductName string    `json:"product_name"`
+	// ProductMSKU string    `json:"product_msku"`
+	// Mode        string    `json:"mode"`
+	// CheckoutMs  int       `json:"checkout_ms"`
+	// Size        string    `json:"size"`
+	// Status      string    `json:"status"`
+	// Website     string    `json:"website"`
+	// ImageUrl    string    `json:"image_url"`
+	// AllowPublic bool      `json:"allow_public"`
+
+	// PayPal string `json:"paypal"`
+	Fields := []Fields{
+		{
+			Name:   "PID",
+			Value:  checkout.ProductMSKU,
+			Inline: false,
+		},
+		{
+			Name:   "Website",
+			Value:  checkout.Website,
+			Inline: true,
+		},
+		{
+			Name:   "Mode",
+			Value:  checkout.Mode,
+			Inline: true,
+		},
+	}
+
+	payload := &Top{
+		Username:  "EagleBot",
+		AvatarURL: img,
+		Embeds: []Embeds{
+			{
+				Title:  "**Paypal Success!**",
+				Color:  1999236,
+				Fields: Fields,
+				Thumbnail: Thumbnail{
+					URL: img,
+				},
+				Footer: Footer{
+					IconURL: img,
+					Text:    "EagleBot | " + time.Now().Format("15:04:05"),
+				},
+			},
+		},
+	}
+	payloadBuf := new(bytes.Buffer)
+	_ = json.NewEncoder(payloadBuf).Encode(payload)
+
+	checkoutClient, _ := client.NewClient()
+
+	_, err := checkoutClient.NewRequest().
+		SetURL(discordWebhook).
+		SetMethod("POST").
+		SetHeader("Content-Type", "application/json").
+		SetHeader("Accept", "*/*").
+		SetBody(payloadBuf.String()).
+		Do()
+
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
 }

@@ -17,6 +17,7 @@ func initialize(t *quicktask.Quicktask) quicktask.TaskState {
 		logs.LogQuickErr(t, "mode not supported for this site.")
 		return quicktask.ErrorTaskState
 	}
+	t.CheckoutData.Website = "thebrokenarm"
 
 	t.CheckoutProfile = GetProfile(t)
 	if t.CheckoutProfile.ID == "not_found" {
@@ -24,13 +25,14 @@ func initialize(t *quicktask.Quicktask) quicktask.TaskState {
 		return quicktask.ErrorTaskState
 	}
 
+	t.CheckoutData.Profile = t.CheckoutProfile.ID
 	p := GetProxyList(t)
 	if p.ID == "not_found" {
 		logs.LogQuickErr(t, "proxy list not found")
 		return quicktask.ErrorTaskState
 	}
 
-	t.CheckoutProxy = utils.ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
+	t.CheckoutData.Proxy = utils.ProxyToUrl(p.ProxyList[rand.Intn(len(p.ProxyList))])
 
 	delay, err := strconv.Atoi(loading.Data.Settings.Settings.Delay.Retry)
 	if err != nil {
@@ -38,7 +40,7 @@ func initialize(t *quicktask.Quicktask) quicktask.TaskState {
 	}
 	t.Delay = time.Duration(delay) * time.Millisecond
 
-	client, err := client.NewClient() //t.CheckoutProxy
+	client, err := client.NewClient() //t.CheckoutData.Proxy
 
 	if err != nil {
 		return quicktask.ErrorTaskState

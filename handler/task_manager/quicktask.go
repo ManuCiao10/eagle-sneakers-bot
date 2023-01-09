@@ -108,7 +108,8 @@ func RunQuickTask(t *quicktask.Quicktask) {
 				Size:        t.CheckoutData.Size,
 				Status:      t.CheckoutData.Status,
 				Website:     t.CheckoutData.Website,
-				ImageUrl:    t.CheckoutData.ImageUrl,
+				ImageUrl:    t.CheckoutData.Image_url,
+				PayPal: 	t.CheckoutData.Link,
 			}, loading.Data.Settings.Settings.DiscordWebhook)
 			// you can report that the task stopped here
 			t.Active = false

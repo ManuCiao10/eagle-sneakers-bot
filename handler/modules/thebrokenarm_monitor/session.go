@@ -37,6 +37,7 @@ func handleResponse(t *quicktask.Quicktask) quicktask.TaskState {
 		return SESSION
 	}
 	saveCookie(t)
+	// fmt.Println(t.Client.LatestResponse.CookiesAsString())
 
 	TBAInternalQuick.ProductID = Id
 

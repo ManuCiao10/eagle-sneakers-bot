@@ -94,14 +94,14 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				if !run {
 					run = true
 					logs.LogsMsgCyan("restock detected!")
-					monitorWebhook(&MonitorDetected{
-						pid:          pid,
-						size:         size,
-						taskQuantity: quantity,
-						proxy:        taskObject.Proxylist,
-						taskFile:     taskObject.Accounts,
-						delay:        delayInt,
-						store:        store,
+					logs.MonitorWebhook(&logs.MonitorDetected{
+						Pid:          pid,
+						Size:         size,
+						TaskQuantity: quantity,
+						Proxy:        taskObject.Proxylist,
+						TaskFile:     taskObject.Accounts,
+						Delay:        delayInt,
+						Store:        store,
 					}, loading.Data.Settings.Settings.DiscordWebhook)
 				}
 

@@ -22,7 +22,6 @@ var TBAInternalQuick = struct {
 	Account    account.Account
 	Cookies    string
 	ProductID  string
-	payPalLink string
 }{}
 
 var dataResponse Response

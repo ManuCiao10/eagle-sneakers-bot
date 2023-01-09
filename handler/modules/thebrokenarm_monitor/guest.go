@@ -44,6 +44,7 @@ func handleAddToCart(t *quicktask.Quicktask) quicktask.TaskState {
 		time.Sleep(t.Delay)
 		return GUEST
 	}
+	saveCookie(t)
 
 	logs.LogQuickCart(t, "added to cart")
 	// console.AddCart()
