@@ -48,19 +48,17 @@ func handleResponseCheckout(t *quicktask.Quicktask) quicktask.TaskState {
 	t.CheckoutData.Link = "https://www.paypal.com/checkoutnow?token=" + payPal.Token
 	logs.LogQuickSuccess(t, "checked out successfully")
 	t.CheckoutData.Status = "paypalsuccess"
-	// t.CheckoutData.Size = dataResponse.Cart.Products[0].Attributes.Taille
 
-	t.CheckoutData.Size = "9.5"
+	size := dataResponse.Cart.Products[0].Attributes.Taille
+	if size == "" {
+		size = "N/A"
+	}
+	t.CheckoutData.Size = size
 	t.CheckoutData.Image_url = dataResponse.Cart.Products[0].Images[0].Medium.URL
-	// price, err := strconv.ParseFloat(dataResponse.Cart.Products[0].RegularPriceAmount, 64)
-	// if err != nil {
-	// 	fmt.Println(t, "error to get price")
-	// 	price = 0
-	// }
-
-	t.CheckoutData.Price = 0
+	t.CheckoutData.ProductMSKU = t.Pid
+	t.CheckoutData.Price = dataResponse.Cart.Products[0].RegularPriceAmount
 	t.CheckoutData.Mode = "paypal"
-	t.CheckoutData.ProductName = "Dunk low Black"
+	t.CheckoutData.ProductName = "Dunk Low to add"
 
 	// console.AddCheckout()
 	return quicktask.DoneTaskState

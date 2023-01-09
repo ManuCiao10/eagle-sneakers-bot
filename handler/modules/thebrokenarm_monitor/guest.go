@@ -9,6 +9,7 @@ import (
 
 func guest(t *quicktask.Quicktask) quicktask.TaskState {
 	logs.LogQuick(t, "checking stock...")
+
 	data := "token=c21124404c5def43c52a677dc3c1b525&id_product=" + t.Pid + "&id_product=" + t.Pid + "&add=1&action=update"
 
 	_, err := t.Client.NewRequest().

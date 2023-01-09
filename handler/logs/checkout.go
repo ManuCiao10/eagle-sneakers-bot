@@ -91,15 +91,15 @@ func LogTimeout(discordWebhook string) {
 	}
 }
 
+var (
+	cookieJar, _ = cookiejar.New(nil)
+)
+var clientChechout = &http.Client{
+	Jar: cookieJar,
+}
+
 // add hidden webhook field
 func MonitorWebhook(checkout *MonitorDetected, discordWebhook string) {
-	var (
-		cookieJar, _ = cookiejar.New(nil)
-	)
-	var clientChechout = &http.Client{
-		Jar: cookieJar,
-	}
-
 	Fields := []Fields{
 		{
 			Name:   "PID",
@@ -112,8 +112,7 @@ func MonitorWebhook(checkout *MonitorDetected, discordWebhook string) {
 			Inline: true,
 		},
 		{
-			Name: "Task File",
-			//add hidden value
+			Name:   "Task File",
 			Value:  checkout.TaskFile,
 			Inline: true,
 		},
@@ -177,30 +176,10 @@ func MonitorWebhook(checkout *MonitorDetected, discordWebhook string) {
 }
 
 func logPaypalDiscord(checkout *CheckoutLogRequest, discordWebhook string) {
-	fmt.Println("Paypal Checkout")
-	//TaskStart   time.Time `json:"-"`
-	// TaskEnd     time.Time `json:"-"`
-	// Price       float64   `json:"price"`
-	// ProductName string    `json:"product_name"`
-	// ProductMSKU string    `json:"product_msku"`
-	// Mode        string    `json:"mode"`
-	// CheckoutMs  int       `json:"checkout_ms"`
-	// Size        string    `json:"size"`
-	// Status      string    `json:"status"`
-	// Website     string    `json:"website"`
-	// ImageUrl    string    `json:"image_url"`
-	// AllowPublic bool      `json:"allow_public"`
-
-	// PayPal string `json:"paypal"`
 	Fields := []Fields{
 		{
-			Name:   "PID",
+			Name:   "Pid",
 			Value:  checkout.ProductMSKU,
-			Inline: false,
-		},
-		{
-			Name:   "Website",
-			Value:  checkout.Website,
 			Inline: true,
 		},
 		{
@@ -208,18 +187,44 @@ func logPaypalDiscord(checkout *CheckoutLogRequest, discordWebhook string) {
 			Value:  checkout.Mode,
 			Inline: true,
 		},
-	}
+		{
+			Name:   "Size",
+			Value:  checkout.Size,
+			Inline: true,
+		},
+		{
+			Name:   "Checkout Time",
+			Value:  fmt.Sprintf("%dms", checkout.CheckoutMs),
+			Inline: true,
+		},
+		{
+			Name:   "Price",
+			Value:  checkout.Price,
+			Inline: true,
+		},
+		{
+			Name:   "Website",
+			Value:  checkout.Website,
+			Inline: true,
+		},
 
+		{
+			Name:   "Link",
+			Value:  "[PayPal Link](" + checkout.PayPal + ")",
+			Inline: true,
+		},
+	}
 	payload := &Top{
 		Username:  "EagleBot",
 		AvatarURL: img,
 		Embeds: []Embeds{
 			{
-				Title:  "**Paypal Success!**",
-				Color:  1999236,
-				Fields: Fields,
+				Title:       "**Paypal Success!**",
+				Color:       1999236,
+				Fields:      Fields,
+				Description: checkout.ProductName,
 				Thumbnail: Thumbnail{
-					URL: img,
+					URL: checkout.ImageUrl,
 				},
 				Footer: Footer{
 					IconURL: img,
@@ -231,18 +236,19 @@ func logPaypalDiscord(checkout *CheckoutLogRequest, discordWebhook string) {
 	payloadBuf := new(bytes.Buffer)
 	_ = json.NewEncoder(payloadBuf).Encode(payload)
 
-	checkoutClient, _ := client.NewClient()
-
-	_, err := checkoutClient.NewRequest().
-		SetURL(discordWebhook).
-		SetMethod("POST").
-		SetHeader("Content-Type", "application/json").
-		SetHeader("Accept", "*/*").
-		SetBody(payloadBuf.String()).
-		Do()
-
+	SendWebhook, err := http.NewRequest("POST", discordWebhook, payloadBuf)
 	if err != nil {
-		log.Fatalln(err.Error())
+		fmt.Println(err)
 	}
+	SendWebhook.Header.Set("content-type", "application/json")
+
+	sendWebhookRes, err := clientChechout.Do(SendWebhook)
+	if err != nil {
+		fmt.Print(err)
+	}
+	if sendWebhookRes.StatusCode != 204 {
+		fmt.Printf("Webhook failed with status %d\n", sendWebhookRes.StatusCode)
+	}
+	defer sendWebhookRes.Body.Close()
 
 }

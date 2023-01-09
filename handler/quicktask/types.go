@@ -38,7 +38,7 @@ type CheckoutLog struct {
 	TaskStart time.Time `json:"-"`
 	TaskEnd   time.Time `json:"-"`
 	Proxy     string    `json:"-"`
-	Price     float64   `json:"-"`
+	Price     string    `json:"-"`
 	Profile   string    `json:"-"`
 
 	Link        string `json:"-"`

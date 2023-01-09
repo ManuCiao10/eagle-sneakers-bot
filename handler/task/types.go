@@ -42,7 +42,7 @@ type CheckoutLogRequest struct {
 	TaskStart   time.Time `json:"-"`            // auto defined
 	TaskEnd     time.Time `json:"-"`            // auto defined
 	CheckoutMs  int       `json:"checkout_ms"`  // auto defined
-	Price       float64   `json:"price"`        // needs to be defined
+	Price       string    `json:"price"`        // needs to be defined
 	ProductName string    `json:"product_name"` // needs to be defined
 	ProductMSKU string    `json:"product_msku"` // needs to be defined
 	Mode        string    `json:"mode"`         // needs to be defined

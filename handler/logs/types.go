@@ -18,7 +18,7 @@ var (
 type CheckoutLogRequest struct {
 	TaskStart   time.Time `json:"-"`
 	TaskEnd     time.Time `json:"-"`
-	Price       float64   `json:"price"`
+	Price       string   `json:"price"`
 	ProductName string    `json:"product_name"`
 	ProductMSKU string    `json:"product_msku"`
 	Mode        string    `json:"mode"`
