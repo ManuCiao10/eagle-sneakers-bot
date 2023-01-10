@@ -107,6 +107,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 				if !taskObject.Active {
 					go task_manager.RunQuickTask(taskObject)
+				} else if taskObject.Done {
+					task_manager.StopQuickTask(taskObject)
 				}
 
 			}

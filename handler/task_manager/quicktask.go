@@ -33,6 +33,7 @@ func handleQuickTaskState(taskState quicktask.TaskState, taskType *quicktask.Tas
 func RunQuickTask(t *quicktask.Quicktask) {
 	t.Context, t.Cancel = context.WithCancel(context.Background())
 	t.Active = true
+	t.Done = false
 
 	defer func() {
 		if r := recover(); r != nil {
@@ -89,7 +90,7 @@ func RunQuickTask(t *quicktask.Quicktask) {
 		if time.Since(t.CheckoutData.TaskStart) > timeOut {
 			logs.LogQuick(t, "Task timed out.")
 			logs.LogTimeout(loading.Data.Settings.Settings.DiscordWebhook)
-			StopQuickTask(t)
+			os.Exit(0)
 			return
 		}
 
@@ -111,11 +112,14 @@ func RunQuickTask(t *quicktask.Quicktask) {
 				PayPal:      t.CheckoutData.Link,
 			}, loading.Data.Settings.Settings.DiscordWebhook)
 			// you can report that the task stopped here
-			StopQuickTask(t)
+			t.Active = false
+			t.Done = true
+			break
 		} else if nextState == quicktask.ErrorTaskState {
 			// report errors
-			logs.LogQuickErr(t, "Task error")
-			StopQuickTask(t)
+			t.Active = false
+			t.Done = true
+			break
 		}
 		time.Sleep(1 * time.Millisecond)
 	}
@@ -124,5 +128,4 @@ func RunQuickTask(t *quicktask.Quicktask) {
 // StopQuickTask stops a QuickTask
 func StopQuickTask(t *quicktask.Quicktask) {
 	t.Cancel()
-	os.Exit(0)
 }
