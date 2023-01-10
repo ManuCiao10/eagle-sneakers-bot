@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/eagle/handler/loading"
@@ -94,13 +95,13 @@ func RunTask(t *task.Task) {
 				Website:     t.CheckoutData.Website,
 				ImageUrl:    t.CheckoutData.ImageUrl,
 			}, loading.Data.Settings.Settings.DiscordWebhook)
+
 			// you can report that the task stopped here
-			t.Active = false
-			break
+			StopTask(t)
 		} else if nextState == task.ErrorTaskState {
-			// report errors
-			t.Active = false
-			break
+			// report errors here
+			logs.LogErr(t, "Task error")
+			StopTask(t)
 		}
 
 		time.Sleep(1 * time.Millisecond)
@@ -110,4 +111,5 @@ func RunTask(t *task.Task) {
 // StopTask stops a task
 func StopTask(t *task.Task) {
 	t.Cancel()
+	os.Exit(0)
 }

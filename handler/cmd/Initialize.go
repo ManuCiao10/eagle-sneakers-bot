@@ -33,8 +33,6 @@ func Initialize() {
 
 				if !taskObject.Active {
 					go task_manager.RunTask(taskObject)
-				} else if taskObject.Done {
-					task_manager.StopTask(taskObject)
 				}
 			}
 			Run = true

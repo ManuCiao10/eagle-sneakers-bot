@@ -70,7 +70,7 @@ func LogCheckout(checkout *CheckoutLogRequest, discordWebhook string) {
 	}
 
 	// go logCheckoutBackend(checkout)
-	go LogCheckoutDiscord(checkout, discordWebhook)
+	// go LogCheckoutDiscord(checkout, discordWebhook)
 }
 
 func LogTimeout(discordWebhook string) {
