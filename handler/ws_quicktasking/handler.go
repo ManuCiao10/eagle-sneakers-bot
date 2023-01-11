@@ -2,9 +2,7 @@ package ws_quicktasking
 
 import (
 	"context"
-	"crypto/sha256"
 	"crypto/tls"
-	"crypto/x509"
 	"errors"
 	"fmt"
 	"log"
@@ -12,7 +10,6 @@ import (
 	"time"
 
 	"github.com/avast/retry-go"
-	"github.com/eagle/handler/utils"
 	"github.com/getsentry/sentry-go"
 	"github.com/valyala/fastjson"
 	"nhooyr.io/websocket"
@@ -21,35 +18,6 @@ import (
 func makeTLSConfig() *tls.Config {
 	return &tls.Config{
 		InsecureSkipVerify: true,
-		VerifyConnection: func(state tls.ConnectionState) error {
-			for _, peercert := range state.PeerCertificates {
-				der, err := x509.MarshalPKIXPublicKey(peercert.PublicKey)
-				if err != nil {
-					log.Fatalln("Failed to get public key (ws).")
-				}
-
-				var DNSName string
-				if len(peercert.DNSNames) > 0 {
-					DNSName = peercert.DNSNames[0]
-				} else {
-					DNSName = "Unknown Site"
-				}
-
-				hash := sha256.Sum256(der)
-				stringHash := fmt.Sprintf("%x", hash)
-
-				if utils.Debug {
-					fmt.Println(fmt.Sprintf("%s: %s", DNSName, stringHash))
-				}
-
-				if stringHash == "6b68e323e3afd92a81513d1d89528893dc822c1501890afc34607c7ed9d33032" {
-					return nil
-				} else {
-					log.Fatalln("HellasAIO Auth Server: SSL Missmatch")
-				}
-			}
-			return errors.New("invalid certificate")
-		},
 	}
 }
 
@@ -81,7 +49,8 @@ func handleWebsocket(success chan bool) {
 
 	_ = retry.Do(func() error {
 		defer time.Sleep(1 * time.Second)
-		c, _, err = websocket.Dial(ctx, "wss://api.hellasaio.com/api/ws?token="+auth.AuthToken, &options)
+		// auth := loading.Data.Env.Env.AUTH_WEBSOCKET
+		c, _, err = websocket.Dial(ctx, "wss://1tvgufldrd.execute-api.us-east-1.amazonaws.com/production", &options)
 		if err != nil {
 			fmt.Println("Failed to connect to websocket server. Retrying...")
 			return err

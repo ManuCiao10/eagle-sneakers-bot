@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Testing AWS API Gateway WebSockets</title>
+</head>
+
+<body>
+<div id="ws-container">
+    <br />
+    <h1>Testing AWS API Gateway WebSockets</h1>
+    <input type="text" size="50" id="wsUrl" placeholder="WebSocket server address">
+    <button onclick="javascript:initWebSocket()">Connect to WebSocket server</button>
+    <hr/>
+    Status: <span id="status">Not initialized</span>
+    <hr/>
+    <input type="text" size="50" id="message" placeholder="Message">
+    <button onclick="javascript:sendMessage()">Send message</button>
+    <div id="messageList" style="border: 1px solid #C0C0C0; margin-top: 10px; padding: 10px">
+        List is Empty
+    </div>
+</div>
+
+<script type="text/javascript">
+    let ws;
+    let hasMessages = false;
+    let connected = false;
+    let addressInput = document.querySelector('#wsUrl');
+    let statusElement = document.querySelector('#status');
+    let messageInput = document.querySelector('#message');
+    let messageListElement = document.querySelector('#messageList');
+
+    function initWebSocket() {
+        let wsUrl = addressInput.value;
+        if (wsUrl.trim()) {
+            setStatus('Connecting...');
+            ws = new WebSocket(wsUrl);
+            initWebSocketsEvents();
+        }
+    }
+
+    function initWebSocketsEvents() {
+        ws.onopen = function () {
+            setStatus('Connection is opened (connected...)');
+            connected = true;
+        };
+
+        ws.onmessage = function (evt) {
+            let message = evt.data;
+            addMessageToList(message);
+        };
+
+        ws.onclose = function () {
+            connected = false;
+            setStatus('Connection is closed...');
+        };
+
+        ws.onerror = function (error) {
+            console.error(error);
+            setStatus('Error occurred, check the console!');
+        };
+    }
+
+    function setStatus(status) {
+        statusElement.textContent = status;
+    }
+
+    function sendMessage() {
+        if (connected) {
+            let message = messageInput.value;
+            if (message.trim()) {
+                ws.send(JSON.stringify({action: 'onmessage', message}));
+            }
+        }
+    }
+
+    function addMessageToList(message) {
+        let result = '';
+        if (hasMessages) {
+            result = `${messageListElement.innerHTML} <br />`;
+        }
+        hasMessages = true;
+        messageListElement.innerHTML = `${result}${message}`;
+    }
+</script>
+</body>
+</html>

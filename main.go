@@ -8,11 +8,14 @@ import (
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/modules/thebrokenarm_monitor"
 	"github.com/eagle/handler/utils"
+	"github.com/eagle/handler/ws_quicktasking"
 )
 
 //go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
 
 func main() {
+	// quicktasking.Initialize()
+	ws_quicktasking.Initialize()
 	thebrokenarm.Initialize()
 	thebrokenarm_monitor.Initialize()
 	loading.Initialize()
