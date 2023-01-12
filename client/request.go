@@ -10,6 +10,8 @@ import (
 	http "github.com/saucesteals/fhttp"
 )
 
+var Debug = false
+
 // set body
 func (r *Request) SetBody(body string) *Request {
 	r.body = strings.NewReader(body)
@@ -53,6 +55,8 @@ func (r *Request) SetHeader(key, value string) *Request {
 	r.header[key] = []string{value}
 	return r
 }
+
+
 
 // Do will send the request with all specified request values
 func (r *Request) Do() (*Response, error) {

@@ -1,12 +1,17 @@
 package client
 
 import (
-	"C"
 	"encoding/json"
 	"log"
+	"C"
 
 	http "github.com/saucesteals/fhttp"
 )
+
+func createCResponse(resp *Response) *C.char {
+	errorJson, _ := json.Marshal(resp)
+	return C.CString(string(errorJson))
+}
 
 // Header returns the response headers
 func (r *Response) Header() http.Header {
@@ -55,9 +60,4 @@ func (r *Response) CookiesAsString() string {
 		cookies += cookie.String() + ";"
 	}
 	return cookies
-}
-
-func createCResponse(resp *Response) *C.char {
-	errorJson, _ := json.Marshal(resp)
-	return C.CString(string(errorJson))
 }

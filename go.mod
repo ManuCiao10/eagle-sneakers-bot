@@ -40,6 +40,7 @@ require (
 	github.com/juju/persistent-cookiejar v1.0.0
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/mitchellh/go-ps v1.0.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9
 	github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7

@@ -50,7 +50,7 @@ func handleWebsocket(success chan bool) {
 	_ = retry.Do(func() error {
 		defer time.Sleep(1 * time.Second)
 		// auth := loading.Data.Env.Env.AUTH_WEBSOCKET
-		c, _, err = websocket.Dial(ctx, "wss://1tvgufldrd.execute-api.us-east-1.amazonaws.com/production", &options)
+		c, _, err = websocket.Dial(ctx, "wss://h90r03l2q4.execute-api.us-east-1.amazonaws.com/production", &options)
 		if err != nil {
 			fmt.Println("Failed to connect to websocket server. Retrying...")
 			return err
