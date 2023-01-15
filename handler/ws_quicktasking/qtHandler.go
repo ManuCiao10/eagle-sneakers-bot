@@ -13,7 +13,6 @@ func handleQuicktaskMessage(message []byte) {
 	size := fastjson.GetString(message, "size")
 
 	// proxyGroupId, _ := proxy.GetProxyGroupIDByName("main")
-	var err error
 
 	siteIdInt, err := strconv.Atoi(siteId)
 	if err != nil {

@@ -17,8 +17,13 @@ require (
 	github.com/juju/go4 v0.0.0-20160222163258-40d72ab9641a // indirect
 	github.com/klauspost/compress v1.15.12 // indirect
 	github.com/kr/pretty v0.3.0 // indirect
+	github.com/lufia/plan9stats v0.0.0-20211012122336-39d0f177ccd0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
+	github.com/power-devops/perfstat v0.0.0-20210106213030-5aafc221ea8c // indirect
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
+	github.com/tklauser/go-sysconf v0.3.11 // indirect
+	github.com/tklauser/numcpus v0.6.0 // indirect
+	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/net v0.4.0 // indirect
 	golang.org/x/text v0.5.0 // indirect
@@ -40,10 +45,10 @@ require (
 	github.com/juju/persistent-cookiejar v1.0.0
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/mitchellh/go-ps v1.0.0
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9
 	github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7
+	github.com/shirou/gopsutil/v3 v3.22.12
 	github.com/valyala/fastjson v1.6.4
 	golang.org/x/sys v0.3.0 // indirect
 	nhooyr.io/websocket v1.8.7

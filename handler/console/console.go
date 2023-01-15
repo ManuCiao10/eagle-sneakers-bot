@@ -46,3 +46,7 @@ func updateTitle() {
 	}
 	_, _ = SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %d ｜ Carts: %d ｜ Checkouts: %d ｜ Failures: %d", version.Version, carts, checkouts, failures))
 }
+
+func updateTitleMQT() {
+	_, _ = SetConsoleTitle(fmt.Sprintf("Eagle - EagleBot Version %d ｜ - MQT Connected", version.Version))
+}

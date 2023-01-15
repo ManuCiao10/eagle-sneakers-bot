@@ -10,6 +10,9 @@ import (
 	"time"
 
 	"github.com/avast/retry-go"
+	"github.com/eagle/handler/auth"
+	"github.com/eagle/handler/logs"
+	"github.com/eagle/handler/utils"
 	"github.com/getsentry/sentry-go"
 	"github.com/valyala/fastjson"
 	"nhooyr.io/websocket"
@@ -48,18 +51,23 @@ func handleWebsocket(success chan bool) {
 	defer log.Fatalln("Tried to reconnect 10 times to websocket server, but failed. Closing bot...")
 
 	_ = retry.Do(func() error {
-		defer time.Sleep(1 * time.Second)
+		// defer time.Sleep(1 * time.Second)
 		// auth := loading.Data.Env.Env.AUTH_WEBSOCKET
-		c, _, err = websocket.Dial(ctx, "wss://h90r03l2q4.execute-api.us-east-1.amazonaws.com/production", &options)
+		c, _, err = websocket.Dial(ctx, "wss://h90r03l2q4.execute-api.us-east-1.amazonaws.com/quicktask", &options)
 		if err != nil {
 			fmt.Println("Failed to connect to websocket server. Retrying...")
 			return err
 		} else {
 			fmt.Println("Successfully connected to quicktask websocket.")
+			fmt.Print("\033[H\033[2J")
+			utils.Banner()
+			auth.Welcome()
+			logs.LogsMsgCyan("EagleBot is waiting for quicktasks...")
+			// console.AddMQT()
 		}
 
 		for {
-			_, message, err := c.Read(ctx)
+			r, message, err := c.Read(ctx)
 			if err != nil {
 				if errors.Is(err, websocket.CloseError{Code: websocket.StatusPolicyViolation, Reason: ""}) {
 					log.Fatalln("Failed to authenticate to websocket server.")
@@ -68,7 +76,8 @@ func handleWebsocket(success chan bool) {
 					return err
 				}
 			}
-
+			// fmt.Println(r)
+			// fmt.Println(string(message))
 			if !authed {
 				if fastjson.GetBool(message, "success") {
 					go func() { success <- true }()

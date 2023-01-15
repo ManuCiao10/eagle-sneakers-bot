@@ -3,33 +3,49 @@ package ws_quicktasking
 import (
 	"fmt"
 	"log"
-	ps "github.com/mitchellh/go-ps"
+
+	"github.com/shirou/gopsutil/v3/process"
 )
 
+var DevMode = true
+
 func Initialize() {
-	//check if the process is already running
-	//if it is, then exit
-	//if it isn't, then continue
-	processList, err := ps.Processes()
+	executableName := "Eagle"
+	if DevMode {
+		executableName = "eagle"
+	}
+
+	processes, err := process.Processes()
 	if err != nil {
-		log.Println("ps.Processes() Failed, are you using windows?")
+		log.Fatal(err)
 		return
 	}
 
-	// map ages
-	for x := range processList {
-		var process ps.Process
-		process = processList[x]
-		log.Printf("%d\t%s\n", process.Pid(), process.Executable())
-
-		// do os.* stuff on the pid
+	for _, process := range processes {
+		name, _ := process.Name()
+		if Contains(name, executableName) {
+			return
+		}
 	}
+
 	fmt.Println("Connecting to quicktask websocket...")
 	success := make(chan bool)
 	go handleWebsocket(success)
 	didSucceed := <-success
 	if didSucceed {
 		fmt.Println("Successfully authenticated to quicktask websocket.")
-		//update Windows Title
 	}
+
+}
+
+func Contains(s, substr string) bool {
+	for i := 0; i < len(s); i++ {
+		if len(s)-i < len(substr) {
+			return false
+		}
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
 }

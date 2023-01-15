@@ -14,3 +14,7 @@ func AddFailure() {
 	failures += 1
 	updateTitle()
 }
+
+func AddMQT() {
+	updateTitleMQT()
+}
