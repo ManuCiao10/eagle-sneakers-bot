@@ -18,7 +18,8 @@ import (
 )
 
 var (
-	run = false
+	run       = false
+	allPidMqt = []string{}
 )
 
 func monitorInitialize() {
@@ -64,8 +65,8 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	for _, dataDiscord := range m.Embeds {
 		pid := getPid(dataDiscord)
-		store := getStore(dataDiscord)
-		size := getSize(dataDiscord)
+		store := getSite(dataDiscord)
+		size := "random"
 
 		for _, taskUUID := range loading.Data.Quicktask.Quicktask[store] {
 			taskObject, err := quicktask.GetQuicktask(taskUUID)
@@ -86,11 +87,12 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 				fmt.Println("Failed to convert quantity to int: ", err.Error())
 				continue
 			}
-			pidMqt := strings.Split(taskObject.Other, ";")
+			pidMqt := strings.Split(strings.ToLower(taskObject.Other), ";")
+
 			allPidMqt = append(allPidMqt, pidMqt...)
 			taskObject.Pid = pid
 
-			if utils.Contains(allPidMqt, pid) {
+			if utils.ContainsPID(allPidMqt, pid) {
 				if !run {
 					run = true
 					logs.LogsMsgCyan("restock detected!")
