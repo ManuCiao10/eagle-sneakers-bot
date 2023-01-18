@@ -67,7 +67,7 @@ func handleWebsocket(success chan bool) {
 		}
 
 		for {
-			r, message, err := c.Read(ctx)
+			_, message, err := c.Read(ctx)
 			if err != nil {
 				if errors.Is(err, websocket.CloseError{Code: websocket.StatusPolicyViolation, Reason: ""}) {
 					log.Fatalln("Failed to authenticate to websocket server.")
@@ -76,8 +76,7 @@ func handleWebsocket(success chan bool) {
 					return err
 				}
 			}
-			// fmt.Println(r)
-			// fmt.Println(string(message))
+
 			if !authed {
 				if fastjson.GetBool(message, "success") {
 					go func() { success <- true }()

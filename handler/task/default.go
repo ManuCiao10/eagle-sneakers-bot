@@ -62,7 +62,7 @@ func PathTask() []string {
 
 	if Dev {
 		for _, f := range files {
-			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" && f.Name() != "monitors" && f.Name() != "eaglequicktask" {
+			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" && f.Name() != "monitor" && f.Name() != "eaglequicktask" {
 				folder = append(folder, f.Name())
 			}
 		}
