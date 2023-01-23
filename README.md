@@ -3,6 +3,7 @@
 ## Features
 
 - [x] Bot Auto-Update + Loader
+- [x] AWS API Auth
 - [x] Auth API Discord
 - [x] Discord Rich Presence
 - [x] Logger
@@ -13,6 +14,7 @@
 - [x] Modules Manager
 - [x] Task manager
 - [x] Clean Architecture
+- [x] Multi-Websites Module
 
 ### Build
 

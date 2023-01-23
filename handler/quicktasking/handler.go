@@ -1,12 +1,25 @@
 package quicktasking
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/eagle/handler/auth"
 )
 
 // http://localhost:18638/quicktask?product_id=LME&siteId=2&size=random
 func quicktaskHandler(w http.ResponseWriter, r *http.Request) {
+	// token := r.Header.Get("token") TODO: add the encrypted key jwt
+	//check if the id of the request is the same as the id of the key
+	user_id := auth.Auth.Integrations.Discord.ID
+	fmt.Println("user", user_id)
+
+	// if r.Header.Get("token") != "eagle" {
+	// 	http.Error(w, "404 not found.", http.StatusNotFound)
+	// 	return
+	// }
+
 	if r.URL.Path != "/quicktask" {
 		http.Error(w, "404 not found.", http.StatusNotFound)
 		return

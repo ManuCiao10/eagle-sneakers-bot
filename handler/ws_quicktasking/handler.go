@@ -51,7 +51,7 @@ func handleWebsocket(success chan bool) {
 	defer log.Fatalln("Tried to reconnect 10 times to websocket server, but failed. Closing bot...")
 
 	_ = retry.Do(func() error {
-		// defer time.Sleep(1 * time.Second)
+		defer time.Sleep(1 * time.Second)
 		// auth := loading.Data.Env.Env.AUTH_WEBSOCKET
 		c, _, err = websocket.Dial(ctx, "wss://h90r03l2q4.execute-api.us-east-1.amazonaws.com/quicktask", &options)
 		if err != nil {
@@ -83,6 +83,9 @@ func handleWebsocket(success chan bool) {
 					authed = true
 				}
 			}
+
+			//check if the id_userKey is the same as the one in the request
+			// id_userKey := auth.Auth.Integrations.Discord.ID
 
 			if authed {
 				if fastjson.Exists(message, "siteId") {

@@ -39,7 +39,7 @@ def BackendLinkFlow(_, parentThread: Thread):
 
     while not parentThread.stop:
         try:
-            time.sleep(3)
+            time.sleep(2)
             try:
                 response = requests.get(
                     "https://shop.doverstreetmarket.com/sitemap_products_1.xml",
@@ -95,6 +95,8 @@ def BackendLinkFlow(_, parentThread: Thread):
                                 time.sleep(1)
                                 continue
 
+                            pid = GetPIDFromLink(url["loc"])
+
                             json = response.json()
                             title = json["product"]["title"]
                             image = json["product"]["image"]["src"]
@@ -102,6 +104,7 @@ def BackendLinkFlow(_, parentThread: Thread):
                             for size in json["product"]["options"]:
                                 for value in size["values"]:
                                     sizes.append(value)
+                            # sizeMqt = json
 
                             PingServer(
                                 webhookImage=image,
@@ -109,7 +112,7 @@ def BackendLinkFlow(_, parentThread: Thread):
                                 title=title,
                                 price=price,
                                 url=url["loc"],
-                                pid=GetPIDFromLink(url["loc"]),
+                                pid=pid,
                                 site=site.upper(),
                             )
 

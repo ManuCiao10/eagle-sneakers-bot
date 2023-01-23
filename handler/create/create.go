@@ -77,4 +77,6 @@ func Initialize() {
 	// os.Remove(dir + "/.DS_Store")
 
 	// time.Sleep(10 * time.Second)
+
+	//TODO create all the files and folders needed like MQT.csv
 }

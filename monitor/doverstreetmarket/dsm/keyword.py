@@ -32,7 +32,7 @@ def KeywordFlow(keywords: list, parentThread: Thread):
     previousItems = []
 
     while not parentThread.stop:
-        time.sleep(3)
+        time.sleep(1)
         try:
             print("[BACKENDLINK] Checking for new items...")
             try:
@@ -70,18 +70,20 @@ def KeywordFlow(keywords: list, parentThread: Thread):
                                 break
 
                             variants = []
+                            url = f"https://shop.doverstreetmarket.com/products/{pid}.json"
 
                             for variant in product["variants"]:
-                                var = variant["title"]
+                                if variant["available"] == True:
+                                    var = variant["title"]
 
-                                variants.append(var)
+                                    variants.append(var)
 
                             PingFrontend(
                                 webhookImage=image,
                                 productSizes=variants,
                                 title=item_name,
                                 price=price,
-                                url=f"https://shop.doverstreetmarket.com/products/{pid}",
+                                url=url,
                                 pid=pid,
                                 site=site.upper(),
                             )
