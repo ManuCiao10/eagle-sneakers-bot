@@ -3,6 +3,7 @@ package thebrokenarmonitor
 import (
 	"encoding/xml"
 	"fmt"
+	"regexp"
 	"time"
 
 	"github.com/eagle/client"
@@ -47,7 +48,7 @@ func FrontendLink() {
 				firstRun = false
 				for url := range data.URL {
 					url := data.URL[url].Loc
-					links = append(links, url)
+					// links = append(links, url)
 					fmt.Println("[Frontend] Added link: ", url)
 				}
 
@@ -65,9 +66,10 @@ func FrontendLink() {
 
 					for {
 						fmt.Println("[Frontend] Getting product info...")
-
+						url_test := "https://www.the-broken-arm.com/en/men/9427-43569-nike-air-force-1-low-slam-jam.html"
 						response, err := client.NewRequest().
-							SetURL(data.URL[url].Loc).
+							// SetURL(data.URL[url].Loc).
+							SetURL(url_test).
 							SetMethod("GET").
 							SetDefaultHeadersTBA().
 							Do()
@@ -77,8 +79,10 @@ func FrontendLink() {
 							continue
 						}
 
-						fmt.Println(response.BodyAsString())
 						//from response get the class "form-control form-control-select"
+
+						//use regex to get the options
+						getData(response.BodyAsString())
 
 						// send to monitor
 						if len(data.URL[url].Image) == 0 {
@@ -132,4 +136,15 @@ func contains(s []string, e string) bool {
 		}
 	}
 	return false
+}
+
+func getData(body string) string {
+	// fmt.Println(body)
+	regex := regexp.MustCompile(`product-actions`)
+	match := regex.FindStringSubmatch(body)
+	
+	// fmt.Println(match[0])
+	fmt.Println(match[1])
+	return match[1]
+
 }
