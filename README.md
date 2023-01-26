@@ -1,5 +1,3 @@
-<kbd> <img src="https://github.com/ManuCiao10/eagle/blob/master/handler/mods/git.png" /> </kbd>
-
 ## Features
 
 - [x] Bot Auto-Update + Loader
