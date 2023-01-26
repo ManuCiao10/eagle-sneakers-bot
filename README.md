@@ -1,3 +1,4 @@
+Beta released Message me to buy it
 ## Features
 
 - [x] Bot Auto-Update + Loader
