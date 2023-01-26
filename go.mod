@@ -48,6 +48,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9
 	github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7
+	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/shirou/gopsutil/v3 v3.22.12
 	github.com/valyala/fastjson v1.6.4
 	golang.org/x/sys v0.3.0 // indirect

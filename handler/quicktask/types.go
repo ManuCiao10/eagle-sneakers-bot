@@ -28,6 +28,7 @@ type Quicktask struct {
 	Context context.Context    `json:"-"`
 	Cancel  context.CancelFunc `json:"-"` // cancel function
 	Delay   time.Duration      `json:"-"` // delay (in ms)
+	Size    string             `json:"-"` // size
 
 	Type            string          `json:"type"` // site name + monitor
 	CheckoutData    CheckoutLog     `json:"-"`    // checkout data

@@ -28,7 +28,7 @@ func Initialize() {
 		}
 	}
 
-	fmt.Println("Connecting to quicktask websocket...")
+	fmt.Println("Connecting to quicktask...")
 	success := make(chan bool)
 	go handleWebsocket(success)
 	didSucceed := <-success

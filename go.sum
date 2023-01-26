@@ -119,6 +119,8 @@ github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9 h1:nly6D3YaP/9X/
 github.com/saucesteals/fhttp v0.0.0-20221106032530-a77df0f55ed9/go.mod h1:ivJd/dPhiPWDoO8eyglVm7eKq2+F4SR5/E1gGItti9I=
 github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7 h1:R9f3Y8DGGQoWjpbx+28UYKHldfqZ+qRglCOtT5qm/yI=
 github.com/saucesteals/mimic v0.0.0-20221213225402-4d4101a81ff7/go.mod h1:qzN9yZWTuB0Sv1Zk7Iglx5dsFRSwErFlgR/VR/dGIA0=
+github.com/shirou/gopsutil v3.21.11+incompatible h1:+1+c1VGhc88SSonWP6foOcLhvnKlUeu/erjjvaPEYiI=
+github.com/shirou/gopsutil v3.21.11+incompatible/go.mod h1:5b4v6he4MtMOwMlS0TUMTu2PcXUg8+E1lC7eC3UO/RA=
 github.com/shirou/gopsutil/v3 v3.22.12 h1:oG0ns6poeUSxf78JtOsfygNWuEHYYz8hnnNg7P04TJs=
 github.com/shirou/gopsutil/v3 v3.22.12/go.mod h1:Xd7P1kwZcp5VW52+9XsirIKd/BROzbb2wdX3Kqlz9uI=
 github.com/spf13/cobra v0.0.3/go.mod h1:1l0Ry5zgKvJasoi3XT1TypsSe7PqH0Sj9dhYf7v3XqQ=

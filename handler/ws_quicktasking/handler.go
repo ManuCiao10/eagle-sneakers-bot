@@ -11,6 +11,7 @@ import (
 
 	"github.com/avast/retry-go"
 	"github.com/eagle/handler/auth"
+	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/utils"
 	"github.com/getsentry/sentry-go"
@@ -52,8 +53,8 @@ func handleWebsocket(success chan bool) {
 
 	_ = retry.Do(func() error {
 		defer time.Sleep(1 * time.Second)
-		// auth := loading.Data.Env.Env.AUTH_WEBSOCKET
-		c, _, err = websocket.Dial(ctx, "wss://h90r03l2q4.execute-api.us-east-1.amazonaws.com/quicktask", &options)
+		wss := loading.Data.Env.Env.AUTH_WEBSOCKET
+		c, _, err = websocket.Dial(ctx, wss, &options)
 		if err != nil {
 			fmt.Println("Failed to connect to websocket server. Retrying...")
 			return err
@@ -62,12 +63,14 @@ func handleWebsocket(success chan bool) {
 			fmt.Print("\033[H\033[2J")
 			utils.Banner()
 			auth.Welcome()
-			logs.LogsMsgCyan("EagleBot is waiting for quicktasks...")
+
 			// console.AddMQT()
 		}
 
 		for {
-			_, message, err := c.Read(ctx)
+			logs.LogsMsgCyan("EagleBot is waiting for quicktasks...")
+
+			r, message, err := c.Read(ctx)
 			if err != nil {
 				if errors.Is(err, websocket.CloseError{Code: websocket.StatusPolicyViolation, Reason: ""}) {
 					log.Fatalln("Failed to authenticate to websocket server.")
@@ -77,12 +80,14 @@ func handleWebsocket(success chan bool) {
 				}
 			}
 
-			if !authed {
-				if fastjson.GetBool(message, "success") {
-					go func() { success <- true }()
-					authed = true
-				}
-			}
+			// if !authed {
+			// 	if fastjson.GetBool(message, "success") {
+			// 		go func() { success <- true }()
+			// 		authed = true
+			// 	}
+			// }
+			fmt.Println(r)
+			fmt.Println(string(message))
 
 			//check if the id_userKey is the same as the one in the request
 			// id_userKey := auth.Auth.Integrations.Discord.ID

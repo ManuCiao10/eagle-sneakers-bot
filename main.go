@@ -7,17 +7,20 @@ import (
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/modules/thebrokenarm_monitor"
+	"github.com/eagle/handler/quicktasking"
 	"github.com/eagle/handler/utils"
 )
 
 //go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
 
 func main() {
-	// quicktasking.Initialize()
+	loading.Initialize()
+	quicktasking.Initialize()
+
 	// ws_quicktasking.Initialize()
 	thebrokenarm.Initialize()
 	thebrokenarm_monitor.Initialize()
-	loading.Initialize()
+
 	logs.LogtailInitialize()
 	// create.Initialize()
 	// auth.Initialize()

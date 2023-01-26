@@ -9,7 +9,7 @@ import (
 )
 
 func session(t *quicktask.Quicktask) quicktask.TaskState {
-	logs.LogQuickSess(t, "getting session...")
+	logs.LogQuickSess(t, "getting session quicktask...")
 	_, err := t.Client.NewRequest().
 		SetURL("https://www.the-broken-arm.com/en/").
 		SetMethod("GET").
