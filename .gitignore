@@ -1,0 +1,15 @@
+client/
+handler/
+monitor/
+proxies/
+thebrokenarm/
+Makefile
+MQT.csv
+notes.txt
+profiles.csv
+settings.json
+main.go
+go.sum
+go.mod
+.DS_Store
+resource.syso
