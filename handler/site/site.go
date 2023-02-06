@@ -14,7 +14,8 @@ var (
 	sites = map[int]string{
 		1: "thebrokenarm",
 		2: "fiver",
-		3: "monitor",
+		3: "nike",
+		4: "monitor",
 	}
 )
 
