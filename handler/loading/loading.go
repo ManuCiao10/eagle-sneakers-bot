@@ -45,7 +45,7 @@ func Load() *Config {
 
 func loadAccounts() *Accounts {
 	paths := []string{
-		"thebrokenarm/accounts.csv",
+		// "thebrokenarm/accounts.csv",
 	}
 
 	var accounts Accounts
