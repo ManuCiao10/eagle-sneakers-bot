@@ -58,32 +58,32 @@ func Initialize() {
 		}
 	}
 
-	if _, err := os.Stat("thebrokenarm"); os.IsNotExist(err) {
-		err := os.Mkdir("thebrokenarm", 0755)
-		if err != nil {
-			log.Fatal(err)
-		}
+	// if _, err := os.Stat("thebrokenarm"); os.IsNotExist(err) {
+	// 	err := os.Mkdir("thebrokenarm", 0755)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		_, err = os.Create("thebrokenarm/tasks.csv")
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	_, err = os.Create("thebrokenarm/tasks.csv")
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		err = ioutil.WriteFile("thebrokenarm/tasks.csv", CsvTemplateTask, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	err = ioutil.WriteFile("thebrokenarm/tasks.csv", CsvTemplateTask, 0644)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		_, err = os.Create("thebrokenarm/accounts.csv")
-		if err != nil {
-			log.Fatal(err)
-		}
+	// 	_, err = os.Create("thebrokenarm/accounts.csv")
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
 
-		err = ioutil.WriteFile("thebrokenarm/accounts.csv", CsvTemplateAccount, 0644)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
+	// 	err = ioutil.WriteFile("thebrokenarm/accounts.csv", CsvTemplateAccount, 0644)
+	// 	if err != nil {
+	// 		log.Fatal(err)
+	// 	}
+	// }
 
 	if _, err := os.Stat("MQT.csv"); os.IsNotExist(err) {
 		csvFile, err := os.Create("MQT.csv")
