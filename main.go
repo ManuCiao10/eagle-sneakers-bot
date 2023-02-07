@@ -6,12 +6,14 @@ import (
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
+
 	"github.com/eagle/handler/modules/fiver"
+	"github.com/eagle/handler/modules/nike"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/modules/thebrokenarm_monitor"
+
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/quicktasking"
-
 	"github.com/eagle/handler/utils"
 )
 
@@ -22,6 +24,7 @@ func main() {
 	loading.Initialize()
 	// console.Initialize() //only windows
 	quicktasking.Initialize()
+	nike.Initialize()
 	thebrokenarm.Initialize()
 	thebrokenarm_monitor.Initialize()
 	fiver.Initialize()
