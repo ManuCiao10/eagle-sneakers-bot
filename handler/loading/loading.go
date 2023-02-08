@@ -45,8 +45,10 @@ func Load() *Config {
 }
 
 func loadAccounts() *Accounts {
+	dir := getPath()
+
 	paths := []string{
-		// "thebrokenarm/accounts.csv",
+		dir + "/thebrokenarm/accounts.csv",
 	}
 
 	var accounts Accounts
@@ -140,15 +142,15 @@ func loadQuicktasks() *Quicktask {
 }
 
 func loadTask() *Tasks {
+	fmt.Println("Loading tasks...")
 	dir := getPath()
 	paths := task_handler.PathTask()
-
-	fmt.Println(paths)
 
 	var tasks Tasks
 	tasks.Tasks = make(map[string][]string)
 
 	for _, path := range paths {
+		fmt.Println("Loading tasks from " + path)
 		index := 1
 
 		type_ := strings.Split(path, "/")[0]
@@ -173,7 +175,7 @@ func loadTask() *Tasks {
 
 		tasktype := fmt.Sprint(type_, ",", strconv.Itoa(index))
 		taskQuantity := len(task)
-		fmt.Println(tasktype, taskQuantity)
+		fmt.Println(tasktype)
 
 		for i := 0; i < taskQuantity; i++ {
 			if i != 0 {

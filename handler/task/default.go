@@ -70,13 +70,13 @@ func PathTask() []string {
 	}
 
 	for _, site := range folder {
-		files, err := os.ReadDir(site)
+		files, err := os.ReadDir(path + "/" + site)
 		if err != nil {
 			log.Fatal(err)
 		}
 
 		for _, fileName := range files {
-			if fileName.Name() != "accounts.csv" {
+			if fileName.Name() != "accounts.csv" && fileName.Name() != ".DS_Store" {
 				paths = append(paths, site+"/"+fileName.Name())
 			}
 		}

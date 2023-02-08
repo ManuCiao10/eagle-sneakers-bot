@@ -1,11 +1,13 @@
----only for macOs
+Beta Site List
+-------------------
+[x] Thebrokenarm
+[x] Nike
+[x] Adidas
 
---Beta Site List
+How to use
+-------------------
+Run ```Make macOS``` in terminal 
 
-- [x] Thebrokenarm
-- [x] Nike
-- [x] Adidas
-
---Contact
-
--[Discord]: Manuciao | YΞ#5388
+Contact
+-------------------
+[Discord]: Manuciao | YΞ#5388
