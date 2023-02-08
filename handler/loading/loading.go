@@ -142,21 +142,18 @@ func loadQuicktasks() *Quicktask {
 }
 
 func loadTask() *Tasks {
-	fmt.Println("Loading tasks...")
 	dir := getPath()
 	paths := task_handler.PathTask()
 
+	var index = 1
 	var tasks Tasks
 	tasks.Tasks = make(map[string][]string)
 
 	for _, path := range paths {
-		fmt.Println("Loading tasks from " + path)
-		index := 1
-
 		type_ := strings.Split(path, "/")[0]
 
 		if task_handler.Contains(array, type_) {
-			index = index + 1
+			index++
 		} else {
 			array = append(array, type_)
 		}
@@ -175,7 +172,6 @@ func loadTask() *Tasks {
 
 		tasktype := fmt.Sprint(type_, ",", strconv.Itoa(index))
 		taskQuantity := len(task)
-		fmt.Println(tasktype)
 
 		for i := 0; i < taskQuantity; i++ {
 			if i != 0 {

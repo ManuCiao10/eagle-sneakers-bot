@@ -6,7 +6,7 @@ Beta Site List
 
 How to use
 -------------------
-Run ```Make macOS``` in terminal 
+Run ```Make macOS``` 
 
 Contact
 -------------------

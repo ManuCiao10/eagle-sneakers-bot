@@ -24,9 +24,7 @@ func Initialize() {
 				eaglemonitor.Initialize()
 			}
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
-
 				taskObject, err := task.GetTask(taskUUID)
-				fmt.Println(taskObject)
 
 				if err != nil {
 					fmt.Println("Failed to get task: ", err.Error())
