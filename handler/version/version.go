@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	Version string
+	Version = "0.0.23"
 	File    Update
 )
 
@@ -83,41 +83,10 @@ func DowloadUpdate(version string) bool {
 	return resp.StatusCode == 200
 }
 
-// TODO fix this for macOS
-func DuplicateCrack() {
-	//delete old version
-	var count int
-	list, _ := os.ReadDir(".")
-	for _, name := range list {
-		if strings.Contains(name.Name(), ".exe") {
-			count++
-		}
-	}
-	if count > 1 {
-		logs.LogsMsgErr("delete old version")
-	}
-}
-
-// TODO fix this for macOS
-func ExecutableName() string {
-
-	DuplicateCrack()
-
-	//name := "EagleBot_0_0_24"
-
-	ExecutableName := os.Args[0]
-	ExecutableName = strings.Split(ExecutableName, "\\")[len(strings.Split(ExecutableName, "\\"))-1]
-
-	ExecutableName = strings.Split(ExecutableName, "_")[1]
-	ExecutableName = ExecutableName[:len(ExecutableName)-4]
-
-	return ExecutableName
-}
-
 func Initialize() {
 	new_version := strings.ToUpper(GetLatestVersion())
 	version := strings.Split(new_version, " ")[1]
-	if version != ExecutableName() {
+	if version != Version {
 		if !DowloadUpdate(version) {
 			logs.LogsMsgErr("error downloading update")
 		}

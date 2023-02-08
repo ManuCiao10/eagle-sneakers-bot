@@ -238,8 +238,9 @@ func loadProxies() *Proxies {
 var JsonTemplate embed.FS
 
 func loadEnv() *Env {
-	var envs Env
 	env, _ := JsonTemplate.ReadFile("config.json")
+
+	var envs Env
 
 	err := json.Unmarshal(env, &envs.Env)
 	if err != nil {

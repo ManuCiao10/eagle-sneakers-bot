@@ -11,9 +11,7 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
-var (
-	Run bool
-)
+var Run bool
 
 func Initialize() {
 	for {

@@ -7,7 +7,7 @@ settings.json
 handler/loading/config.json
 nike
 # .gitignore
-.gitmodules
+# .gitmodules
 
 .DS_Store
 resource.syso

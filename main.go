@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/eagle/handler/auth"
 	"github.com/eagle/handler/cmd"
+	"github.com/eagle/handler/cmd/console_mac"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
@@ -23,6 +24,7 @@ func main() {
 	create.Initialize()
 	loading.Initialize()
 	// console.Initialize() //only windows
+	console_mac.Initialize()
 	quicktasking.Initialize()
 	nike.Initialize()
 	thebrokenarm.Initialize()

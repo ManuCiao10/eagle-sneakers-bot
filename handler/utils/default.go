@@ -71,7 +71,6 @@ func Banner() {
 }
 
 func Site() {
-	// version.Version = version.ExecutableName()
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("1. THEBROKENARM"))
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("2. FIVER"))
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("3. NIKE"))
