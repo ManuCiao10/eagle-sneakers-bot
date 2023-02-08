@@ -1,9 +1,11 @@
----Beta Site List
+---only for macOs
+
+--Beta Site List
 
 - [x] Thebrokenarm
 - [x] Nike
 - [x] Adidas
 
----Contact
+--Contact
 
----Discord: Manuciao | YΞ#5388
+-[Discord]: Manuciao | YΞ#5388

@@ -83,6 +83,7 @@ func DowloadUpdate(version string) bool {
 	return resp.StatusCode == 200
 }
 
+// TODO fix this for macOS
 func DuplicateCrack() {
 	//delete old version
 	var count int
@@ -97,9 +98,12 @@ func DuplicateCrack() {
 	}
 }
 
+// TODO fix this for macOS
 func ExecutableName() string {
 
 	DuplicateCrack()
+
+	//name := "EagleBot_0_0_24"
 
 	ExecutableName := os.Args[0]
 	ExecutableName = strings.Split(ExecutableName, "\\")[len(strings.Split(ExecutableName, "\\"))-1]

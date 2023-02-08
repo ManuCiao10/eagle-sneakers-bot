@@ -18,6 +18,7 @@ import (
 	quicktask_handler "github.com/eagle/handler/quicktask"
 	"github.com/eagle/handler/settings"
 	task_handler "github.com/eagle/handler/task"
+	"github.com/mitchellh/go-homedir"
 )
 
 var (
@@ -97,7 +98,9 @@ func loadQuicktasks() *Quicktask {
 	var quicktask Quicktask
 	quicktask.Quicktask = make(map[string][]string)
 
-	csvFile, err := os.Open("MQT.csv")
+	path := getPath()
+
+	csvFile, err := os.Open(path + "/MQT.csv")
 	if err != nil {
 		log.Fatal("error opening file MQT.csv")
 	}
@@ -137,7 +140,10 @@ func loadQuicktasks() *Quicktask {
 }
 
 func loadTask() *Tasks {
+	dir := getPath()
 	paths := task_handler.PathTask()
+
+	fmt.Println(paths)
 
 	var tasks Tasks
 	tasks.Tasks = make(map[string][]string)
@@ -146,15 +152,16 @@ func loadTask() *Tasks {
 		index := 1
 
 		type_ := strings.Split(path, "/")[0]
+
 		if task_handler.Contains(array, type_) {
 			index = index + 1
 		} else {
 			array = append(array, type_)
 		}
 
-		csvFile, err := os.Open(path)
+		csvFile, err := os.Open(dir + "/" + path)
 		if err != nil {
-			log.Fatal("error opening file")
+			fmt.Println("error opening file", type_)
 		}
 		reader := csv.NewReader(bufio.NewReader(csvFile))
 
@@ -166,6 +173,7 @@ func loadTask() *Tasks {
 
 		tasktype := fmt.Sprint(type_, ",", strconv.Itoa(index))
 		taskQuantity := len(task)
+		fmt.Println(tasktype, taskQuantity)
 
 		for i := 0; i < taskQuantity; i++ {
 			if i != 0 {
@@ -196,7 +204,9 @@ func loadProxies() *Proxies {
 	proxyMutex.RLock()
 	defer proxyMutex.RUnlock()
 
-	files, err := os.ReadDir("./proxies")
+	path := getPath()
+
+	files, err := os.ReadDir(path + "/proxies")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -204,7 +214,7 @@ func loadProxies() *Proxies {
 	var proxies Proxies
 
 	for _, fileName := range files {
-		file, err := os.Open("proxies/" + fileName.Name())
+		file, err := os.Open(path + "/proxies/" + fileName.Name())
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -230,21 +240,22 @@ func loadProxies() *Proxies {
 var JsonTemplate embed.FS
 
 func loadEnv() *Env {
-	env, _ := JsonTemplate.ReadFile("config.json")
-
 	var envs Env
+	env, _ := JsonTemplate.ReadFile("config.json")
 
 	err := json.Unmarshal(env, &envs.Env)
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	return &envs
 
 }
 
 func loadSettings() *Settings {
-	jsonFile, err := os.Open("settings.json")
-	// jsonFile, err := os.Open("handler/loading/settings.json")
+	path := getPath()
+
+	jsonFile, err := os.Open(path + "/settings.json")
 
 	if err != nil {
 		fmt.Println(err)
@@ -263,7 +274,9 @@ func loadSettings() *Settings {
 }
 
 func loadProfiles() *Profiles {
-	f, err := os.Open("profiles.csv")
+	path := getPath()
+
+	f, err := os.Open(path + "/profiles.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -303,4 +316,15 @@ func loadProfiles() *Profiles {
 		})
 	}
 	return &profiles
+}
+
+func getPath() string {
+	dir, err := homedir.Dir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	path := dir + "/Desktop/EagleBot"
+
+	return path
 }

@@ -29,7 +29,6 @@ func main() {
 	thebrokenarm_monitor.Initialize()
 	fiver.Initialize()
 	logs.LogtailInitialize()
-	// nike.Initialize()
 
 	// ws_quicktasking.Initialize() //to be implemented
 	// auth.Initialize() //to be fixed

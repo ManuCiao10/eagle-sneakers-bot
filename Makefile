@@ -13,5 +13,5 @@ macOs:
 	rm -rf EagleBot_0.0.24
 	go generate
 	rm resource.syso
-	env GOOS=darwin GOARCH=amd64 go build github.com/eagle
+	env GOOS=darwin GOARCH=amd64 go build -o EagleBot_0_0_24 github.com/eagle
 

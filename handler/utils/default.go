@@ -13,6 +13,7 @@ import (
 	"github.com/eagle/handler/logs"
 	"github.com/eagle/handler/version"
 	"github.com/fatih/color"
+	"github.com/mitchellh/go-homedir"
 )
 
 var (
@@ -70,7 +71,7 @@ func Banner() {
 }
 
 func Site() {
-	version.Version = version.ExecutableName()
+	// version.Version = version.ExecutableName()
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("1. THEBROKENARM"))
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("2. FIVER"))
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("3. NIKE"))
@@ -80,14 +81,16 @@ func Site() {
 }
 
 func Directory(site string) {
+	path := Path()
+
 	var i = 1
-	files, err := os.ReadDir("./" + site)
+	files, err := os.ReadDir(path + "/" + site)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	for _, f := range files {
-		if f.Name() != "accounts.csv" {
+		if f.Name() != "accounts.csv" && f.Name() != ".DS_Store" {
 			s := strconv.Itoa(i)
 			color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString(s+". "+f.Name()))
 			i++
@@ -125,4 +128,15 @@ func ProxyToUrl(proxy string) string {
 	}
 
 	return fmt.Sprintf("http://%s", proxy)
+}
+
+func Path() string {
+	dir, err := homedir.Dir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	path := dir + "/Desktop/EagleBot"
+	return path
+
 }

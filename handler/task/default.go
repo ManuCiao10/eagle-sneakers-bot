@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"github.com/lithammer/shortuuid"
+	"github.com/mitchellh/go-homedir"
 )
 
 var (
@@ -52,25 +53,19 @@ func CreateTask(tasktype, mode, pid, size, mail, Profile, payment, cardNum, mont
 }
 
 func PathTask() []string {
+	path := findPath()
+
 	var folder []string
 	var paths []string
 
-	files, err := ioutil.ReadDir("./")
+	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if Dev {
-		for _, f := range files {
-			if f.IsDir() && f.Name() != ".git" && f.Name() != "proxies" && f.Name() != "handler" && f.Name() != "client" && f.Name() != "monitor" && f.Name() != "quicktask" {
-				folder = append(folder, f.Name())
-			}
-		}
-	} else {
-		for _, f := range files {
-			if f.IsDir() && f.Name() != "proxies" {
-				folder = append(folder, f.Name())
-			}
+	for _, f := range files {
+		if f.IsDir() && f.Name() != "proxies" {
+			folder = append(folder, f.Name())
 		}
 	}
 
@@ -88,4 +83,15 @@ func PathTask() []string {
 	}
 
 	return paths // return all the paths
+}
+
+func findPath() string {
+	dir, err := homedir.Dir()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	path := dir + "/Desktop/EagleBot"
+
+	return path
 }
