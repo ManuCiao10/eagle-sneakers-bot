@@ -18,9 +18,19 @@ import (
 	"github.com/eagle/handler/utils"
 )
 
-//go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico -manifest=handler/create/file.exe.manifest
+//go:generate goversioninfo -skip-versioninfo=true -icon=handler/create/favicon.ico 
 
 func main() {
+	// w := webview.New(true)
+	// defer w.Destroy()
+	// w.SetTitle("Eagle")
+	// w.SetSize(800, 600, webview.HintNone)
+	// w.Bind("quit", func() {
+	// 	w.Terminate()
+	// })
+
+	// w.Run()
+
 	create.Initialize()
 	loading.Initialize()
 	// console.Initialize() //only windows

@@ -1,13 +1,3 @@
-Beta Site List
--------------------
-[x] Thebrokenarm
-[x] Nike
-[x] Adidas
-
-How to use
--------------------
-Run ```Make macOS``` 
-
       .---.        .-----------
      /     \  __  /    ------
     / /     \(  )/    -----           
@@ -30,6 +20,10 @@ WELCOME BACK  Manuciao | YΞ#5388
 
 [Eagle 0.0.23] [18:32:36.810737] PLESE SELECT A SITE: 
 
+
+How to use
+-------------------
+Run ```Make macOS```
 
 Contact
 -------------------

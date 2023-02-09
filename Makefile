@@ -11,6 +11,6 @@ git:
 # 64-bit
 macOs:
 	go generate
-	rm resource.syso
+	# rm resource.syso
 	env GOOS=darwin GOARCH=amd64 go build -o EagleBot_0_0_24 github.com/eagle
 
