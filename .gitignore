@@ -6,8 +6,6 @@ profiles.csv
 settings.json
 handler/loading/config.json
 nike
-# .gitignore
-# .gitmodules
 
 .DS_Store
 resource.syso
