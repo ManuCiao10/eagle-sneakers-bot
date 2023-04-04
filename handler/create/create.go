@@ -108,5 +108,5 @@ func Initialize() {
 
 var empData = [][]string{
 	{"Site", "Tasks Quantity", "Profiles", "Accounts (guest/accounts)", "Email", "Proxylist", "Payment Method", "Credit Card", "Other"},
-	{"thebrokenarm", "5", "Manu", "guest", "@cathall", "test", "CC", "5638378250-01-29-128", "PIDLV2;7866;9267;9311"},
+	{"thebrokenarm", "5", "Manu", "guest", "@cathall", "test", "CC", "563-01-29-128", "test"},
 }

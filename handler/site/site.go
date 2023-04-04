@@ -13,9 +13,8 @@ import (
 var (
 	sites = map[int]string{
 		1: "thebrokenarm",
-		2: "fiver",
+		2: "adidas",
 		3: "nike",
-		4: "monitor",
 	}
 )
 

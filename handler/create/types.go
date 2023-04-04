@@ -21,7 +21,7 @@ var (
 
 	JsonTemplateDEV = []byte(`{
 	"key": "EAGLE-LD9W-CJ3K-NAO7-KFOV",
-	"webhook": "https://discord.com/api/webhooks/1039416403834441768/sjA3RKtRY2H3v-RZUOTPvA3RTSP9WAm2ndkWdcPhQRUw2EE97_C5tfcx9dmV9qVjKvZj",
+	"webhook": "",
 			
 	"2captcha_key": "INSERT_YOUR_2CAPTCHA_KEY",
 	"anticaptcha_key": "INSERT_YOUR_ANTICAPTCHA_KEY",

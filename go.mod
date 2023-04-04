@@ -5,14 +5,12 @@ go 1.19
 require (
 	github.com/lithammer/shortuuid v3.0.0+incompatible
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/webview/webview v0.0.0-20230201080802-a36f7869a99d
 )
 
 require github.com/refraction-networking/utls v1.1.6-0.20221101174805-9c1996abbbba // indirect
 
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
-	github.com/akavel/rsrc v0.10.2 // indirect
 	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
@@ -42,7 +40,6 @@ require (
 
 require (
 	github.com/avast/retry-go v3.0.0+incompatible
-	github.com/bwmarrin/discordgo v0.26.1
 	github.com/fatih/color v1.13.0
 	github.com/getsentry/sentry-go v0.16.0
 	github.com/hugolgst/rich-go v0.0.0-20210925091458-d59fb695d9c0

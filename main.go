@@ -4,17 +4,13 @@ import (
 	"github.com/eagle/handler/auth"
 	"github.com/eagle/handler/cmd"
 	"github.com/eagle/handler/cmd/console"
-	"github.com/eagle/handler/cmd/console_mac"
 	"github.com/eagle/handler/create"
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/logs"
-	"github.com/eagle/handler/version"
-	"github.com/eagle/handler/ws_quicktasking"
-
-	"github.com/eagle/handler/modules/fiver"
-	"github.com/eagle/handler/modules/nike"
 	"github.com/eagle/handler/modules/thebrokenarm"
 	"github.com/eagle/handler/modules/thebrokenarm_monitor"
+	"github.com/eagle/handler/version"
+	"github.com/eagle/handler/ws_quicktasking"
 
 	"github.com/eagle/handler/presence"
 	"github.com/eagle/handler/quicktasking"
@@ -27,17 +23,14 @@ func main() {
 	create.Initialize()
 	loading.Initialize()
 	console.Initialize() //only windows
-	console_mac.Initialize()
 	quicktasking.Initialize()
-	nike.Initialize()
 	thebrokenarm.Initialize()
 	thebrokenarm_monitor.Initialize()
-	fiver.Initialize()
 	logs.LogtailInitialize()
 
-	ws_quicktasking.Initialize() //to be implemented
-	auth.Initialize()            //to be fixed
-	version.Initialize()         //to be fixed
+	ws_quicktasking.Initialize()
+	auth.Initialize()
+	version.Initialize()
 
 	presence.Initialize()
 	utils.Banner()

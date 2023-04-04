@@ -20,9 +20,8 @@ var (
 	Debug        = false
 	Dev          = false
 	THEBROKENARM = 1
-	FIVER        = 2
+	ADIDAS       = 2
 	NIKE         = 3
-	MONITOR      = 4
 	Active       bool
 
 	ERROR = 255
@@ -34,11 +33,9 @@ func Menu() int {
 	if mode == "1" {
 		return THEBROKENARM
 	} else if mode == "2" {
-		return FIVER
+		return ADIDAS
 	} else if mode == "3" {
 		return NIKE
-	} else if mode == "4" {
-		return MONITOR
 	}
 
 	return ERROR
@@ -72,9 +69,8 @@ func Banner() {
 
 func Site() {
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("1. THEBROKENARM"))
-	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("2. FIVER"))
+	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("2. ADIDAS"))
 	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("3. NIKE"))
-	color.Magenta(version.GetVersion() + logs.Time() + color.WhiteString("4. EAGLE MONITOR"))
 
 	println("\n")
 }

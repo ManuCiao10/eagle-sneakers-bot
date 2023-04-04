@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/eagle/handler/eaglemonitor"
 	"github.com/eagle/handler/loading"
 	"github.com/eagle/handler/site"
 	"github.com/eagle/handler/task"
@@ -18,9 +17,6 @@ func Initialize() {
 		if !Run {
 			index := utils.Menu()
 			data := site.Parsing(index)
-			if data == "monitor" {
-				eaglemonitor.Initialize()
-			}
 			for _, taskUUID := range loading.Data.Tasks.Tasks[data] {
 				taskObject, err := task.GetTask(taskUUID)
 
