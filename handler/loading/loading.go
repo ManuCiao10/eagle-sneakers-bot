@@ -234,7 +234,7 @@ func loadProxies() *Proxies {
 
 }
 
-//go:embed config.json
+// go:embed config.json
 var JsonTemplate embed.FS
 
 func loadEnv() *Env {

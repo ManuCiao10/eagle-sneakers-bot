@@ -44,26 +44,23 @@ func Validing(csv string, name string) string {
 }
 
 func Parsing(site int) string {
-	if site == utils.ERROR {
+	sitename, err := sites[site]
+	if !err {
 		logs.LogsMsgErr("invalid option")
 	}
 
-	if site != utils.MONITOR {
-		fmt.Print("\033[H\033[2J")
-		utils.Banner()
-		utils.Directory(sites[site])
-		csv_index := utils.SelectMode(version.GetVersion() + logs.Time() + "PLEASE SELECT CSV:")
+	fmt.Print("\033[H\033[2J")
+	utils.Banner()
+	utils.Directory(sitename)
+	csv_index := utils.SelectMode(version.GetVersion() + logs.Time() + "PLEASE SELECT CSV:")
 
-		t_name := Validing(csv_index, sites[site])
+	t_name := Validing(csv_index, sitename)
 
-		if t_name == "unexpected" {
-			logs.LogsMsgErr("invalid selection")
-		}
-		task_type := fmt.Sprint(sites[site], ",", csv_index)
-
-		return task_type
+	if t_name == "unexpected" {
+		logs.LogsMsgErr("invalid selection")
 	}
+	task_type := fmt.Sprint(sitename, ",", csv_index)
 
-	return "monitor"
+	return task_type
 
 }

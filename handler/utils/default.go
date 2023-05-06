@@ -17,28 +17,24 @@ import (
 )
 
 var (
-	Debug        = false
-	Dev          = false
-	THEBROKENARM = 1
-	ADIDAS       = 2
-	NIKE         = 3
-	Active       bool
+	Debug  = false
+	Dev    = false
+	Active bool
 
-	ERROR = 255
+	// ERROR = 255
 )
 
-// add grid sites
+
 func Menu() int {
 	mode := SelectMode(color.MagentaString(version.GetVersion() + logs.Time() + color.WhiteString("PLESE SELECT A SITE:")))
-	if mode == "1" {
-		return THEBROKENARM
-	} else if mode == "2" {
-		return ADIDAS
-	} else if mode == "3" {
-		return NIKE
+
+	modeInt, err := strconv.Atoi(mode)
+	if err != nil {
+		logs.LogsMsgErr("invalid option")
 	}
 
-	return ERROR
+	return modeInt
+
 }
 
 func SelectMode(label string) string {
