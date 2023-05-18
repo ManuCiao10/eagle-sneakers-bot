@@ -17,7 +17,15 @@
 - [x] Multi-Websites Module
 
 ### Build
-1.  Run Makefile with the command `make`
+Windows:
+	go generate
+	env GOOS=windows GOARCH=amd64 go build -o EagleBot_<version>.exe github.com/eagle
+
+# 64-bit
+macOs:
+	go generate
+	rm resource.syso
+	env GOOS=darwin GOARCH=amd64 go build -o EagleBot_<version> github.com/eagle
 
 ### Download and Install
 1.  From the dashboard install the executable file.exe
