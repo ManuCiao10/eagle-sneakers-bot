@@ -1,6 +1,6 @@
 <kbd> <img src="https://github.com/ManuCiao10/eagle/blob/master/handler/mods/git.png" /> </kbd>
 
-## Features
+### Features
 
 - [x] Bot Auto-Update + Loader
 - [x] AWS API Auth
@@ -18,14 +18,20 @@
 
 ### Build
 Windows:
-	go generate
-	env GOOS=windows GOARCH=amd64 go build -o EagleBot_<version>.exe github.com/eagle
-
+```
+go generate
+env GOOS=windows GOARCH=amd64 go build -o EagleBot_<version>.exe github.com/eagle
+```
 
 macOs(64-bit):
-	go generate
-	rm resource.syso
-	env GOOS=darwin GOARCH=amd64 go build -o EagleBot_<version> github.com/eagle
+```
+go generate
+rm resource.syso
+env GOOS=darwin GOARCH=amd64 go build -o EagleBot_<version> github.com/eagle
+```
+
+### TODO
+- Rewrite the authentication for WHOP (Hyper has been deprecated)
 
 ### Download and Install
 1.  From the dashboard install the executable file.exe
