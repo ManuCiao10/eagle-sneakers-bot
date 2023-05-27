@@ -69,9 +69,6 @@ func RunTask(t *task.Task) {
 	logs.LogInfo(t, "Starting task...")
 	t.CheckoutData.TaskStart = time.Now()
 
-	// t.Internal = reflect.New(taskType.GetInternalType().Elem()).Interface()
-
-	// loop the task states
 	for {
 		nextState = handleTaskState(nextState, taskType, t)
 		if utils.Debug {
@@ -94,11 +91,11 @@ func RunTask(t *task.Task) {
 				Website:     t.CheckoutData.Website,
 				ImageUrl:    t.CheckoutData.ImageUrl,
 			}, loading.Data.Settings.Settings.DiscordWebhook)
-			// you can report that the task stopped here
+
 			t.Active = false
 			break
 		} else if nextState == task.ErrorTaskState {
-			// report errors
+			fmt.Println("Task error")
 			t.Active = false
 			break
 		}

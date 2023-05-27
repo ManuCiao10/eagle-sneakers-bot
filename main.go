@@ -22,7 +22,7 @@ import (
 func main() {
 	create.Initialize()
 	loading.Initialize()
-	console.Initialize() //only windows
+	console.Initialize() //windows
 	quicktasking.Initialize()
 	thebrokenarm.Initialize()
 	thebrokenarm_monitor.Initialize()

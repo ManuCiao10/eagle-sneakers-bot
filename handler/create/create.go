@@ -21,7 +21,6 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		//---proxies---//
 		err = os.Mkdir(path+"/proxies", 0755)
 		if err != nil {
 			log.Fatal(err)
@@ -32,7 +31,6 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		//---settings---//
 		_, err = os.Create(path + "/settings.json")
 		if err != nil {
 			log.Fatal(err)
@@ -47,7 +45,6 @@ func Initialize() {
 			}
 		}
 
-		//---profiles---//
 		_, err = os.Create(path + "/profiles.csv")
 		if err != nil {
 			log.Fatal(err)
@@ -58,7 +55,6 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		//---MQT.csv---//
 		csvFile, err := os.Create(path + "/MQT.csv")
 		if err != nil {
 			log.Fatal(err)
@@ -71,7 +67,6 @@ func Initialize() {
 
 		csvwriter.Flush()
 
-		//---thebrokenarm---//
 		err = os.Mkdir(path+"/thebrokenarm", 0755)
 		if err != nil {
 			log.Fatal(err)
@@ -96,13 +91,11 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		//---.DS_Store---//
 		_ = os.Remove(path + "/thebrokenarm/.DS_Store")
 
 		color.Green("EagleBot folder created...")
 
 	}
-	// fmt.Print("\033[H\033[2J")
 
 }
 
