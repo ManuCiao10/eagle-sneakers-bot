@@ -1,4 +1,5 @@
 # Table of contents
 
-* [Go Environment Configuration](README.md)
-* [preface](preface.md)
+* [Go Environment](README.md)
+* [Authentication](authentication.md)
+* [Preface](preface.md)
