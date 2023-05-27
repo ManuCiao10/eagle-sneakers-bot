@@ -1,6 +1,8 @@
 # Authentication
 
-Authentication can be implemented strictly through Discord user connections using [Whop](https://whop.com), a dedicated API, or a combination of both. With Whop, we can obtain the Discord user's information, including their user ID, key, machine HWID, and access a dedicated dashboard to showcase our product or service.
+Authentication can be implemented strictly through Discord user connections using [Whop](https://whop.com), a dedicated API, or a combination of both.&#x20;
+
+With Whop, we can obtain the Discord user's information, including their user ID, key, machine HWID, and access a dedicated dashboard to showcase our product or service.
 
 ### Client Settings
 
@@ -29,6 +31,8 @@ type Delay struct {
 {% endcode %}
 
 ### Validate a License Key
+
+This validation involves checking the key against expiration date, activation limits, and machine hwid. Preventing unauthorized usage, and ensure a secure and compliant user experience.
 
 {% code overflow="wrap" %}
 ```go
