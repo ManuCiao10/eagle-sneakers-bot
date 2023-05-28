@@ -1,10 +1,10 @@
 # Logging
 
-To implement logging in Golang, we can use the standard library's `log` package or considerer a third-party logging libraries. I will describe how to perform basic logging using `Logtail`, a public API of the tailscale logs service, with a a dashboard of the data included.
+To implement logging in Golang, we can use the standard library's `log` package or consider third-party logging libraries. In this example, I will describe how to perform basic logging using `Logtail`, a public API of the Tailscale logs service, which includes a dashboard for viewing the logged data.
 
 ### Logging
 
-The snippet code has been taken from the offcial repository of [eagle-sneakers-bot](../handler/logs/logtail.go#L65).
+The code snippet has been taken from the official repository of [eagle-sneakers-bot](../handler/logs/logtail.go#L65).
 
 ```go
 func flushLogs() {
