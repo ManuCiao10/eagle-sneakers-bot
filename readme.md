@@ -14,7 +14,6 @@
 - [x] Modules Manager
 - [x] Task manager
 - [x] Clean Architecture
-- [x] Multi-Websites Module
 
 ### Build
 Windows:

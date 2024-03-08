@@ -104,7 +104,6 @@ func RunTask(t *task.Task) {
 	}
 }
 
-// StopTask stops a task
 func StopTask(t *task.Task) {
 	t.Cancel()
 }
