@@ -2,7 +2,6 @@ package task
 
 import (
 	"errors"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -58,7 +57,7 @@ func PathTask() []string {
 	var folder []string
 	var paths []string
 
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -2,7 +2,6 @@ package create
 
 import (
 	"encoding/csv"
-	"io/ioutil"
 	"log"
 	"os"
 
@@ -37,9 +36,9 @@ func Initialize() {
 		}
 
 		if utils.Dev {
-			ioutil.WriteFile(path+"/settings.json", JsonTemplateDEV, 0644)
+			os.WriteFile(path+"/settings.json", JsonTemplateDEV, 0644)
 		} else {
-			err = ioutil.WriteFile(path+"/settings.json", JsonTemplate, 0644)
+			err = os.WriteFile(path+"/settings.json", JsonTemplate, 0644)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -50,7 +49,7 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		err = ioutil.WriteFile(path+"/profiles.csv", CsvTemplate, 0644)
+		err = os.WriteFile(path+"/profiles.csv", CsvTemplate, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -76,7 +75,7 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		err = ioutil.WriteFile(path+"/thebrokenarm/tasks.csv", CsvTemplateTask, 0644)
+		err = os.WriteFile(path+"/thebrokenarm/tasks.csv", CsvTemplateTask, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -86,7 +85,7 @@ func Initialize() {
 			log.Fatal(err)
 		}
 
-		err = ioutil.WriteFile(path+"/thebrokenarm/accounts.csv", CsvTemplateAccount, 0644)
+		err = os.WriteFile(path+"/thebrokenarm/accounts.csv", CsvTemplateAccount, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -49,7 +49,7 @@ func validate_license() {
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	body, _ := os.ReadAll(res.Body)
 
 	fmt.Println(res)
 	fmt.Println(string(body))
