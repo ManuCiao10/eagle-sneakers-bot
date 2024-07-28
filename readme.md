@@ -46,4 +46,4 @@ Each of these [architectures](https://blog.cleancoder.com/uncle-bob/2012/08/13/t
 5. Independent of any external agency. In fact your business rules simply don’t know anything at all about the outside world.
 
 ### Contact
--Discord: manuciao.
+-Discord: manuciao_dev
